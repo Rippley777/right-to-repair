@@ -5,7 +5,11 @@ module.exports = {
     "./.storybook/**/*.{js,jsx,ts,tsx}", // Include Storybook files
   ],
   theme: {
-    extend: {},
+    extend: {
+      backgroundImage: {
+        "hero-background": "url('/src/assets/images/hero-no-repeat.webp')",
+      },
+    },
   },
   plugins: [],
 };
