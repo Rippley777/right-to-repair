@@ -7,6 +7,9 @@ import "./index.css";
 
 import store, { persistor } from "./store/store";
 import Home from "./pages/Home";
+import DeviceList from "./pages/DeviceList";
+import DeviceDetails from "./pages/DeviceDetails";
+import Charts from "./pages/Charts";
 
 const queryClient = new QueryClient();
 
@@ -18,6 +21,12 @@ function App() {
           <Router>
             <Routes>
               <Route path="/" element={<Home />} />
+              <Route path="/devices" element={<DeviceList />} />
+              <Route
+                path="/device/:model_identifier"
+                element={<DeviceDetails />}
+              />
+              <Route path="/charts" element={<Charts />} />
             </Routes>
           </Router>
         </QueryClientProvider>
