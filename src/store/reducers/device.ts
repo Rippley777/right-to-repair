@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
 import { Device, PartialDeviceUpdate } from "../../types";
-import { API_DEV_URL } from "../../api";
+import { API_DEV_URL } from "../../api/";
 
 interface SingleDeviceState {
   data: Device | null;
