@@ -12,6 +12,7 @@
     "build-storybook": "storybook build"
   },
   "dependencies": {
+    "@tanstack/react-table": "^8.20.6",
     "@types/mongoose": "^5.11.97",
     "axios": "^1.7.9",
     "chart.js": "^4.4.7",
