@@ -21,7 +21,9 @@ export const fetchDeviceById = createAsyncThunk<
   { rejectValue: string }
 >("singleDevice/fetchDeviceById", async (id, thunkAPI) => {
   try {
-    const response = await axios.get<Device>(`${API_DEV_URL}api/devices/${id}`); // Replace with your endpoint
+    const response = await axios.get<Device>(
+      `${API_DEV_URL}api/devices/id/${id}`
+    ); // Replace with your endpoint
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
@@ -39,7 +41,10 @@ export const updateDeviceById = createAsyncThunk<
   { rejectValue: string }
 >("singleDevice/updateDeviceById", async ({ id, updates }, thunkAPI) => {
   try {
-    const response = await axios.patch<Device>(`/api/devices/${id}`, updates); // Replace with your endpoint
+    const response = await axios.patch<Device>(
+      `/api/devices/id/${id}`,
+      updates
+    ); // Replace with your endpoint
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {

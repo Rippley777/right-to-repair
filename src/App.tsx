@@ -10,6 +10,7 @@ import Home from "./pages/Home";
 import DeviceList from "./pages/DeviceList";
 import DeviceDetails from "./pages/DeviceDetails";
 import Charts from "./pages/Charts";
+import Tables from "./pages/Tables";
 
 const queryClient = new QueryClient();
 
@@ -27,6 +28,7 @@ function App() {
                 element={<DeviceDetails />}
               />
               <Route path="/charts" element={<Charts />} />
+              <Route path="/tables" element={<Tables />} />
             </Routes>
           </Router>
         </QueryClientProvider>

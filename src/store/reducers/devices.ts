@@ -22,7 +22,9 @@ export const fetchDevices = createAsyncThunk<
   { rejectValue: string }
 >("devices/fetchDevices", async (_, thunkAPI) => {
   try {
-    const response = await axios.get(`${API_DEV_URL}api/devices/`); // Replace with your API endpoint
+    const response = await axios.get(`${API_DEV_URL}api/devices/search`);
+    console.log("api response: ", response);
+
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {
