@@ -27,10 +27,6 @@ jobs:
         with:
           node-version: "20.18.1" # Set your desired Node.js version
           cache: "yarn"
-      - name: Upgrade Yarn
-        run: |
-          npm install -g yarn@1.22.19
-          yarn --version
       - name: Install OIDC Client from Core Package
         run: yarn add @actions/core@1.6.0 @actions/http-client
       - name: Get Id Token
