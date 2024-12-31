@@ -37,6 +37,10 @@ jobs:
             const coredemo = require('@actions/core')
             return await coredemo.getIDToken()
           result-encoding: string
+      - name: Upgrade Yarn
+        run: |
+          npm install -g yarn@1.22.19
+          yarn --version
       - name: Install Dependencies
         run: yarn install --frozen-lockfile
 
