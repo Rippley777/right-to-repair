@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
-import { API_URL } from "../../api/";
+import { API_URL } from "../../api";
 import { Device } from "../../types";
 
 interface DevicesState {
