@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
-import { API_DEV_URL } from "../../api/";
+import { API_URL } from "../../api/";
 import { Device } from "../../types";
 
 interface DevicesState {
@@ -22,7 +22,7 @@ export const fetchDevices = createAsyncThunk<
   { rejectValue: string }
 >("devices/fetchDevices", async (_, thunkAPI) => {
   try {
-    const response = await axios.get(`${API_DEV_URL}api/devices/search`);
+    const response = await axios.get(`${API_URL}/api/devices/search`);
     console.log("api response: ", response);
 
     return response.data;
