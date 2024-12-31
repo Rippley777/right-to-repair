@@ -3,7 +3,7 @@ import { Device } from "../../../../types";
 
 import { useState } from "react";
 import FilterChip from "./FieldChip";
-import DataFieldFilter from "./FieldFilter";
+import DataFieldFilter from "./fieldFilter";
 // const Filters = (table: TableType<Device>) => {
 
 const chips = [
