@@ -1,0 +1,16 @@
+{
+  "platform": {
+    "nodeVersion": "20.18.1"
+  },
+  "navigationFallback": {
+    "rewrite": "/index.html",
+    "exclude": ["/images/*", "/static/*", "/favicon.ico"]
+  },
+  "routes": [
+    {
+      "route": "/*",
+      "serve": "/index.html",
+      "statusCode": 200
+    }
+  ]
+}
