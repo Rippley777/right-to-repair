@@ -27,6 +27,8 @@ jobs:
         with:
           node-version: "20.18.1" # Set your desired Node.js version
           cache: "yarn"
+      - name: Set environment variables
+        run: echo "VITE_API_URL=${{ secrets.VITE_API_URL }}" >> $GITHUB_ENV
       - name: Install OIDC Client from Core Package
         run: yarn add @actions/core@1.6.0 @actions/http-client
       - name: Get Id Token
