@@ -9,7 +9,7 @@ const Table = (table: TableType<Device>) => {
           {/* TABLE HEADERS */}
           <thead>
             {table.getHeaderGroups().map((headerGroup) => (
-              <tr className="bg-[#242424]">
+              <tr key={headerGroup.id} className="bg-[#242424]">
                 {headerGroup.headers.map((header) => (
                   <th
                     colSpan={header.colSpan}

@@ -2,8 +2,8 @@ import { Table as TableType } from "@tanstack/react-table";
 import { Device } from "../../../../types";
 
 import { useState } from "react";
-import DataFieldFilter from "./fieldFilter";
-
+import FilterChip from "./FieldChip";
+import DataFieldFilter from "./FieldFilter";
 // const Filters = (table: TableType<Device>) => {
 
 const chips = [
@@ -17,7 +17,7 @@ const chips = [
 
 const Filters = (table: TableType<Device>) => {
   const [subfilter, setSubfilter] = useState<string | null>(null);
-
+  console.log("filterDataSet: ", { subfilter });
   return (
     <>
       <h3 className="text-[#FFFFFF] text-lg font-bold leading-tight tracking-[-0.015em] px-4 pb-2 pt-4">
@@ -34,7 +34,13 @@ const Filters = (table: TableType<Device>) => {
       </div>
       <div className="flex gap-3 p-3 flex-wrap pr-4">
         {chips.map((chip) => (
-          <FilterChip onClick={() => setSubfilter(chip)} type={chip} />
+          <FilterChip
+            key={chip}
+            onClick={() => setSubfilter(chip)}
+            type={chip}
+            subfilter={subfilter}
+            active={subfilter === chip}
+          />
         ))}
       </div>
       <div className="h-20">
@@ -46,47 +52,44 @@ const Filters = (table: TableType<Device>) => {
 
 export default Filters;
 
-type FilterChipProps = {
-  onClick: (type: string) => void;
-  type: string;
-};
-const FilterChip: React.FC<FilterChipProps> = ({ onClick, type }) => {
-  return (
-    <div
-      onClick={onClick as unknown as () => void}
-      className="flex h-8 shrink-0 items-center justify-center gap-x-2 rounded-xl bg-[#292929] pl-4 pr-4"
-    >
-      <p className="text-[#FFFFFF] text-sm font-medium leading-normal">
-        {type}
-      </p>
-    </div>
-  );
-};
-
 type SubFilterProps = {
   table: TableType<Device>;
   subfilter: string | null;
   // setSubfilter: (subfilter: string) => void;
 };
 const SubFilter: React.FC<SubFilterProps> = ({ table, subfilter }) => {
-  switch (subfilter) {
+  switch (subfilter?.toLowerCase()) {
     case "brand":
-      <DataFieldFilter type={subfilter} table={table} />;
+      console.log("inbrand");
+
+      return (
+        <DataFieldFilter subfilter={subfilter} type={subfilter} table={table} />
+      );
       break;
     case "year":
-      <DataFieldFilter type={subfilter} table={table} />;
+      return (
+        <DataFieldFilter subfilter={subfilter} type={subfilter} table={table} />
+      );
       break;
     case "repairability":
-      <DataFieldFilter type={subfilter} table={table} />;
+      return (
+        <DataFieldFilter subfilter={subfilter} type={subfilter} table={table} />
+      );
       break;
     case "processor":
-      <DataFieldFilter type={subfilter} table={table} />;
+      return (
+        <DataFieldFilter subfilter={subfilter} type={subfilter} table={table} />
+      );
       break;
     case "memory":
-      <DataFieldFilter type={subfilter} table={table} />;
+      return (
+        <DataFieldFilter subfilter={subfilter} type={subfilter} table={table} />
+      );
       break;
     case "storage":
-      <DataFieldFilter type={subfilter} table={table} />;
+      return (
+        <DataFieldFilter subfilter={subfilter} type={subfilter} table={table} />
+      );
       break;
     default:
       return null;
