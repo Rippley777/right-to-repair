@@ -42,9 +42,9 @@ jobs:
         run: yarn install --frozen-lockfile
 
       - name: Build Project
-        run: yarn build
         env:
           VITE_API_URL: ${{ secrets.VITE_API_URL }}
+        run: yarn build
 
       - name: Deploy to Azure Static Web App
         id: builddeploy
