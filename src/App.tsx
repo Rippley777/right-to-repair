@@ -10,7 +10,7 @@ import Home from "./pages/Home";
 import DeviceList from "./pages/DeviceList";
 import DeviceDetails from "./pages/DeviceDetails";
 import Charts from "./pages/Charts";
-import Tables from "./pages/Tables";
+import Tables from "./pages/DeviceTables";
 
 const queryClient = new QueryClient();
 

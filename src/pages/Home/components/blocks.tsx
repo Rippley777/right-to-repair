@@ -6,7 +6,7 @@ import {
   TbAntenna as GroupIcon,
 } from "react-icons/tb";
 
-function HomeBlocksSection() {
+const HomeBlocksSection = () => {
   return (
     <>
       <h2 className="text-white text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">
@@ -60,7 +60,7 @@ function HomeBlocksSection() {
       </div>
     </>
   );
-}
+};
 
 export default HomeBlocksSection;
 

@@ -1,5 +1,5 @@
 import React, { useMemo } from "react";
-import { Device } from "../../types/";
+import { Device } from "../../types";
 import {
   //   Column,
   //   Table,
@@ -8,7 +8,6 @@ import {
   getCoreRowModel,
   getFilteredRowModel,
   getPaginationRowModel,
-  flexRender,
   RowData,
   getSortedRowModel,
   getFacetedRowModel,
@@ -19,26 +18,12 @@ import {
 // import { EditableCell } from "./components/EditableCell";
 import useDevices from "../../hooks/useDevices";
 import "./table.css";
-// Define the type for the data
-// type Device = {
-//   _id: string;
-//   model_number: string;
-//   brand: string;
-//   type: string;
-//   repairability_score: number;
-//   repair_difficulty: string;
-//   known_issues: string[];
-//   hardware_details: {
-//     memory: string;
-//     processor: string;
-//     gpu_model: string;
-//   };
-//   repairability_insights: {
-//     battery: string;
-//     tools_required: string;
-//     cooling_system: string;
-//   };
-// };
+import Table from "./components/Table";
+import Filters from "./components/Filters";
+import HomeHeaderSection from "../Home/components/header";
+import Sidebar from "./components/Sidebar";
+// import Header from "./components/Header";
+
 declare module "@tanstack/react-table" {
   interface TableMeta<TData extends RowData> {
     updateData: (
@@ -53,17 +38,6 @@ declare module "@tanstack/react-table" {
   }
 }
 
-// const defaultColumn: Partial<ColumnDef<Device>> = {
-//   cell: (cellContext) => {
-//     console.log({ cellContext });
-
-//     <EditableCell {...cellContext} />;
-//   },
-// };
-
-// Define the column structure
-
-// App Component
 function App() {
   const { devices: data, error, status } = useDevices();
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
@@ -79,6 +53,7 @@ function App() {
             accessorKey: "release_year",
             header: "Year",
             footer: (props) => props.column.id,
+            sortDescFirst: true,
           },
           {
             accessorKey: "model_identifier",
@@ -222,43 +197,20 @@ function App() {
   if (status === "failed") {
     return <p>Error: {error}</p>;
   }
-  console.log("what are these header groups?: ", table.getHeaderGroups());
 
   return (
-    <div className="p-4">
-      <table className="table-auto border-collapse border border-gray-300 w-full">
-        <thead>
-          {table.getHeaderGroups().map((headerGroup) => (
-            <tr key={headerGroup.id}>
-              {headerGroup.headers.map((header) => (
-                <th
-                  key={header.id}
-                  className="border border-gray-300 p-2 text-left"
-                  colSpan={header.colSpan}
-                >
-                  {header.isPlaceholder
-                    ? null
-                    : flexRender(
-                        header.column.columnDef.header,
-                        header.getContext()
-                      )}
-                </th>
-              ))}
-            </tr>
-          ))}
-        </thead>
-        <tbody>
-          {table.getRowModel().rows.map((row) => (
-            <tr key={row.id}>
-              {row.getVisibleCells().map((cell) => (
-                <td key={cell.id} className="border border-gray-300 p-2">
-                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                </td>
-              ))}
-            </tr>
-          ))}
-        </tbody>
-      </table>
+    <div className="relative flex size-full min-h-screen w-screen flex-col bg-[#141414] dark group/design-root overflow-x-hidden">
+      <div className="layout-container flex h-full grow flex-col">
+        <HomeHeaderSection />
+        <div className="gap-1 px-0 flex flex-1 justify-around py-5">
+          <div className="layout-content-container flex flex-col max-w-[920px] flex-1">
+            {/* <Header /> */}
+            <Filters {...table} />
+            <Table {...table} />
+          </div>
+          <Sidebar />
+        </div>
+      </div>
     </div>
   );
 }

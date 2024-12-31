@@ -1,6 +1,6 @@
 // import NavigationMenu from "@ui/src/components/navigation-menu";
 
-function HomeHeroSection() {
+const HomeHeroSection = () => {
   return (
     <div className="@container">
       <div className="@[480px]:p-4">
@@ -29,6 +29,6 @@ function HomeHeroSection() {
       </div>
     </div>
   );
-}
+};
 
 export default HomeHeroSection;

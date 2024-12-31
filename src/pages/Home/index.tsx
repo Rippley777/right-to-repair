@@ -1,7 +1,7 @@
 import Blocks from "./components/blocks";
 import Header from "./components/header";
 import Hero from "./components/hero";
-import Portals from "./components/portals";
+// import Portals from "./components/portals";
 
 function Home() {
   return (
@@ -13,7 +13,7 @@ function Home() {
         <Header />
         <Hero />
         <Blocks />
-        <Portals />
+        {/* <Portals /> */}
 
         <div className="flex items-center gap-4 bg-[#111418] px-4 min-h-14 justify-between">
           <p className="text-white text-base font-normal leading-normal flex-1 truncate">
