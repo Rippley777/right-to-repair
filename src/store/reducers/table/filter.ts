@@ -4,6 +4,7 @@ const filtersSlice = createSlice({
   name: "filters",
   initialState: {
     data: [],
+    history: [],
     total: 0,
     category: "",
     price_lt: null,
@@ -26,7 +27,11 @@ const filtersSlice = createSlice({
       state.page = 1;
       state.pageSize = 10;
     },
-
+    //   action: { payload: { [key: string]: unknown } }
+    updateFilterHistory: (state, action) => {
+      // @ts-expect-error - TODO fix this
+      state.history.push(action.payload);
+    },
     setPage: (state, action) => {
       state.page = action.payload;
     },
@@ -36,6 +41,11 @@ const filtersSlice = createSlice({
   },
 });
 
-export const { setFilter, resetFilters, setPage, setPageSize } =
-  filtersSlice.actions;
+export const {
+  setFilter,
+  resetFilters,
+  setPage,
+  setPageSize,
+  updateFilterHistory,
+} = filtersSlice.actions;
 export default filtersSlice.reducer;

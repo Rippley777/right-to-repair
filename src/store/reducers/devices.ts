@@ -38,6 +38,8 @@ export const fetchDevices = createAsyncThunk<
     const queryParams = new URLSearchParams({
       page: page?.toString() ?? "1",
       pageSize: pageSize?.toString() ?? "10",
+      brand: "Apple",
+      repairability_score: "4",
     });
 
     const response = await axios.get(
