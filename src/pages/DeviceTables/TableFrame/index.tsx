@@ -144,6 +144,7 @@ const TableFrame = () => {
     ],
     []
   );
+
   const table = useReactTable({
     data: devices,
     columns,

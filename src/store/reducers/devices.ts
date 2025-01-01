@@ -24,7 +24,7 @@ export type FilterProps = {
 };
 
 export const fetchDevices = createAsyncThunk<
-  void,
+  Device[],
   FilterProps,
   { rejectValue: string }
 >("devices/fetchDevices", async (_, thunkAPI) => {
