@@ -1,21 +1,25 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import useDevices from "../../hooks/useDevices";
+import { useDevices } from "../../hooks/useDevices";
+import { Device } from "../../types";
 
 const DevicesList: React.FC = () => {
-  const { devices, status, error } = useDevices();
+  const { data: devices, loading, error } = useDevices();
 
-  if (status === "loading") {
+  if (loading) {
     return <p>Loading...</p>;
   }
 
-  if (status === "failed") {
+  if (error) {
     return <p>Error: {error}</p>;
   }
 
+  if (!devices || devices.length === 0) {
+    return null;
+  }
   return (
     <ul>
-      {devices.map((device) => (
+      {devices.map((device: Device) => (
         <li key={device.model_identifier}>
           <h2>
             {device.model_identifier} ({device.release_year})

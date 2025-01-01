@@ -1,16 +1,16 @@
 import React from "react";
 // import { Link } from "react-router-dom";
-import useDevices from "../../hooks/useDevices";
+import { useDevices } from "../../hooks/useDevices";
 import RepairabilityChart from "./Repairability/chart";
 
 const DevicesList: React.FC = () => {
-  const { devices, status, error } = useDevices();
+  const { data: devices, loading, error } = useDevices();
 
-  if (status === "loading") {
+  if (loading) {
     return <p>Loading...</p>;
   }
 
-  if (status === "failed") {
+  if (error) {
     return <p>Error: {error}</p>;
   }
 

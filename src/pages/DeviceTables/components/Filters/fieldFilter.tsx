@@ -16,6 +16,7 @@ const filterValueMap = {
   processor: "hardware_details.processor",
   memory: "hardware_details.memory",
   storage: "hardware_details.storage",
+  difficulty: "repair_difficulty",
 };
 const getNestedValue = <T,>(obj: T, path: string): unknown => {
   if (!path) {
@@ -40,9 +41,9 @@ const DataFieldFilter: React.FC<DataFieldFilterProps> = ({
   const allFieldValues = (field: string) => {
     console.log({ field });
     return table.getRowModel().rows.map(
-      // TODO all lowercasing should be handled closer to the API call
       // (row) => row.original[field.toLocaleLowerCase() as keyof Device]
       // (row) => row.original[filterValueMap[field.toLocaleLowerCase()]]
+      // TODO all lowercasing should be handled closer to the API call
       (row) =>
         getNestedValue<RowData>(
           row.original,

@@ -15,6 +15,7 @@
     "build-storybook": "storybook build"
   },
   "dependencies": {
+    "@tanstack/react-query": "^5.62.11",
     "@tanstack/react-table": "^8.20.6",
     "@types/mongoose": "^5.11.97",
     "axios": "^1.7.9",

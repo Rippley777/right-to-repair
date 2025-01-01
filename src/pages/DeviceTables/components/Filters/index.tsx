@@ -3,7 +3,7 @@ import { Device } from "../../../../types";
 
 import { useState } from "react";
 import FilterChip from "./FieldChip";
-import DataFieldFilter from "./fieldFilter";
+import DataFieldFilter from "./FieldFilter";
 // const Filters = (table: TableType<Device>) => {
 
 const chips = [
@@ -13,9 +13,14 @@ const chips = [
   "Processor",
   "Memory",
   "Storage",
+  "Difficulty",
 ];
-
-const Filters = (table: TableType<Device>) => {
+type FilterProps = {
+  filters?: string;
+  updateFilter?: (key: string, value: string) => void;
+  table: TableType<Device>;
+};
+const Filters: React.FC<FilterProps> = ({ table }) => {
   const [subfilter, setSubfilter] = useState<string | null>(null);
   console.log("filterDataSet: ", { subfilter });
   return (
@@ -59,34 +64,22 @@ type SubFilterProps = {
 };
 const SubFilter: React.FC<SubFilterProps> = ({ table, subfilter }) => {
   switch (subfilter?.toLowerCase()) {
+    // normal filter
+    case "type":
     case "brand":
-      console.log("inbrand");
-
-      return (
-        <DataFieldFilter subfilter={subfilter} type={subfilter} table={table} />
-      );
-      break;
-    case "year":
-      return (
-        <DataFieldFilter subfilter={subfilter} type={subfilter} table={table} />
-      );
-      break;
-    case "repairability":
-      return (
-        <DataFieldFilter subfilter={subfilter} type={subfilter} table={table} />
-      );
-      break;
+    case "model_identifier":
+    case "in_stock":
+    case "difficulty":
     case "processor":
-      return (
-        <DataFieldFilter subfilter={subfilter} type={subfilter} table={table} />
-      );
-      break;
     case "memory":
+    case "storage":
       return (
         <DataFieldFilter subfilter={subfilter} type={subfilter} table={table} />
       );
       break;
-    case "storage":
+    // range filter
+    case "year":
+    case "repairability":
       return (
         <DataFieldFilter subfilter={subfilter} type={subfilter} table={table} />
       );
@@ -94,5 +87,4 @@ const SubFilter: React.FC<SubFilterProps> = ({ table, subfilter }) => {
     default:
       return null;
   }
-  return <div className="h-20"></div>;
 };

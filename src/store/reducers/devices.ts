@@ -2,6 +2,7 @@ import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
 import { API_URL } from "../../api";
 import { Device } from "../../types";
+import { setPage, setPageSize } from "./table/filter";
 
 interface DevicesState {
   data: Device[];
@@ -15,29 +16,50 @@ const initialState: DevicesState = {
   error: null,
 };
 
-// Async thunk for fetching device data
+export type FilterProps = {
+  category?: string;
+  price_lt?: number | string;
+  page?: number;
+  pageSize?: number;
+};
+
 export const fetchDevices = createAsyncThunk<
-  Device[],
   void,
+  FilterProps,
   { rejectValue: string }
 >("devices/fetchDevices", async (_, thunkAPI) => {
+  const { dispatch, getState } = thunkAPI;
   try {
-    const response = await axios.get(`${API_URL}/api/devices/search`);
+    const state = getState() as {
+      table: { filters: FilterProps };
+    };
+    const { page, pageSize } = state.table.filters;
+
+    const queryParams = new URLSearchParams({
+      page: page?.toString() ?? "1",
+      pageSize: pageSize?.toString() ?? "10",
+    });
+
+    const response = await axios.get(
+      `${API_URL}/api/devices/search?${queryParams.toString()}`
+    );
+    if (response.data.page) {
+      dispatch(setPage(response.data.page));
+      dispatch(setPageSize(response.data.pageSize));
+    }
     console.log("api response: ", response);
 
-    return response.data;
+    return response.data.devices;
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {
       return thunkAPI.rejectWithValue(
         error.response.data.message || "Error fetching data"
       );
     }
-    // Fallback for other error types
     return thunkAPI.rejectWithValue("An unexpected error occurred");
   }
 });
 
-// Create the slice
 const devicesSlice = createSlice({
   name: "devices",
   initialState,
