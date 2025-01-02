@@ -65,7 +65,16 @@ const devicesSlice = createSlice({
         fetchDevices.fulfilled,
         (state, action: PayloadAction<Device[]>) => {
           state.status = "succeeded";
-          state.data = action.payload;
+          // @ts-expect-error TODO actually learn TS and get fancy here with indexing
+          state.data = action.payload.map((device) => ({
+            ...device,
+            repairability_insights: {
+              ...device.repairability_insights,
+              tools_required: device.repairability_insights.tools_required.map(
+                (tool) => tool as unknown
+              ),
+            },
+          }));
         }
       )
       .addCase(

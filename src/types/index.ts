@@ -1,127 +1,174 @@
-import { Types } from "mongoose";
+import { ObjectId } from "mongoose";
 
-export type { ObjectId as ObjectId } from "mongoose";
-/**
- * Enums for fixed values
- */
-export enum RepairDifficulty {
-  Easy = "Easy",
-  Medium = "Medium",
-  Hard = "Hard",
-  VeryHard = "Very Hard",
-  ExtremelyHard = "Extremely Hard",
-}
-
-export enum Recyclability {
-  Poor = "Poor",
-  Average = "Average",
-  Good = "Good",
-  Excellent = "Excellent",
-}
-
-/**
- * Type for estimated repair costs
- */
-export type EstimatedRepairCost = {
-  battery?: string;
-  screen?: string;
-  keyboard?: string;
-};
-
-/**
- * Type for repairability insights
- */
-export interface RepairabilityInsights {
-  battery: string;
-  ram_storage: string;
-  tools_required: string;
-  adhesive_level?: string;
-  cooling_system?: string;
-}
-
-/**
- * Type for hardware details
- */
-export interface HardwareDetails {
-  memory: string;
-  memory_connector: string;
-  max_ram?: string;
-  storage: string;
-  storage_connector: string;
-  max_storage?: string;
-  processor: string;
-  processor_socket: string;
-  gpu_model?: string;
-  gpu_connector?: string;
-  screen_size?: string;
-  resolution?: string;
-  port_types: string[];
-  wireless: string;
-  bluetooth_version?: string;
-}
-
-/**
- * Main interface for a device
- */
 export interface Device {
-  _id: Types.ObjectId;
-  brand: string;
   type: string;
+  brand: string;
   model_identifier: string;
-  release_year: number;
+  release_date: string;
+  discontinued_date?: string;
   model_number: string;
   repairability_score: number;
-  hardware_details: HardwareDetails;
-  repairability_insights: RepairabilityInsights;
-  repair_difficulty?: RepairDifficulty;
+  hardware_details: {
+    memory: {
+      format:
+        | "DDR4"
+        | "DDR5"
+        | "LPDDR4"
+        | "LPDDR5"
+        | "GDDR6"
+        | "HBM2"
+        | "Other";
+      available_sizes: string[];
+      max_ram?: string;
+      speed?: string;
+      ecc?: boolean;
+      soldered?: boolean;
+      channels?: number;
+    };
+    storage: Array<{
+      type: "HDD" | "SSD" | "NVMe" | "eMMC" | "Hybrid" | "Other";
+      capacity: string;
+      connector: "SATA" | "PCIe" | "M.2" | "USB" | "Other";
+      max_capacity?: string;
+      speed?: string;
+      removable?: boolean;
+      raid_support?: boolean;
+    }>;
+    processor: {
+      model: string;
+      socket: string;
+      architecture?: string;
+      cores?: number;
+      threads?: number;
+      base_clock?: string;
+      boost_clock?: string;
+      cache?: string;
+      tdp?: string;
+      integrated_graphics?: string;
+      removable?: boolean;
+    };
+    gpu: {
+      model: string;
+      type: "Integrated" | "Dedicated" | "External";
+      memory?: string;
+      connector?: "PCIe" | "M.2" | "Thunderbolt" | "USB-C" | "Other";
+      tdp?: string;
+      removable?: boolean;
+      cooling_type?: "Passive" | "Active" | "Liquid";
+      supported_technologies?: string[];
+    };
+    screen: {
+      size: string;
+      resolution: string;
+      aspect_ratio?: string;
+      refresh_rate?: number;
+      panel_type?: "TN" | "IPS" | "OLED" | "AMOLED" | "VA" | "Other";
+      brightness?: string;
+      touch_support?: boolean;
+      hdr_support?: boolean;
+    };
+    port_types: Array<{
+      type:
+        | "USB-A"
+        | "USB-C"
+        | "HDMI"
+        | "DisplayPort"
+        | "Thunderbolt"
+        | "Ethernet"
+        | "Audio Jack"
+        | "SD Card Slot"
+        | "Power Connector"
+        | "Other";
+      version?: string;
+      quantity?: number;
+      features?: Array<
+        | "Power Delivery"
+        | "Video Output"
+        | "Fast Charging"
+        | "Data Only"
+        | "Audio Support"
+        | "Other"
+      >;
+    }>;
+    wireless: {
+      wifi: {
+        standard:
+          | "802.11a"
+          | "802.11b"
+          | "802.11g"
+          | "802.11n"
+          | "802.11ac"
+          | "802.11ax";
+        frequency_bands?: ("2.4GHz" | "5GHz" | "6GHz")[];
+        mimo_support?: boolean;
+        max_speed?: string;
+      };
+      bluetooth: {
+        version?: string;
+        low_energy?: boolean;
+      };
+      cellular?: {
+        supported?: boolean;
+        technology?: "4G LTE" | "5G" | "3G" | "Other";
+      };
+      nfc?: boolean;
+      gps?: boolean;
+    };
+    bluetooth: {
+      version: string;
+      profiles?: Array<
+        "A2DP" | "HFP" | "HSP" | "HID" | "PAN" | "PBAP" | "MAP" | "Other"
+      >;
+      codecs?: Array<"SBC" | "AAC" | "aptX" | "aptX HD" | "LDAC" | "Other">;
+      range?: string;
+      low_energy?: boolean;
+      multipoint?: boolean;
+      class?: "Class 1" | "Class 2" | "Class 3" | "Other";
+    };
+  };
+  optical?: {
+    drive_type:
+      | "SuperDrive"
+      | "Combo Drive"
+      | "Blu-ray"
+      | "DVD-RW"
+      | "CD-RW"
+      | "Other";
+    write_speed?: string;
+    read_speed?: string;
+    dual_layer_support?: boolean;
+    removable?: boolean;
+  };
+  repairability_insights: {
+    tools_required: ObjectId[];
+    battery: {
+      accessibility: "Easy" | "Moderate" | "Difficult";
+      replacement_cost?: string;
+      removable?: boolean;
+    };
+    ram_storage: {
+      accessibility: "Easy" | "Moderate" | "Difficult";
+      soldered?: boolean;
+      max_upgradable?: string;
+    };
+    adhesive_level?: "Low" | "Medium" | "High";
+    cooling_system?: string;
+  };
+  repair_difficulty?: string;
   disassembly_steps?: number;
   disassembly_tool_count?: number;
   known_issues: string[];
   replacement_part_availability?: string;
-  estimated_repair_cost?: EstimatedRepairCost;
+  estimated_repair_cost?: {
+    battery?: string;
+    screen?: string;
+    keyboard?: string;
+  };
   repair_guide_availability?: string;
   community_score?: number;
-  recyclability?: Recyclability;
-  images: Types.ObjectId[]; // Array of Mongoose ObjectIds
+  recyclability?: string;
+  images?: ObjectId[];
+  version?: number;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
-
-/**
- * Utility Types
- */
-
-// Type for partial updates (PATCH requests)
-export type PartialDeviceUpdate = Partial<Device>;
-
-// Read-only version of a device
-export type ReadonlyDevice = Readonly<Device>;
-
-// Device without images (lightweight data fetching)
-export type DeviceWithoutImages = Omit<Device, "images">;
-
-// Device with populated images (replacing ObjectId with detailed objects)
-export interface DeviceImage {
-  _id: Types.ObjectId;
-  url: string;
-  description: string;
-}
-
-export interface DeviceWithImages extends Omit<Device, "images"> {
-  images: DeviceImage[];
-}
-
-/**
- * Type guard to verify a given object conforms to the Device interface
- */
-export const isDevice = (obj: unknown): obj is Device => {
-  if (
-    typeof obj === "object" &&
-    obj !== null &&
-    typeof (obj as Device).model_identifier === "string" &&
-    typeof (obj as Device).release_year === "number" &&
-    typeof (obj as Device).repairability_score === "number" &&
-    Array.isArray((obj as Device).known_issues)
-  ) {
-    return true;
-  }
-  return false;
-};

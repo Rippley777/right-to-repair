@@ -51,7 +51,6 @@ const TableFrame = () => {
 
   const table = useReactTable<Device>({
     data: devices,
-    // @ts-expect-error TODO fix this
     columns,
     state: {
       columnFilters,

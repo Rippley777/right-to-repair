@@ -6,7 +6,8 @@ import rootReducer from "./reducers/";
 const persistConfig = {
   key: "root",
   storage,
-  whitelist: ["user"], // only user reducer will be persisted
+  whitelist: ["user", "table"],
+  // blacklist: ["table.filters"],
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

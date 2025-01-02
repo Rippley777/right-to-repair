@@ -1,13 +1,11 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { API_URL } from "../../../api";
-interface FiltersState {
-  [key: string]: string[]; // Each key holds an array of values
-}
 
 interface SetFilterAction {
   payload: {
-    key: string; // The filter key (e.g., 'brand', 'type')
+    key: string;
+    // key: string;
     value: string | number; // The filter value
   };
 }
@@ -29,55 +27,74 @@ export const fetchFilterOptions = createAsyncThunk(
   }
 );
 
+type FilterData = {
+  [key: string]: string | number;
+};
+type FilterState = {
+  data: FilterData;
+  history: FilterData[]; // Adjust type if you know the structure of history items
+  total: number;
+  loading: boolean;
+  error: string | null;
+  activeSubfilter: string;
+  activeSubfilterValues: string[];
+  filterKeys: string[];
+  filterValues: Record<string, unknown>;
+  rangeKeys: string[];
+  rangeValues: Record<string, unknown>;
+  sortKeys: string[];
+  sortValues: Record<string, unknown>;
+  fetchingFilterOptions: boolean;
+};
+
+const initialState: FilterState = {
+  data: {
+    page: 1,
+    pageSize: 10,
+  },
+  history: [],
+  total: 0,
+  loading: false,
+  error: null as string | null,
+  activeSubfilter: "",
+  activeSubfilterValues: [] as string[],
+  filterKeys: [] as string[],
+  filterValues: {} as Record<string, unknown>,
+  rangeKeys: [] as string[],
+  rangeValues: {} as Record<string, unknown>,
+  sortKeys: [] as string[],
+  sortValues: {} as Record<string, unknown>,
+  fetchingFilterOptions: false,
+};
 const filtersSlice = createSlice({
   name: "filters",
-  initialState: {
-    data: {
-      page: 1,
-      pageSize: 10,
-    },
-    history: [],
-    total: 0,
-    loading: false,
-    error: null as string | null,
-    activeSubfilter: "",
-    activeSubfilterValues: [] as string[],
-    filterKeys: [] as string[],
-    filterValues: {} as Record<string, unknown>,
-    rangeKeys: [] as string[],
-    rangeValues: {} as Record<string, unknown>,
-    sortKeys: [] as string[],
-    sortValues: {} as Record<string, unknown>,
-    fetchingFilterOptions: false,
-  },
+  initialState,
   reducers: {
-    setFilter: (state: FiltersState, action: SetFilterAction) => {
+    setFilter: (state: FilterState, action: SetFilterAction) => {
       console.log("setting filter: ", action.payload);
       console.log("state: ", state);
+
       const { key, value } = action.payload;
 
-      // if (state.filterValues[key].length === 0) {
-      //   delete state[key]; // Remove the key from the state
-      // }
-
-      // Ensure the key exists in the state and is an array
-      if (!Array.isArray(state.data[key])) {
-        state.data[key] = [];
+      // Ensure the key exists in the state and is an object
+      if (typeof state.data[key] !== "object" || state.data[key] === null) {
+        state.data[key] = "";
       }
 
-      // Check if the value already exists in the array
-      const index = state.data[key].indexOf(`${value}`);
-      if (index === -1) {
-        // If not present, add the value
-        state.data[key].push(`${value}`);
+      // Toggle the value in the object
+      if (state.data[key] === value) {
+        // If the value exists, remove it (toggle off)
+        state.data[key] = "";
       } else {
-        // If present, remove the value (toggle off)
-        state.data[key].splice(index, 1);
+        // If the value does not exist, add it (toggle on)
+        state.data[key] = value;
       }
     },
     setActiveSubfilter: (state, action) => {
       state.activeSubfilter = action.payload;
-      state.activeSubfilterValues = state.filterValues[action.payload];
+      state.activeSubfilterValues = state.filterValues[
+        action.payload
+      ] as string[];
     },
     resetFilters: (state) => {
       // state.category = "";
@@ -88,12 +105,11 @@ const filtersSlice = createSlice({
     resetFiltersByKeys: (state, action) => {
       action.payload.forEach((key: string) => {
         // TODO research delete vs traditional state[key] = []
-        delete state[key];
+        delete state.data[key];
       });
     },
     //   action: { payload: { [key: string]: unknown } }
     updateFilterHistory: (state, action) => {
-      // @ts-expect-error - TODO fix this
       state.history.push(action.payload);
     },
     setPage: (state, action) => {

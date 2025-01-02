@@ -1,5 +1,19 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+// async function loadUserFilters(userId: string, dispatch: any) {
+//   const response = await fetch(`/api/users/${userId}/filters`);
+//   const data = await response.json();
+//   dispatch(setFilters(data.filters));
+// }
+
+// async function saveUserFilters(userId: string, filters: FilterState) {
+//   await fetch(`/api/users/${userId}/filters`, {
+//     method: "POST",
+//     headers: { "Content-Type": "application/json" },
+//     body: JSON.stringify({ filters }),
+//   });
+// }
+
 export const columnsSlice = createSlice({
   name: "columnsSlice",
   initialState: {
@@ -16,6 +30,7 @@ export const columnsSlice = createSlice({
       "GPU Model": true,
       "Battery Info": true,
       Tools: true,
+      "Model Details": true,
     },
   },
   reducers: {
@@ -25,8 +40,17 @@ export const columnsSlice = createSlice({
     // setCustomTheme: (state, action) => {
     //   state.theme = action.payload.theme;
     // },
+    toggleVisibility: (state, action) => {
+      const columnName = action.payload as keyof typeof state.visibilityStatus;
+      if (columnName in state.visibilityStatus) {
+        state.visibilityStatus[columnName] =
+          !state.visibilityStatus[columnName];
+      } else {
+        state.visibilityStatus[columnName] = false;
+      }
+    },
   },
 });
 
-// export const { toggleTheme, setCustomTheme } = columnsSlice.actions;
+export const { toggleVisibility } = columnsSlice.actions;
 export default columnsSlice.reducer;
