@@ -43,12 +43,6 @@ jobs:
       - name: Checkout submodules
         run: git submodule update --init --recursive
 
-      # DEBUGGING STEPS
-      - name: Verify submodules
-        run: git submodule status
-      - name: Verify submodule files
-        run: ls ui
-
       - name: Install and build UI submodule
         working-directory: ui
         run: |
@@ -56,16 +50,20 @@ jobs:
           yarn run build
 
       # DEBUGGING STEPS
-      - name: Verify submodules
-        run: git submodule status
-      - name: Verify submodule files
-        run: ls ui
-
-      - name: Copy UI build to main project
-        run: cp -R ./ui/dist ./src/public/ui
+      - name: Verify files
+        run: ls ./
 
       - name: Install Dependencies
         run: yarn install --frozen-lockfile
+
+      - name: Copy UI build to main project
+        run: cp -R ./ui/dist ./src/ui
+
+      # DEBUGGING STEPS
+      - name: Verify files
+        run: ls ./
+      - name: Verify src files
+        run: ls ./src
 
       - name: Build Project
         run: yarn build
