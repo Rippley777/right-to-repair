@@ -4,9 +4,9 @@ import { useDevices } from "../../hooks/useDevices";
 import RepairabilityChart from "./Repairability/chart";
 
 const DevicesList: React.FC = () => {
-  const { data: devices, loading, error } = useDevices();
+  const { devices, status, error } = useDevices();
 
-  if (loading) {
+  if (status === "loading") {
     return <p>Loading...</p>;
   }
 

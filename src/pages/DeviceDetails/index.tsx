@@ -13,7 +13,7 @@ const DeviceDetails: React.FC = () => {
     (state: RootState) =>
       state.devices.data.find(
         (device) => device.model_identifier === model_identifier
-      )?._id
+      )?.model_number
   );
 
   const device = useSelector((state: RootState) => state.device.data);
@@ -49,11 +49,11 @@ const DeviceDetails: React.FC = () => {
   return (
     <div>
       <h1>
-        {device.model_identifier} ({device.release_year})
+        {device.model_identifier} ({device.release_date})
       </h1>
       <p>Repairability Score: {device.repairability_score}</p>
       <h2>Hardware Details:</h2>
-      <ul>
+      {/* <ul>
         <li>Memory: {device.hardware_details.memory}</li>
         <li>Max RAM: {device.hardware_details.max_ram || "N/A"}</li>
         <li>Storage: {device.hardware_details.storage}</li>
@@ -64,7 +64,7 @@ const DeviceDetails: React.FC = () => {
         <li>Battery: {device.repairability_insights.battery}</li>
         <li>RAM & Storage: {device.repairability_insights.ram_storage}</li>
         <li>Tools Required: {device.repairability_insights.tools_required}</li>
-      </ul>
+      </ul> */}
     </div>
   );
 };

@@ -5,6 +5,7 @@ export const featuresSlice = createSlice({
   initialState: {
     search: false,
     headerGroups: false,
+    editFilters: false,
   },
   reducers: {
     setSearch: (state, action) => {
@@ -13,8 +14,19 @@ export const featuresSlice = createSlice({
     toggleSearch: (state) => {
       state.search = !state.search;
     },
+    toggleHeaderGroups: (state) => {
+      state.headerGroups = !state.headerGroups;
+    },
+    toggleEditFilters: (state) => {
+      state.editFilters = !state.editFilters;
+    },
   },
 });
 
-export const { setSearch, toggleSearch } = featuresSlice.actions;
+export const {
+  setSearch,
+  toggleSearch,
+  toggleEditFilters,
+  toggleHeaderGroups,
+} = featuresSlice.actions;
 export default featuresSlice.reducer;

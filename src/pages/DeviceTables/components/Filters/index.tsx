@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useSelector } from "react-redux";
 import { Table as TableType } from "@tanstack/react-table";
 
@@ -19,14 +18,15 @@ type FilterProps = {
 };
 
 const Filters: React.FC<FilterProps> = ({ table }) => {
-  const [showFilterHandlerPanel] = useState(false);
   const devMode = process.env.NODE_ENV === "debug";
 
   const { activeSubfilter: subfilter, filterKeys } = useSelector(
     (state: RootState) => state.table.filters
   );
 
-  const { search } = useSelector((state: RootState) => state.table.features);
+  const { search, editFilters } = useSelector(
+    (state: RootState) => state.table.features
+  );
 
   return (
     <div>
@@ -67,7 +67,7 @@ const Filters: React.FC<FilterProps> = ({ table }) => {
         </div>
       ) : null}
       {search ? <FilterSearch /> : null}
-      {showFilterHandlerPanel ? (
+      {editFilters ? (
         <div
           className={
             (twMerge("p-4 text-white rounded"), devMode ? "bg-purple-500" : "")

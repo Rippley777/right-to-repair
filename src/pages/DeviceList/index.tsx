@@ -4,9 +4,9 @@ import { useDevices } from "../../hooks/useDevices";
 import { Device } from "../../types";
 
 const DevicesList: React.FC = () => {
-  const { data: devices, loading, error } = useDevices();
+  const { devices, status, error } = useDevices();
 
-  if (loading) {
+  if (status === "loading") {
     return <p>Loading...</p>;
   }
 
@@ -22,7 +22,7 @@ const DevicesList: React.FC = () => {
       {devices.map((device: Device) => (
         <li key={device.model_identifier}>
           <h2>
-            {device.model_identifier} ({device.release_year})
+            {device.model_identifier} ({device.release_date})
           </h2>
           <p>Repairability Score: {device.repairability_score}</p>
           <Link to={`/device/${device.model_identifier}`}>View Details</Link>

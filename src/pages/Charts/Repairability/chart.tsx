@@ -25,7 +25,7 @@ ChartJS.register(
 
 type ChartData = Pick<
   Device,
-  "release_year" | "repairability_score" | "model_identifier"
+  "release_date" | "repairability_score" | "model_identifier"
 >;
 
 interface RepairabilityChartProps {
@@ -37,8 +37,8 @@ const RepairabilityChart: React.FC<RepairabilityChartProps> = ({ data }) => {
   //     return data.filter((d) => d.repairability_score !== null);
   //   };
   const uniqueSortedYears = Array.from(
-    new Set(data.map((item) => item.release_year))
-  ).sort((a, b) => a - b);
+    new Set(data.map((item) => item.release_date))
+  ).sort((a, b) => Number(a) - Number(b));
 
   const chartData = {
     labels: uniqueSortedYears,

@@ -11,16 +11,6 @@ type DataFieldFilterProps = {
   type?: string;
 };
 
-// const filterValueMap = {
-//   brand: "brand",
-//   year: "release_year",
-//   repairability: "repairability_score",
-//   processor: "hardware_details.processor",
-//   memory: "hardware_details.memory",
-//   storage: "hardware_details.storage",
-//   difficulty: "repair_difficulty",
-// };
-
 const DataFieldFilter: React.FC<DataFieldFilterProps> = ({
   subfilter,
   // table,
@@ -43,12 +33,13 @@ const DataFieldFilter: React.FC<DataFieldFilterProps> = ({
     >
       {activeSubfilterValues.map((chip: string) => {
         console.log({ chip });
-        // @ts-expect-error TODO actually learn TS and get fancy here with indexing
-        const isActive = data[activeSubfilter]?.includes(chip);
+        const isActive =
+          typeof data[activeSubfilter] === "string"
+            ? data[activeSubfilter]?.includes(chip)
+            : data[activeSubfilter] == Number(chip);
         return (
           <FieldChip
             key={chip as string}
-            // TODO handle edge cases for string type/make sure API is locked down to string
             type={chip as string}
             subfilter={subfilter}
             active={isActive}

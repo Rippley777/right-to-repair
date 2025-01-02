@@ -48,6 +48,14 @@ jobs:
           VITE_API_URL: ${{ secrets.VITE_API_URL }}
         run: yarn build
 
+      - name: Install and build UI submodule
+        working-directory: ./ui
+        run: |
+          yarn install
+          yarn run build
+      - name: Copy UI build to main project
+        run: cp -R ./ui/dist ./src/public/ui
+
       - name: Deploy to Azure Static Web App
         id: builddeploy
         uses: Azure/static-web-apps-deploy@v1
