@@ -16,30 +16,20 @@ const initialState: DevicesState = {
   error: null,
 };
 
-export type FilterProps = {
-  category?: string;
-  price_lt?: number | string;
-  page?: number;
-  pageSize?: number;
-};
-
 export const fetchDevices = createAsyncThunk<
   Device[],
-  FilterProps,
+  unknown,
   { rejectValue: string }
 >("devices/fetchDevices", async (_, thunkAPI) => {
   const { dispatch, getState } = thunkAPI;
   try {
     const state = getState() as {
-      table: { filters: FilterProps };
+      table: { filters: { data: Record<string, string> } };
     };
-    const { page, pageSize } = state.table.filters;
+    const { data } = state.table.filters;
 
     const queryParams = new URLSearchParams({
-      page: page?.toString() ?? "1",
-      pageSize: pageSize?.toString() ?? "10",
-      brand: "Apple",
-      repairability_score: "4",
+      ...data,
     });
 
     const response = await axios.get(

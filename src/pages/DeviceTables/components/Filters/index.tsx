@@ -1,33 +1,38 @@
-import { Table as TableType } from "@tanstack/react-table";
-import { Device } from "../../../../types";
-
 import { useState } from "react";
-import FilterChip from "./FieldChip";
-import DataFieldFilter from "./FieldFilter";
-import FilterHandler from "./FilterHandler";
-// const Filters = (table: TableType<Device>) => {
+import { twMerge } from "tailwind-merge";
+import { useSelector } from "react-redux";
+import { Table as TableType } from "@tanstack/react-table";
 
-const chips = [
-  "Brand",
-  "Year",
-  "Repairability",
-  "Processor",
-  "Memory",
-  "Storage",
-  "Difficulty",
-];
+import { Device } from "../../../../types";
+import { RootState } from "../../../../store/store";
+
+import FilterChip from "./FieldChip";
+import SubFilter from "./FieldSubFilter";
+import FilterHandler from "./FilterHandler";
+// import FilterToolbar from "./FilterToolbar";
+
 type FilterProps = {
   filters?: string;
   updateFilter?: (key: string, value: string) => void;
   table: TableType<Device>;
 };
 const Filters: React.FC<FilterProps> = ({ table }) => {
-  const [subfilter, setSubfilter] = useState<string | null>(null);
-  console.log("filterDataSet: ", { subfilter });
+  const [showHelperPanel] = useState(true);
+  const [panelLocation] = useState("bottom");
+  const { activeSubfilter: subfilter, filterKeys } = useSelector(
+    (state: RootState) => state.table.filters
+  );
+
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-      <div className="p-4 text-white rounded">
-        <div className="flex max-w-[480px] flex-wrap items-end gap-4 px-4 py-3">
+    <div
+      className={twMerge(
+        "flex max-w-full gap-4 bg-blue-900",
+        panelLocation === "right" ? "flex-row" : "flex-col"
+      )}
+    >
+      {/* <FilterToolbar /> */}
+      <div className="p-4 text-white rounded bg-blue-700 overflow-scroll">
+        <div className="flex flex-wrap items-end gap-4 px-4 py-3">
           <label className="flex flex-col min-w-40 flex-1">
             <input
               placeholder="Search models"
@@ -36,58 +41,28 @@ const Filters: React.FC<FilterProps> = ({ table }) => {
             />
           </label>
         </div>
-        <div className="flex gap-3 p-3 overflow-scroll pr-4">
-          {chips.map((chip) => (
+        <div className="flex gap-3 p-3 overflow-scroll pr-4 bg-yellow-500">
+          {filterKeys.map((chip) => (
             <FilterChip
               key={chip}
-              onClick={() => setSubfilter(chip)}
               type={chip}
               subfilter={subfilter}
               active={subfilter === chip}
             />
           ))}
         </div>
-        <div className="h-20">
+        <div className="h-20 bg-red-600">
           <SubFilter table={table} subfilter={subfilter} />
         </div>
       </div>
-      <div className="p-4 text-white rounded">
-        <FilterHandler />
-      </div>
+
+      {showHelperPanel ? (
+        <div className="p-4 text-white rounded bg-purple-500">
+          <FilterHandler />
+        </div>
+      ) : null}
     </div>
   );
 };
 
 export default Filters;
-
-type SubFilterProps = {
-  table: TableType<Device>;
-  subfilter: string | null;
-  // setSubfilter: (subfilter: string) => void;
-};
-const SubFilter: React.FC<SubFilterProps> = ({ table, subfilter }) => {
-  switch (subfilter?.toLowerCase()) {
-    // normal filter
-    case "type":
-    case "brand":
-    case "model_identifier":
-    case "in_stock":
-    case "difficulty":
-    case "processor":
-    case "memory":
-    case "storage":
-      return (
-        <DataFieldFilter subfilter={subfilter} type={subfilter} table={table} />
-      );
-      break;
-    // range filter
-    case "year":
-    case "repairability":
-      return (
-        <DataFieldFilter subfilter={subfilter} type={subfilter} table={table} />
-      );
-      break;
-    default:
-      return null;
-  }
-};
