@@ -18,6 +18,7 @@ export const columnsSlice = createSlice({
   name: "columnsSlice",
   initialState: {
     visibilityStatus: {
+      known_issues: false,
       Year: true,
       Model: false,
       "Model Number": true,

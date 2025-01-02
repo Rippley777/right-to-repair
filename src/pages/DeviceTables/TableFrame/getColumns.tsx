@@ -6,6 +6,9 @@ interface NestedRecord {
 
 export const useDynamicColumns = () => {
   const { filterKeys } = useSelector((state: RootState) => state.table.filters);
+  const { visibilityStatus } = useSelector(
+    (state: RootState) => state.table.columns
+  );
 
   type ColumnDef<T> = {
     header: string;
@@ -31,6 +34,42 @@ export const useDynamicColumns = () => {
       return tree;
     };
 
+    if (filterKeys.length === 0) {
+      return [
+        {
+          header: "Model Details",
+          footer: (props) => props.column.id,
+          columns: [
+            {
+              accessorKey: "release_year",
+              header: "Year",
+              footer: (props) => props.column.id,
+              sortDescFirst: true,
+            },
+            {
+              accessorKey: "model_identifier",
+              header: "Model",
+              footer: (props) => props.column.id,
+            },
+            {
+              accessorKey: "model_number",
+              header: "Model Number",
+              footer: (props) => props.column.id,
+            },
+            {
+              accessorKey: "brand",
+              header: "Brand",
+              footer: (props) => props.column.id,
+            },
+            {
+              accessorKey: "type",
+              header: "Type",
+              footer: (props) => props.column.id,
+            },
+          ],
+        },
+      ];
+    }
     const treeToColumns = (
       tree: Record<string, NestedRecord | null>,
       prefix = ""
@@ -64,5 +103,10 @@ export const useDynamicColumns = () => {
 
   const allColumns = generateColumnsFromSchema(filterKeys);
 
-  return allColumns ?? [];
+  const filteredColumns = allColumns?.filter((column) => {
+    // @ts-expect-error TODO learn typescript lmao
+    return visibilityStatus[column.header] === false ? false : true;
+  });
+
+  return filteredColumns ?? [];
 };
