@@ -1,4 +1,5 @@
 import { ObjectId } from "mongoose";
+import { WritableDraft } from "immer";
 
 export interface Device {
   type: string;
@@ -140,7 +141,7 @@ export interface Device {
     removable?: boolean;
   };
   repairability_insights: {
-    tools_required: ObjectId[];
+    tools_required: WritableDraft<ObjectId>[];
     battery: {
       accessibility: "Easy" | "Moderate" | "Difficult";
       replacement_cost?: string;

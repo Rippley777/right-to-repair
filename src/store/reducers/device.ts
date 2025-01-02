@@ -1,7 +1,9 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
+import { WritableDraft } from "immer";
 import axios from "axios";
-import { Device, PartialDeviceUpdate } from "../../types";
+import { Device } from "../../types";
 import { API_URL } from "../../api/";
+import { ObjectId } from "mongoose";
 
 interface SingleDeviceState {
   data: Device | null;
@@ -35,7 +37,7 @@ export const fetchDeviceById = createAsyncThunk<
 
 export const updateDeviceById = createAsyncThunk<
   Device,
-  { id: string; updates: PartialDeviceUpdate },
+  { id: string; updates: Partial<Device> },
   { rejectValue: string }
 >("singleDevice/updateDeviceById", async ({ id, updates }, thunkAPI) => {
   try {
@@ -70,13 +72,15 @@ const deviceSlice = createSlice({
         state.status = "loading";
         state.error = null;
       })
-      .addCase(
-        fetchDeviceById.fulfilled,
-        (state, action: PayloadAction<Device>) => {
-          state.status = "succeeded";
-          state.data = action.payload;
-        }
-      )
+      .addCase(fetchDeviceById.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        state.data = {
+          ...action.payload,
+          images: action.payload.images
+            ? [...(action.payload.images as WritableDraft<ObjectId>[])]
+            : undefined,
+        };
+      })
       .addCase(
         fetchDeviceById.rejected,
         (state, action: PayloadAction<string | undefined>) => {
@@ -92,7 +96,12 @@ const deviceSlice = createSlice({
         updateDeviceById.fulfilled,
         (state, action: PayloadAction<Device>) => {
           state.status = "succeeded";
-          state.data = action.payload;
+          state.data = {
+            ...action.payload,
+            images: action.payload.images
+              ? [...(action.payload.images as WritableDraft<ObjectId>[])]
+              : undefined,
+          };
         }
       )
       .addCase(
