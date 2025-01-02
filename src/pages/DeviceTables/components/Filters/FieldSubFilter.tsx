@@ -4,7 +4,7 @@ import { Table as TableType } from "@tanstack/react-table";
 import { RootState } from "../../../../store/store";
 import { Device } from "../../../../types";
 
-import DataFieldFilter from "./FieldFilter";
+import DataFieldFilter from "./fieldFilter";
 
 type SubFilterProps = {
   table: TableType<Device>;
