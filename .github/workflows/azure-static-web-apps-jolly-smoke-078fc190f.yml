@@ -57,6 +57,7 @@ jobs:
         run: |
           yarn install
           yarn run build
+
       - name: Copy UI build to main project
         run: cp -R ./ui/dist ./src/public/ui
 
