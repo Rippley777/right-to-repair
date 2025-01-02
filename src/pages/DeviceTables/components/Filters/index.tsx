@@ -45,14 +45,17 @@ const Filters: React.FC<FilterProps> = ({ table }) => {
             devMode ? "bg-yellow-500" : ""
           )}
         >
-          {filterKeys.map((chip) => (
-            <FilterChip
-              key={chip}
-              type={chip}
-              subfilter={subfilter}
-              active={subfilter === chip}
-            />
-          ))}
+          {/* TODO maybe check if array */}
+          {filterKeys &&
+            filterKeys.length > 1 &&
+            filterKeys.map((chip) => (
+              <FilterChip
+                key={chip}
+                type={chip}
+                subfilter={subfilter}
+                active={subfilter === chip}
+              />
+            ))}
         </div>
       </div>
 
