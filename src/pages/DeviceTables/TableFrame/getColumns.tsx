@@ -34,7 +34,7 @@ export const useDynamicColumns = () => {
       return tree;
     };
 
-    if (filterKeys.length === 0) {
+    if (!filterKeys || filterKeys.length === 0) {
       return [
         {
           header: "Model Details",

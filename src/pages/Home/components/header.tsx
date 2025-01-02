@@ -13,15 +13,15 @@ const HomeHeaderSection = () => {
         <div className="flex items-center gap-9">
           <a
             className="text-[#FFFFFF] text-sm font-medium leading-normal"
-            href="#"
+            href="/"
           >
             Dashboard
           </a>
           <a
             className="text-[#FFFFFF] text-sm font-medium leading-normal"
-            href="#"
+            href="/tables"
           >
-            Models
+            Device Table
           </a>
           <a
             className="text-[#FFFFFF] text-sm font-medium leading-normal"
