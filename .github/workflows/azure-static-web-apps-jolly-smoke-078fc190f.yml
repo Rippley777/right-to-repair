@@ -48,8 +48,6 @@ jobs:
         run: yarn install --frozen-lockfile
 
       - name: Build Project
-        env:
-          VITE_API_URL: ${{ secrets.VITE_API_URL }}
         run: yarn build
 
       - name: Install and build UI submodule
