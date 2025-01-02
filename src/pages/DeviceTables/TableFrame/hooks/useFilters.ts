@@ -6,8 +6,11 @@ export const useFilters = () => {
   const filters = useSelector((state: RootState) => state.table.filters);
   const dispatch = useDispatch();
 
-  const updateFilter = (key: string, value: unknown) =>
-    dispatch(setFilter({ key, value }));
+  const updateFilter = (key: string, value: unknown) => {
+    if (typeof value === "string" || typeof value === "number") {
+      dispatch(setFilter({ key, value }));
+    }
+  };
 
   return { filters, updateFilter };
 };

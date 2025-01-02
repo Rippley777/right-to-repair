@@ -1,9 +1,10 @@
 import { flexRender, Table as TableType } from "@tanstack/react-table";
 import { Device } from "../../../types";
-import { useState } from "react";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../store/store";
 
 const Table = (table: TableType<Device>) => {
-  const [showHeaderGroups] = useState(false);
+  const { features } = useSelector((state: RootState) => state.table);
   const headerGroups = table.getHeaderGroups();
   const lastHeaderGroup = headerGroups[headerGroups.length - 1]; // Get only the last header group
 
@@ -12,8 +13,8 @@ const Table = (table: TableType<Device>) => {
       <div className="flex overflow-scroll rounded-xl border border-[#383838] bg-[#141414]">
         <table className="flex-1 border-0">
           {/* TABLE HEADERS */}
-          <thead>
-            {showHeaderGroups
+          <thead className="text-gray-400">
+            {features.headerGroups
               ? headerGroups.map(
                   (headerGroup) => (
                     <tr key={headerGroup.id} className="bg-[#242424]">
@@ -31,7 +32,7 @@ const Table = (table: TableType<Device>) => {
                   ) // Skip rendering header groups
                 )
               : lastHeaderGroup.headers.map((header) => (
-                  <th key={header.id} className="border-black">
+                  <th key={header.id} className="border-black bg-[#242424]">
                     {header.isPlaceholder
                       ? null
                       : flexRender(

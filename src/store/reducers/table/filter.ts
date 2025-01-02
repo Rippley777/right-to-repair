@@ -76,21 +76,17 @@ const filtersSlice = createSlice({
 
       const { key, value } = action.payload;
 
-      // Ensure the key exists in the state and is an array
       if (!Array.isArray(state.data[key])) {
-        state.data[key] = value; // Initialize with the value if it doesn't exist
-      } else {
-        // Toggle the value in the array
-        const valueIndex = (state.data[key] as Array<string | number>).indexOf(
-          value
-        );
-        if (valueIndex > -1) {
-          // If the value exists, remove it (toggle off)
-          (state.data[key] as Array<string | number>).splice(valueIndex, 1);
-        } else {
-          // If the value does not exist, add it (toggle on)
-          (state.data[key] as Array<string | number>).push(value);
-        }
+        //@ts-expect-error TODO handle error
+        state.data[key] = []; // Initialize as an empty array if it doesn't exist
+      }
+
+      // Add the value to the array only if it doesn't already exist
+      if (
+        Array.isArray(state.data[key]) &&
+        !(state.data[key] as Array<string | number>).includes(value)
+      ) {
+        (state.data[key] as Array<string | number>).push(value);
       }
     },
     setActiveSubfilter: (state, action) => {
@@ -110,6 +106,7 @@ const filtersSlice = createSlice({
     },
     resetFiltersByKeys: (state, action) => {
       action.payload.forEach((key: string) => {
+        // TODO research delete vs traditional state[key] = []
         delete state.data[key];
       });
     },

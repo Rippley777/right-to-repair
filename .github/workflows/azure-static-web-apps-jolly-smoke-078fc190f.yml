@@ -21,6 +21,7 @@ jobs:
       - uses: actions/checkout@v3
         with:
           submodules: true
+          fetch-depth: 0
           lfs: false
       - name: Set Up Node.js
         uses: actions/setup-node@v3
@@ -29,8 +30,10 @@ jobs:
           cache: "yarn"
       - name: Set environment variables
         run: echo "VITE_API_URL=${{ secrets.VITE_API_URL }}" >> $GITHUB_ENV
+
       - name: Install OIDC Client from Core Package
         run: yarn add @actions/core@1.6.0 @actions/http-client
+
       - name: Get Id Token
         uses: actions/github-script@v6
         id: idtoken
@@ -39,7 +42,8 @@ jobs:
             const coredemo = require('@actions/core')
             return await coredemo.getIDToken()
           result-encoding: string
-
+      - name: Checkout submodules
+        run: git submodule update --init --recursive
       - name: Install Dependencies
         run: yarn install --frozen-lockfile
 
@@ -49,12 +53,18 @@ jobs:
         run: yarn build
 
       - name: Install and build UI submodule
-        working-directory: ./ui
+        working-directory: ui
         run: |
           yarn install
           yarn run build
       - name: Copy UI build to main project
         run: cp -R ./ui/dist ./src/public/ui
+
+      # DEBUGGING STEPS
+      - name: Verify submodules
+        run: git submodule status
+      - name: Verify submodule files
+        run: ls ui
 
       - name: Deploy to Azure Static Web App
         id: builddeploy

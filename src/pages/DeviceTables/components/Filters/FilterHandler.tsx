@@ -29,10 +29,15 @@ const FilterHandler = () => {
   console.log({ data, allEntries });
 
   return (
-    <div className={twMerge("flex gap-2", devMode ? "bg-purple-500" : "")}>
-      {allEntries.map(({ key, value }) => (
-        <FilterChip key={`${key}-${value}`} group={key} type={value} />
-      ))}
+    <div className="flex gap-2 justify-between">
+      <div
+        className={twMerge("flex gap-2 p-3", devMode ? "bg-purple-500" : "")}
+      >
+        {allEntries.map(({ key, value }) => (
+          <FilterChip key={`${key}-${value}`} group={key} type={value} />
+        ))}
+      </div>
+      <TbTrash size={36} />
     </div>
   );
 };

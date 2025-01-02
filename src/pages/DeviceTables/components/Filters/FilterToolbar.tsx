@@ -6,6 +6,7 @@ import {
   TbRefresh,
   TbEdit,
   TbEye,
+  TbSend,
 } from "react-icons/tb";
 import { useDispatch } from "react-redux";
 import { twMerge } from "tailwind-merge";
@@ -22,6 +23,10 @@ const Toolbar = () => {
   const dispatch = useDispatch<AppDispatch>();
   console.log({ UI });
   const devMode = process.env.NODE_ENV === "debug";
+
+  const handleUpdate = () => {
+    dispatch(fetchDevices({}));
+  };
 
   const handleSearch = () => {
     dispatch(toggleSearch());
@@ -47,6 +52,7 @@ const Toolbar = () => {
         devMode && "bg-green-600"
       )}
     >
+      <TbSend color="white" size={32} onClick={handleUpdate} />
       <TbSearch color="white" size={32} onClick={handleSearch} />
       <TbEdit color="white" size={32} onClick={handleEdit} />
       <TbEye color="white" size={32} onClick={handleViewHeaders} />
