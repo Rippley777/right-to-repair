@@ -99,8 +99,11 @@ const filtersSlice = createSlice({
     resetFilters: (state) => {
       // state.category = "";
       // state.price_lt = null;
-      state.data.page = 1;
-      state.data.pageSize = 10;
+      state.history.push(state.data);
+      state.data = {
+        page: 1,
+        pageSize: 10,
+      };
     },
     resetFiltersByKeys: (state, action) => {
       action.payload.forEach((key: string) => {

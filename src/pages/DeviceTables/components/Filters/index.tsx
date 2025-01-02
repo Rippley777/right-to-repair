@@ -19,13 +19,14 @@ type FilterProps = {
 };
 
 const Filters: React.FC<FilterProps> = ({ table }) => {
-  const [showSearchPanel] = useState(false);
   const [showFilterHandlerPanel] = useState(false);
   const devMode = process.env.NODE_ENV === "debug";
 
   const { activeSubfilter: subfilter, filterKeys } = useSelector(
     (state: RootState) => state.table.filters
   );
+
+  const { search } = useSelector((state: RootState) => state.table.features);
 
   return (
     <div>
@@ -65,7 +66,7 @@ const Filters: React.FC<FilterProps> = ({ table }) => {
           <SubFilter table={table} subfilter={subfilter} />
         </div>
       ) : null}
-      {showSearchPanel ? <FilterSearch /> : null}
+      {search ? <FilterSearch /> : null}
       {showFilterHandlerPanel ? (
         <div
           className={
