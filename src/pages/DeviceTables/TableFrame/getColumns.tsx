@@ -64,5 +64,5 @@ export const useDynamicColumns = () => {
 
   const allColumns = generateColumnsFromSchema(filterKeys);
 
-  return allColumns;
+  return allColumns ?? [];
 };
