@@ -6,7 +6,6 @@ import { RootState } from "../../../../store/store";
 
 import SubFilter from "./Field/Subfield";
 import FilterHandler from "./Handler";
-import FilterToolbar from "./Toolbar";
 import FilterSearch from "./Search";
 import { twMerge } from "tailwind-merge";
 import Field from "./Field";
@@ -60,9 +59,6 @@ const Filters: React.FC<FilterProps> = ({ table }) => {
           <FilterHandler />
         </div>
       ) : null}
-
-      {/* Toolbar */}
-      <FilterToolbar />
     </div>
   );
 };

@@ -21,17 +21,15 @@ export const columnsSlice = createSlice({
       "Model Details": true,
       Repairability: true,
       "Model Identifier": true,
+      community_score: true,
+      model_identifier: true,
+      type: true,
     },
   },
   reducers: {
     toggleVisibility: (state, action) => {
       const columnName = action.payload as keyof typeof state.visibilityStatus;
-      if (columnName in state.visibilityStatus) {
-        state.visibilityStatus[columnName] =
-          !state.visibilityStatus[columnName];
-      } else {
-        state.visibilityStatus[columnName] = false;
-      }
+      state.visibilityStatus[columnName] = !state.visibilityStatus[columnName];
     },
   },
 });

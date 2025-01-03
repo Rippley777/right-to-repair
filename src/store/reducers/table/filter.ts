@@ -20,11 +20,11 @@ export const fetchFilterOptions = createAsyncThunk(
 
       if (response.data.filterKeys) {
         const tree = buildTree(response.data.filterKeys);
-        const { topLevelValues, valueTree } = separateTopLevelTree(tree);
+        const { topLevelNullValues, valueTree } = separateTopLevelTree(tree);
 
         return {
           ...response.data,
-          filterTree: { device_details: topLevelValues, ...valueTree },
+          filterTree: { device_details: topLevelNullValues, ...valueTree },
         };
       }
 

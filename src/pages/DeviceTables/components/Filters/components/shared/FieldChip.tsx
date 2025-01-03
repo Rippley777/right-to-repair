@@ -7,6 +7,7 @@ import {
   setFilter,
 } from "../../../../../../store/reducers/table/filter";
 import { AppDispatch, RootState } from "../../../../../../store/store";
+import { humanReadableKey } from "../../../../../../utils/dataUtils";
 
 type FilterChipProps = {
   key?: string;
@@ -47,7 +48,7 @@ const FilterChip: React.FC<FilterChipProps> = ({
       )}
     >
       <p className="text-[#FFFFFF] text-sm font-medium leading-normal">
-        {filterValueMap[type] ?? type}
+        {humanReadableKey(filterValueMap[type] ?? type)}
       </p>
     </div>
   );

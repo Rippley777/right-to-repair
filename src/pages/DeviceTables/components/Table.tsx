@@ -10,7 +10,7 @@ const Table = (table: TableType<Device>) => {
 
   return (
     <div className="px-4 py-3 @container">
-      <div className="flex overflow-scroll rounded-xl border border-[#383838] bg-[#141414]">
+      <div className="flex overflow-scroll rounded border border-[#383838] bg-[#141414]">
         <table className="flex-1 border-0">
           {/* TABLE HEADERS */}
           <thead className="text-gray-400">
@@ -46,7 +46,10 @@ const Table = (table: TableType<Device>) => {
               return (
                 <tr key={row.id}>
                   {row.getVisibleCells().map((cell) => (
-                    <td key={cell.id} className="border-t border-t-[#383838]">
+                    <td
+                      key={cell.id}
+                      className="border-t border-t-[#383838] min-h-10 h-10"
+                    >
                       {flexRender(
                         cell.column.columnDef.cell,
                         cell.getContext()

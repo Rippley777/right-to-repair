@@ -6,6 +6,7 @@ import Actions from "./Actions";
 import Sort from "./Sort";
 import Columns from "./Columns";
 import DevModeToggle from "../../../../components/dev/DevModeToggle";
+import FilterToolbar from "./Toolbar";
 
 type SidebarProps = {
   table: TableType<Device>;
@@ -21,7 +22,10 @@ const Sidebar: React.FC<SidebarProps> = ({ table }) => {
   return (
     <div className="layout-content-container flex flex-col justify-start w-[360px]">
       <div className="bg-[#242424] rounded-xl m-4 py-6">
-        <span className="text-2xl">Custom Filters</span>
+        {/* <span className="text-2xl">Custom Filters</span> */}
+
+        {/* Toolbar */}
+        <FilterToolbar />
         <Columns table={table} />
         <Actions />
         <Sort />

@@ -3,11 +3,16 @@ import { useDispatch, useSelector } from "react-redux";
 // import { toggleVisibility } from "../../../../store/reducers/table/columns";
 import { RootState } from "../../../../store/store";
 import { toggleColumnsExpanded } from "../../../../store/reducers/table/features";
-import { TbChevronDown, TbChevronRight } from "react-icons/tb";
+import {
+  TbChevronDown,
+  TbChevronRight,
+  TbHexagon,
+  TbHexagonFilled,
+} from "react-icons/tb";
 import { Device } from "../../../../types";
-import { useState } from "react";
+import { MouseEventHandler, useState } from "react";
 import { humanReadableKey } from "../../../../utils/dataUtils";
-import { TbBorderCorners, TbCheckbox } from "react-icons/tb";
+import { toggleVisibility } from "../../../../store/reducers/table/columns";
 
 type ColumnProps = {
   table: TableType<Device>;
@@ -43,8 +48,12 @@ const Columns: React.FC<ColumnProps> = ({ table }) => {
       {columnsExpanded && filterTree
         ? Object.keys(filterTree).map((filter) => {
             return (
-              // @ts-expect-error TODO learn typescript
-              <SubColumnFilter filter={filter} data={filterTree[filter]} />
+              <SubColumnFilter
+                filter={filter}
+                // @ts-expect-error TODO learn typescrip t
+                data={filterTree[filter]}
+                level={1}
+              />
             );
           })
         : null}
@@ -57,19 +66,71 @@ export default Columns;
 type SubColumnFilterProps = {
   filter: string;
   data: unknown;
+  level: number;
 };
-const SubColumnFilter: React.FC<SubColumnFilterProps> = ({ filter, data }) => {
+const SubColumnFilter: React.FC<SubColumnFilterProps> = ({
+  filter,
+  data,
+  level,
+}) => {
   const [expanded, setExpanded] = useState(false);
-  return (
-    <div key={filter} className="bg-[#242424]">
-      <span onClick={() => setExpanded(!expanded)} className="border-black">
-        {true ? <TbCheckbox className="inline" /> : <TbBorderCorners />}
+  const dispatch = useDispatch();
+  const { visibilityStatus } = useSelector(
+    (state: RootState) => state.table.columns
+  );
 
+  const handleOnSelectionClick: MouseEventHandler<SVGElement> = (e) => {
+    e.stopPropagation();
+    dispatch(toggleVisibility(filter));
+  };
+
+  const handleOnExpandClick = () => {
+    if (!Array.isArray(data)) {
+      dispatch(toggleVisibility(filter));
+    }
+    setExpanded(!expanded);
+  };
+  console.log({ filter, data, level });
+
+  return (
+    <div key={filter} className="bg-[#242424] p-2">
+      <span
+        onClick={handleOnExpandClick}
+        className="border-black cursor-pointer"
+      >
+        {/* @ts-expect-error TODO learn typescript */}
+        {visibilityStatus[filter] ? (
+          <TbHexagonFilled
+            onClick={handleOnSelectionClick}
+            className="inline mr-2"
+            size={24 / level}
+          />
+        ) : (
+          <TbHexagon
+            onClick={handleOnSelectionClick}
+            className="inline mr-2"
+            size={24 / level}
+          />
+        )}
         {humanReadableKey(filter)}
+        {Array.isArray(data) ? (
+          expanded ? (
+            <TbChevronDown className="inline" />
+          ) : (
+            <TbChevronRight className="inline" />
+          )
+        ) : null}
       </span>
-      {expanded && Array.isArray(data)
-        ? data.map((filter) => {
-            return <SubColumnFilter filter={filter} data={data[filter]} />;
+      {expanded && data
+        ? Object.keys(data).map((subFilterKey) => {
+            console.log({ subFilterKey });
+            return (
+              <SubColumnFilter
+                filter={subFilterKey}
+                data={null}
+                level={level + 1}
+              />
+            );
           })
         : null}
     </div>

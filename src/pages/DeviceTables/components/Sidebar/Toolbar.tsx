@@ -54,16 +54,16 @@ const Toolbar = () => {
         debugMode && "bg-fuchsia-700"
       )}
     >
-      <TbSend color="white" size={32} onClick={handleUpdate} />
-      <TbSearch color="white" size={32} onClick={handleSearch} />
-      <TbEdit color="white" size={32} onClick={handleEdit} />
+      <TbSend color="white" size={24} onClick={handleUpdate} />
+      <TbSearch color="white" size={24} onClick={handleSearch} />
+      <TbEdit color="white" size={24} onClick={handleEdit} />
       {debugMode ? (
-        <TbEye color="white" size={32} onClick={handleViewHeaders} />
+        <TbEye color="white" size={24} onClick={handleViewHeaders} />
       ) : null}
-      <TbColumns3 color="white" size={32} />
-      <TbSettings color="white" size={32} />
-      <TbRefresh color="white" size={32} onClick={handleRefresh} />
-      <TbTrash size={36} />
+      <TbColumns3 color="white" size={24} />
+      <TbSettings color="white" size={24} />
+      <TbRefresh color="white" size={24} onClick={handleRefresh} />
+      <TbTrash size={24} />
     </div>
   );
 };

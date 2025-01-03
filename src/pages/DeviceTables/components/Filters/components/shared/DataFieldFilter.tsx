@@ -1,3 +1,5 @@
+// TOOD this component is miscategorized, it should be in the shared components folder
+
 import { Table as TableType } from "@tanstack/react-table";
 import { Device } from "../../../../../../types";
 import FieldChip from "./FieldChip";

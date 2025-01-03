@@ -47,7 +47,7 @@ export const separateTopLevelTree = (filterTree: FilterTree) => {
     }
   });
 
-  return { topLevelValues, valueTree };
+  return { topLevelValues, topLevelNullValues, valueTree };
 };
 
 export const categorizeKeys = (

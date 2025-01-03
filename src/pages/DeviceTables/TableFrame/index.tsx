@@ -42,6 +42,7 @@ const TableFrame = () => {
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const columns = useDynamicColumns();
   const dispatch: AppDispatch = useDispatch();
+  const [sidebarWidth /*, setSidebarWidth*/] = useState(400);
 
   useEffect(() => {
     dispatch(fetchFilterOptions());
@@ -79,11 +80,12 @@ const TableFrame = () => {
     },
   });
 
-  console.log("table: ", table.getAllColumns());
   return (
-    <div className="gap-1 px-0 flex flex-1 justify-around py-5">
-      <Sidebar table={table} />
-      <div className="layout-content-container flex flex-col max-w-[920px] flex-1">
+    <div className="gap-1 flex px-0  justify-around py-5">
+      <div className={`width-[${sidebarWidth}px] h-full`}>
+        <Sidebar table={table} />
+      </div>
+      <div className="flex flex-col max-w-[920px] flex-1">
         {/* <Header /> */}
         <Filters table={table} />
         <Table {...table} />

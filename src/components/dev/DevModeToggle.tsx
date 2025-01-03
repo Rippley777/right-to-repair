@@ -27,7 +27,6 @@ const DevModeToggle = () => {
       <div onClick={handleToggleDebug}>Debug Mode</div>
     </>
   );
-  // return <Switch checked={status.devMode} onCheckedChange={handleToggle} />;
 };
 
 export default DevModeToggle;

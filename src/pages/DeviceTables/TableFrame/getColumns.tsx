@@ -89,12 +89,53 @@ export const useDynamicColumns = () => {
   const allColumns = generateColumnsFromSchema(filterKeys);
 
   const filteredColumns = allColumns?.filter((column) => {
+    console.log({
+      column,
+      visibilityStatus,
+      // @ts-expect-error TODO learn typescript lmao
+      test: visibilityStatus[column.accessorKey ?? column.header],
+    });
+
     // @ts-expect-error TODO learn typescript lmao
-    debugger;
-    return visibilityStatus[column.header] === false ? false : true;
+    return !!visibilityStatus[column.accessorKey ?? column.header];
   });
 
   console.log(filteredColumns);
 
-  return filteredColumns ?? [];
+  return (
+    filteredColumns ?? [
+      {
+        header: "Model Details",
+        footer: (props) => props.column.id,
+        columns: [
+          {
+            accessorKey: "release_year",
+            header: "Year",
+            footer: (props) => props.column.id,
+            sortDescFirst: true,
+          },
+          {
+            accessorKey: "model_identifier",
+            header: "Model",
+            footer: (props) => props.column.id,
+          },
+          {
+            accessorKey: "model_number",
+            header: "Model Number",
+            footer: (props) => props.column.id,
+          },
+          {
+            accessorKey: "brand",
+            header: "Brand",
+            footer: (props) => props.column.id,
+          },
+          {
+            accessorKey: "type",
+            header: "Type",
+            footer: (props) => props.column.id,
+          },
+        ],
+      },
+    ]
+  );
 };
