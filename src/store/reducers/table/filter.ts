@@ -1,12 +1,12 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { API_URL } from "../../../api";
+import { buildTree, separateTopLevelTree } from "../../../utils/dataUtils";
 
 interface SetFilterAction {
   payload: {
     key: string;
-    // key: string;
-    value: string | number; // The filter value
+    value: string | number;
   };
 }
 export const fetchFilterOptions = createAsyncThunk(
@@ -14,6 +14,20 @@ export const fetchFilterOptions = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const response = await axios.get(`${API_URL}/api/devices/search/filters`);
+      if (!response.data) {
+        return rejectWithValue("Failed to fetch filter options");
+      }
+
+      if (response.data.filterKeys) {
+        const tree = buildTree(response.data.filterKeys);
+        const { topLevelValues, valueTree } = separateTopLevelTree(tree);
+
+        return {
+          ...response.data,
+          filterTree: { device_details: topLevelValues, ...valueTree },
+        };
+      }
+
       return response.data;
     } catch (error: unknown) {
       if (!error || typeof error !== "object" || !("response" in error)) {
@@ -44,6 +58,7 @@ type FilterState = {
   rangeValues: Record<string, unknown>;
   sortKeys: string[];
   sortValues: Record<string, unknown>;
+  filterTree?: unknown;
   fetchingFilterOptions: boolean;
 };
 
@@ -64,6 +79,7 @@ const initialState: FilterState = {
   rangeValues: {} as Record<string, unknown>,
   sortKeys: [] as string[],
   sortValues: {} as Record<string, unknown>,
+  filterTree: undefined,
   fetchingFilterOptions: false,
 };
 const filtersSlice = createSlice({
@@ -71,17 +87,12 @@ const filtersSlice = createSlice({
   initialState,
   reducers: {
     setFilter: (state: FilterState, action: SetFilterAction) => {
-      console.log("setting filter: ", action.payload);
-      console.log("state: ", state);
-
       const { key, value } = action.payload;
 
       if (!Array.isArray(state.data[key])) {
         //@ts-expect-error TODO handle error
-        state.data[key] = []; // Initialize as an empty array if it doesn't exist
+        state.data[key] = [];
       }
-
-      // Add the value to the array only if it doesn't already exist
       if (
         Array.isArray(state.data[key]) &&
         !(state.data[key] as Array<string | number>).includes(value)
@@ -96,8 +107,6 @@ const filtersSlice = createSlice({
       ] as string[];
     },
     resetFilters: (state) => {
-      // state.category = "";
-      // state.price_lt = null;
       state.history.push(state.data);
       state.data = {
         page: 1,
@@ -110,7 +119,6 @@ const filtersSlice = createSlice({
         delete state.data[key];
       });
     },
-    //   action: { payload: { [key: string]: unknown } }
     updateFilterHistory: (state, action) => {
       state.history.push(action.payload);
     },
@@ -135,6 +143,7 @@ const filtersSlice = createSlice({
         state.rangeValues = action.payload.rangeValues;
         state.sortKeys = action.payload.sortKeys;
         state.sortValues = action.payload.sortValues;
+        state.filterTree = action.payload.filterTree;
       })
       .addCase(fetchFilterOptions.rejected, (state, action) => {
         state.fetchingFilterOptions = false;

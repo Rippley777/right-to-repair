@@ -1,9 +1,10 @@
 import { Table as TableType } from "@tanstack/react-table";
-import { Device } from "../../../../types";
+import { Device } from "../../../../../../types";
 import FieldChip from "./FieldChip";
 import { useSelector } from "react-redux";
-import { RootState } from "../../../../store/store";
+import { RootState } from "../../../../../../store/store";
 import { twMerge } from "tailwind-merge";
+import useDebugMode from "../../../../../../hooks/dev/useDebugMode";
 
 type DataFieldFilterProps = {
   subfilter: string | null;
@@ -22,13 +23,12 @@ const DataFieldFilter: React.FC<DataFieldFilterProps> = ({
     activeSubfilterValues /*rangeValues, sortValues*/,
     data,
   } = useSelector((state: RootState) => state.table.filters);
-  const devMode = process.env.NODE_ENV === "debug";
-
+  const debugMode = useDebugMode();
   return (
     <div
       className={twMerge(
         "flex gap-3 p-3 flex-wrap pr-4",
-        devMode ? "bg-red-500" : ""
+        debugMode ? "bg-teal-300" : ""
       )}
     >
       {activeSubfilterValues.map((chip: string) => {

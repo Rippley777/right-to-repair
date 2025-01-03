@@ -1,10 +1,10 @@
 import { useSelector } from "react-redux";
 import { Table as TableType } from "@tanstack/react-table";
 
-import { RootState } from "../../../../store/store";
-import { Device } from "../../../../types";
+import { RootState } from "../../../../../store/store";
+import { Device } from "../../../../../types";
 
-import DataFieldFilter from "./fieldFilter";
+import DataFieldFilter from "../components/shared/DataFieldFilter";
 
 type SubFilterProps = {
   table: TableType<Device>;

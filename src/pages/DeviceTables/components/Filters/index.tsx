@@ -4,12 +4,13 @@ import { Table as TableType } from "@tanstack/react-table";
 import { Device } from "../../../../types";
 import { RootState } from "../../../../store/store";
 
-import FilterChip from "./FieldChip";
-import SubFilter from "./FieldSubFilter";
-import FilterHandler from "./FilterHandler";
-import FilterToolbar from "./FilterToolbar";
-import FilterSearch from "./FilterSearch";
+import SubFilter from "./Field/Subfield";
+import FilterHandler from "./Handler";
+import FilterToolbar from "./Toolbar";
+import FilterSearch from "./Search";
 import { twMerge } from "tailwind-merge";
+import Field from "./Field";
+import useDebugMode from "../../../../hooks/dev/useDebugMode";
 
 type FilterProps = {
   filters?: string;
@@ -18,9 +19,9 @@ type FilterProps = {
 };
 
 const Filters: React.FC<FilterProps> = ({ table }) => {
-  const devMode = process.env.NODE_ENV === "debug";
+  const debugMode = useDebugMode();
 
-  const { activeSubfilter: subfilter, filterKeys } = useSelector(
+  const { activeSubfilter: subfilter } = useSelector(
     (state: RootState) => state.table.filters
   );
 
@@ -30,55 +31,38 @@ const Filters: React.FC<FilterProps> = ({ table }) => {
 
   return (
     <div>
-      <FilterToolbar />
-
-      {/* CHIPS */}
-      <div
-        className={twMerge(
-          "text-white rounded overflow-scroll",
-          devMode ? "bg-teal-700" : ""
-        )}
-      >
-        <div
-          className={twMerge(
-            "flex gap-3 p-3 overflow-scroll pr-4",
-            devMode ? "bg-yellow-500" : ""
-          )}
-        >
-          {/* TODO maybe check if array */}
-          {filterKeys &&
-            filterKeys.length > 1 &&
-            filterKeys.map((chip) => (
-              <FilterChip
-                key={chip}
-                type={chip}
-                subfilter={subfilter}
-                active={subfilter === chip}
-              />
-            ))}
-        </div>
-      </div>
-
+      {/* Field */}
+      <Field />
+      {/* SubField */}
       {subfilter ? (
         <div
           className={twMerge(
             "h-20 overflow-scroll ",
-            devMode ? "bg-red-500" : ""
+            debugMode ? "bg-red-500" : ""
           )}
         >
           <SubFilter table={table} subfilter={subfilter} />
         </div>
       ) : null}
+
+      {/* Search */}
+
       {search ? <FilterSearch /> : null}
+
+      {/* Handler */}
       {editFilters ? (
         <div
           className={
-            (twMerge("p-4 text-white rounded"), devMode ? "bg-purple-500" : "")
+            (twMerge("p-4 text-white rounded"),
+            debugMode ? "bg-purple-500" : "")
           }
         >
           <FilterHandler />
         </div>
       ) : null}
+
+      {/* Toolbar */}
+      <FilterToolbar />
     </div>
   );
 };

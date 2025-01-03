@@ -4,10 +4,11 @@ import { TbTrash } from "react-icons/tb";
 
 import { AppDispatch, RootState } from "../../../../store/store";
 import { setFilter } from "../../../../store/reducers/table/filter";
+import useDebugMode from "../../../../hooks/dev/useDebugMode";
 
 const FilterHandler = () => {
   const { data } = useSelector((state: RootState) => state.table.filters);
-  const devMode = process.env.NODE_ENV === "debug";
+  const debugMode = useDebugMode();
   const allEntries = Object.entries(data)
     .flatMap(([key, values]) => {
       if (Array.isArray(values)) {
@@ -31,13 +32,12 @@ const FilterHandler = () => {
   return (
     <div className="flex gap-2 justify-between">
       <div
-        className={twMerge("flex gap-2 p-3", devMode ? "bg-purple-500" : "")}
+        className={twMerge("flex gap-2 p-3", debugMode ? "bg-rose-400" : "")}
       >
         {allEntries.map(({ key, value }) => (
           <FilterChip key={`${key}-${value}`} group={key} type={value} />
         ))}
       </div>
-      <TbTrash size={36} />
     </div>
   );
 };

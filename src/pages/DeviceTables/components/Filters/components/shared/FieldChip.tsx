@@ -1,12 +1,12 @@
 import { twMerge } from "tailwind-merge";
-import { filterValueMap } from "./utils/filterHelpers";
+import { filterValueMap } from "../../utils/filterHelpers";
 import { useDispatch, useSelector } from "react-redux";
 import {
   // fetchFilterOptions,
   setActiveSubfilter,
   setFilter,
-} from "../../../../store/reducers/table/filter";
-import { AppDispatch, RootState } from "../../../../store/store";
+} from "../../../../../../store/reducers/table/filter";
+import { AppDispatch, RootState } from "../../../../../../store/store";
 
 type FilterChipProps = {
   key?: string;

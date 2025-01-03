@@ -26,7 +26,11 @@ export const persistor = persistStore(store);
 
 export default store;
 
-export type RootState = ReturnType<typeof rootReducer>;
+export type RootState = ReturnType<typeof rootReducer> & {
+  devMode?: {
+    debugMode?: boolean;
+  };
+};
 export type AppDispatch = typeof store.dispatch;
 export type AppThunk<ReturnType = void> = ThunkAction<
   ReturnType,

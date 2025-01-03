@@ -18,29 +18,12 @@ export const columnsSlice = createSlice({
   name: "columnsSlice",
   initialState: {
     visibilityStatus: {
-      known_issues: false,
-      Year: true,
-      Model: false,
-      "Model Number": true,
-      Brand: true,
-      Type: true,
-      Score: true,
-      Difficulty: true,
-      Memory: true,
-      Processor: true,
-      "GPU Model": true,
-      "Battery Info": true,
-      Tools: true,
       "Model Details": true,
+      Repairability: true,
+      "Model Identifier": true,
     },
   },
   reducers: {
-    // toggleTheme: (state) => {
-    //   state.theme = state.theme === "light" ? "dark" : "light";
-    // },
-    // setCustomTheme: (state, action) => {
-    //   state.theme = action.payload.theme;
-    // },
     toggleVisibility: (state, action) => {
       const columnName = action.payload as keyof typeof state.visibilityStatus;
       if (columnName in state.visibilityStatus) {

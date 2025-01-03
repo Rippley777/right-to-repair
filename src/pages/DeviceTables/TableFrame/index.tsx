@@ -82,12 +82,12 @@ const TableFrame = () => {
   console.log("table: ", table.getAllColumns());
   return (
     <div className="gap-1 px-0 flex flex-1 justify-around py-5">
+      <Sidebar table={table} />
       <div className="layout-content-container flex flex-col max-w-[920px] flex-1">
         {/* <Header /> */}
         <Filters table={table} />
         <Table {...table} />
       </div>
-      <Sidebar />
     </div>
   );
 };

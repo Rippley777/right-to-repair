@@ -1,6 +1,6 @@
 const FilterSearch = (/*{ filter, setFilter }*/) => {
   return (
-    <div className="flex flex-wrap items-end gap-4 p-2 bg-amber-700">
+    <div className="flex flex-wrap items-end gap-4 p-2 bg-amber-300">
       <label className="flex flex-col min-w-40 flex-1">
         <input
           placeholder="Search models"

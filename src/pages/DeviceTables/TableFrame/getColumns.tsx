@@ -1,8 +1,10 @@
 import { useSelector } from "react-redux";
 import { RootState } from "../../../store/store";
-interface NestedRecord {
-  [key: string]: NestedRecord | null;
-}
+import {
+  buildTree,
+  humanReadableKey,
+  NestedRecord,
+} from "../../../utils/dataUtils";
 
 export const useDynamicColumns = () => {
   const { filterKeys } = useSelector((state: RootState) => state.table.filters);
@@ -19,21 +21,6 @@ export const useDynamicColumns = () => {
   };
 
   function generateColumnsFromSchema<T>(schema: string[]): ColumnDef<T>[] {
-    const buildTree = (keys: string[]) => {
-      const tree: Record<string, NestedRecord | null> = {};
-      keys.forEach((key) => {
-        const parts = key.split(".");
-        let current = tree;
-        parts.forEach((part, index) => {
-          if (!current[part]) {
-            current[part] = index === parts.length - 1 ? null : {};
-          }
-          current = current[part] as Record<string, NestedRecord | null>;
-        });
-      });
-      return tree;
-    };
-
     if (!filterKeys || filterKeys.length === 0) {
       return [
         {
@@ -70,6 +57,7 @@ export const useDynamicColumns = () => {
         },
       ];
     }
+
     const treeToColumns = (
       tree: Record<string, NestedRecord | null>,
       prefix = ""
@@ -79,14 +67,12 @@ export const useDynamicColumns = () => {
         if (value === null) {
           return {
             accessorKey,
-            header:
-              key.charAt(0).toUpperCase() + key.slice(1).replace(/_/g, " "),
+            header: humanReadableKey(key),
             footer: (props) => props.column.id,
           };
         } else {
           return {
-            header:
-              key.charAt(0).toUpperCase() + key.slice(1).replace(/_/g, " "),
+            header: humanReadableKey(key),
             footer: (props) => props.column.id,
             columns:
               typeof value === "string"
@@ -96,7 +82,6 @@ export const useDynamicColumns = () => {
         }
       });
     };
-
     const tree = buildTree(schema);
     return treeToColumns(tree);
   }
@@ -105,8 +90,11 @@ export const useDynamicColumns = () => {
 
   const filteredColumns = allColumns?.filter((column) => {
     // @ts-expect-error TODO learn typescript lmao
+    debugger;
     return visibilityStatus[column.header] === false ? false : true;
   });
+
+  console.log(filteredColumns);
 
   return filteredColumns ?? [];
 };

@@ -6,6 +6,9 @@ export const featuresSlice = createSlice({
     search: false,
     headerGroups: false,
     editFilters: false,
+    actionsExpanded: false,
+    columnsExpanded: true,
+    sortExpanded: false,
   },
   reducers: {
     setSearch: (state, action) => {
@@ -20,6 +23,15 @@ export const featuresSlice = createSlice({
     toggleEditFilters: (state) => {
       state.editFilters = !state.editFilters;
     },
+    toggleActionsExpanded: (state) => {
+      state.actionsExpanded = !state.actionsExpanded;
+    },
+    toggleColumnsExpanded: (state) => {
+      state.columnsExpanded = !state.columnsExpanded;
+    },
+    toggleSortExpanded: (state) => {
+      state.sortExpanded = !state.sortExpanded;
+    },
   },
 });
 
@@ -28,5 +40,8 @@ export const {
   toggleSearch,
   toggleEditFilters,
   toggleHeaderGroups,
+  toggleActionsExpanded,
+  toggleColumnsExpanded,
+  toggleSortExpanded,
 } = featuresSlice.actions;
 export default featuresSlice.reducer;

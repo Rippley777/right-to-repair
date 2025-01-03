@@ -6,7 +6,7 @@ import { RootState } from "../../../store/store";
 const Table = (table: TableType<Device>) => {
   const { features } = useSelector((state: RootState) => state.table);
   const headerGroups = table.getHeaderGroups();
-  const lastHeaderGroup = headerGroups[headerGroups.length - 1]; // Get only the last header group
+  const lastHeaderGroup = headerGroups[headerGroups.length - 1];
 
   return (
     <div className="px-4 py-3 @container">
@@ -15,22 +15,20 @@ const Table = (table: TableType<Device>) => {
           {/* TABLE HEADERS */}
           <thead className="text-gray-400">
             {features.headerGroups
-              ? headerGroups.map(
-                  (headerGroup) => (
-                    <tr key={headerGroup.id} className="bg-[#242424]">
-                      {headerGroup.headers.map((header) => (
-                        <th key={header.id} className="border-black">
-                          {header.isPlaceholder
-                            ? null
-                            : flexRender(
-                                header.column.columnDef.header,
-                                header.getContext()
-                              )}
-                        </th>
-                      ))}
-                    </tr>
-                  ) // Skip rendering header groups
-                )
+              ? headerGroups.map((headerGroup) => (
+                  <tr key={headerGroup.id} className="bg-[#242424]">
+                    {headerGroup.headers.map((header) => (
+                      <th key={header.id} className="border-black">
+                        {header.isPlaceholder
+                          ? null
+                          : flexRender(
+                              header.column.columnDef.header,
+                              header.getContext()
+                            )}
+                      </th>
+                    ))}
+                  </tr>
+                ))
               : lastHeaderGroup.headers.map((header) => (
                   <th key={header.id} className="border-black bg-[#242424]">
                     {header.isPlaceholder
@@ -41,23 +39,6 @@ const Table = (table: TableType<Device>) => {
                         )}
                   </th>
                 ))}
-            {/* {table.getHeaderGroups().map((headerGroup) => (
-              <tr key={headerGroup.id} className="bg-[#242424]">
-                {headerGroup.headers.map((header) => (
-                  <th
-                    colSpan={header.colSpan}
-                    className="px-4 py-3 text-left text-[#FFFFFF] w-[400px] text-sm font-medium leading-normal border-black"
-                  >
-                    {header.isPlaceholder
-                      ? null
-                      : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
-                  </th>
-                ))}
-              </tr>
-            ))} */}
           </thead>
 
           <tbody>
