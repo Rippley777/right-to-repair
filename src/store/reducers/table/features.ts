@@ -3,6 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 export const featuresSlice = createSlice({
   name: "features",
   initialState: {
+    instantSearch: true,
     search: false,
     headerGroups: false,
     editFilters: false,
@@ -13,6 +14,9 @@ export const featuresSlice = createSlice({
   reducers: {
     setSearch: (state, action) => {
       state.search = action.payload;
+    },
+    toggleInstantSearch: (state) => {
+      state.instantSearch = !state.instantSearch;
     },
     toggleSearch: (state) => {
       state.search = !state.search;
@@ -43,5 +47,6 @@ export const {
   toggleActionsExpanded,
   toggleColumnsExpanded,
   toggleSortExpanded,
+  toggleInstantSearch,
 } = featuresSlice.actions;
 export default featuresSlice.reducer;

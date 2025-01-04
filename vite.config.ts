@@ -13,6 +13,7 @@ export default defineConfig({
   resolve: {
     alias: {
       "@ui": path.resolve(__dirname, "./ui/src/index.ts"),
+      "@": path.resolve(__dirname, "src"),
     },
   },
 });

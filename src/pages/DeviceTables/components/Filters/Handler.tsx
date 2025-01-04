@@ -8,8 +8,13 @@ import useDebugMode from "../../../../hooks/dev/useDebugMode";
 
 const FilterHandler = () => {
   const { data } = useSelector((state: RootState) => state.table.filters);
+  const { editFilters } = useSelector(
+    (state: RootState) => state.table.features
+  );
+  const { page, ...filterData } = data;
+  console.log({ page });
   const debugMode = useDebugMode();
-  const allEntries = Object.entries(data)
+  const allEntries = Object.entries(filterData)
     .flatMap(([key, values]) => {
       if (Array.isArray(values)) {
         // Handle arrays (nested keys)
@@ -29,14 +34,26 @@ const FilterHandler = () => {
 
   console.log({ data, allEntries });
 
+  if (!editFilters) {
+    return null;
+  }
+
   return (
-    <div className="flex gap-2 justify-between">
-      <div
-        className={twMerge("flex gap-2 p-3", debugMode ? "bg-rose-400" : "")}
-      >
-        {allEntries.map(({ key, value }) => (
-          <FilterChip key={`${key}-${value}`} group={key} type={value} />
-        ))}
+    <div
+      className={
+        (twMerge("p-4 text-white rounded"), debugMode ? "bg-purple-500" : "")
+      }
+    >
+      <div className="flex flex-col gap-2 justify-start">
+        <span className="text-sm">Active Filters</span>
+
+        <div
+          className={twMerge("flex gap-2 p-3", debugMode ? "bg-rose-400" : "")}
+        >
+          {allEntries.map(({ key, value }) => (
+            <FilterChip key={`${key}-${value}`} group={key} type={value} />
+          ))}
+        </div>
       </div>
     </div>
   );

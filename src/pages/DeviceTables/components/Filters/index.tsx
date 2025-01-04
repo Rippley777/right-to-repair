@@ -1,15 +1,14 @@
 import { useSelector } from "react-redux";
+import { twMerge } from "tailwind-merge";
 import { Table as TableType } from "@tanstack/react-table";
 
-import { Device } from "../../../../types";
-import { RootState } from "../../../../store/store";
+import { Device } from "@/types";
+import { RootState } from "@/store/store";
+import useDebugMode from "@/hooks/dev/useDebugMode";
 
 import SubFilter from "./Field/Subfield";
-import FilterHandler from "./Handler";
 import FilterSearch from "./Search";
-import { twMerge } from "tailwind-merge";
 import Field from "./Field";
-import useDebugMode from "../../../../hooks/dev/useDebugMode";
 
 type FilterProps = {
   filters?: string;
@@ -24,9 +23,7 @@ const Filters: React.FC<FilterProps> = ({ table }) => {
     (state: RootState) => state.table.filters
   );
 
-  const { search, editFilters } = useSelector(
-    (state: RootState) => state.table.features
-  );
+  const { search } = useSelector((state: RootState) => state.table.features);
 
   return (
     <div>
@@ -47,18 +44,6 @@ const Filters: React.FC<FilterProps> = ({ table }) => {
       {/* Search */}
 
       {search ? <FilterSearch /> : null}
-
-      {/* Handler */}
-      {editFilters ? (
-        <div
-          className={
-            (twMerge("p-4 text-white rounded"),
-            debugMode ? "bg-purple-500" : "")
-          }
-        >
-          <FilterHandler />
-        </div>
-      ) : null}
     </div>
   );
 };

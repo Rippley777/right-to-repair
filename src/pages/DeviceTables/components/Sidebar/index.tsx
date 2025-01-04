@@ -1,12 +1,14 @@
 import { Table as TableType } from "@tanstack/react-table";
 
-import { Device } from "../../../../types";
+import DevModeToggle from "@/components/dev/DevModeToggle";
+import useDebugMode from "@/hooks/dev/useDebugMode";
+import { Device } from "@/types";
 
+import FilterHandler from "../Filters/Handler";
 import Actions from "./Actions";
 import Sort from "./Sort";
 import Columns from "./Columns";
-import DevModeToggle from "../../../../components/dev/DevModeToggle";
-import FilterToolbar from "./Toolbar";
+import ToggleInstantSearch from "../shared/ToggleInstantSearch";
 
 type SidebarProps = {
   table: TableType<Device>;
@@ -18,16 +20,18 @@ export type SidebarSectionProps = {
 };
 
 const Sidebar: React.FC<SidebarProps> = ({ table }) => {
-  console.log({ table });
+  const debugMode = useDebugMode();
+
+  if (debugMode) console.log({ table });
+
   return (
     <div className="layout-content-container flex flex-col justify-start w-[360px]">
       <div className="bg-[#242424] rounded-xl m-4 py-6">
-        {/* <span className="text-2xl">Custom Filters</span> */}
-
-        {/* Toolbar */}
-        <FilterToolbar />
-        <Columns table={table} />
+        {/* Handler */}
+        <ToggleInstantSearch />
+        <FilterHandler />
         <Actions />
+        <Columns table={table} />
         <Sort />
       </div>
       <DevModeToggle />

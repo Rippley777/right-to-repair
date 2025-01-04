@@ -7,7 +7,9 @@ import {
 } from "../../../utils/dataUtils";
 
 export const useDynamicColumns = () => {
-  const { filterKeys } = useSelector((state: RootState) => state.table.filters);
+  const { filterKeys, sortKeys } = useSelector(
+    (state: RootState) => state.table.filters
+  );
   const { visibilityStatus } = useSelector(
     (state: RootState) => state.table.columns
   );
@@ -18,6 +20,7 @@ export const useDynamicColumns = () => {
     columns?: ColumnDef<T>[];
     accessorKey?: string;
     sortDescFirst?: boolean;
+    onHeaderClick?: () => void;
   };
 
   function generateColumnsFromSchema<T>(schema: string[]): ColumnDef<T>[] {

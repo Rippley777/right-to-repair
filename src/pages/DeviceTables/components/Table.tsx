@@ -10,7 +10,7 @@ const Table = (table: TableType<Device>) => {
 
   return (
     <div className="px-4 py-3 @container">
-      <div className="flex overflow-scroll rounded border border-[#383838] bg-[#141414]">
+      <div className="flex overflow-scroll rounded border-2 border-[#383838] bg-[#141414]">
         <table className="flex-1 border-0">
           {/* TABLE HEADERS */}
           <thead className="text-gray-400">

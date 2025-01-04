@@ -33,7 +33,7 @@ const Columns: React.FC<ColumnProps> = ({ table }) => {
   };
 
   return (
-    <div className="text-left">
+    <div className="text-center">
       <h3
         onClick={handleContainerClick}
         className="text-[#FFFFFF] text-lg font-bold leading-tight tracking-[-0.015em] px-4 pb-2 pt-4"
@@ -85,15 +85,24 @@ const SubColumnFilter: React.FC<SubColumnFilterProps> = ({
   };
 
   const handleOnExpandClick = () => {
-    if (!Array.isArray(data)) {
+    console.log({ data });
+
+    if (!data) {
       dispatch(toggleVisibility(filter));
     }
     setExpanded(!expanded);
   };
   console.log({ filter, data, level });
 
+  const iconSizeMap: { [key: number]: number } = {
+    1: 16,
+    2: 12,
+    3: 8,
+    4: 6,
+  };
+
   return (
-    <div key={filter} className="bg-[#242424] p-2">
+    <div key={filter} className="bg-[#242424] px-4 py-2 text-left">
       <span
         onClick={handleOnExpandClick}
         className="border-black cursor-pointer"
@@ -103,17 +112,17 @@ const SubColumnFilter: React.FC<SubColumnFilterProps> = ({
           <TbHexagonFilled
             onClick={handleOnSelectionClick}
             className="inline mr-2"
-            size={24 / level}
+            size={iconSizeMap[level]}
           />
         ) : (
           <TbHexagon
             onClick={handleOnSelectionClick}
             className="inline mr-2"
-            size={24 / level}
+            size={iconSizeMap[level]}
           />
         )}
         {humanReadableKey(filter)}
-        {Array.isArray(data) ? (
+        {data ? (
           expanded ? (
             <TbChevronDown className="inline" />
           ) : (

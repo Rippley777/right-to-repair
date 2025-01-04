@@ -1,6 +1,15 @@
+import { twMerge } from "tailwind-merge";
+import useDebugMode from "@/hooks/dev/useDebugMode";
+
 const FilterSearch = (/*{ filter, setFilter }*/) => {
+  const debugMode = useDebugMode();
   return (
-    <div className="flex flex-wrap items-end gap-4 p-2 bg-amber-300">
+    <div
+      className={twMerge(
+        "flex flex-wrap items-end gap-4 p-2",
+        debugMode && "bg-amber-300"
+      )}
+    >
       <label className="flex flex-col min-w-40 flex-1">
         <input
           placeholder="Search models"
