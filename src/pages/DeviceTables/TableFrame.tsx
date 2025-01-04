@@ -38,6 +38,8 @@ import Table from "./components/Table";
 
 import { useDynamicColumns } from "./getColumns";
 import { fetchDevices } from "@/store/reducers/devices";
+import { twMerge } from "tailwind-merge";
+import Pagination from "./components/Pagination";
 
 declare module "@tanstack/react-table" {
   interface TableMeta<TData extends RowData> {
@@ -58,7 +60,6 @@ const TableFrame = () => {
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const columns = useDynamicColumns();
   const dispatch: AppDispatch = useDispatch();
-  const [sidebarWidth] = useState(400);
 
   const {
     activeSubfilter,
@@ -82,6 +83,10 @@ const TableFrame = () => {
     dispatch(fetchFilterOptions());
   }, [dispatch]);
 
+  /*
+   * Start callbacks all components within TableFrame
+   *
+   */
   const handleUpdate = () => {
     dispatch(fetchDevices({}));
   };
@@ -108,6 +113,10 @@ const TableFrame = () => {
   const handleSidebarExpandSortClick = () => {
     dispatch(toggleSortExpanded());
   };
+  const handlePageChange = (page: number) => {
+    dispatch(setFilter({ key: "page", value: page }));
+    dispatch(fetchDevices({}));
+  };
   const handleFilterClick = (type: string) => {
     if (filterValues[type] === undefined) {
       dispatch(setFilter({ key: activeSubfilter, value: type }));
@@ -125,6 +134,11 @@ const TableFrame = () => {
   //   }
   //   dispatch(setActiveSubfilter(type));
   // };
+
+  /*
+   * Start table logic
+   *
+   */
   const { devices } = useDevices();
 
   const table = useReactTable<Device>({
@@ -157,8 +171,18 @@ const TableFrame = () => {
   });
 
   return (
-    <div className="gap-1 flex px-0  justify-around py-5">
-      <div className={`width-[${sidebarWidth}px] h-full`}>
+    <div
+      className={twMerge(
+        "gap-1 grid grid-cols-4 grid-rows-8 px-0 py-5 w-screen max-w-screen",
+        debugMode && "bg-indigo-900"
+      )}
+    >
+      <div
+        className={twMerge(
+          "col-span-1 row-span-8",
+          debugMode && "bg-indigo-800"
+        )}
+      >
         <Sidebar
           columnsExpanded={columnsExpanded}
           debugMode={debugMode}
@@ -177,7 +201,7 @@ const TableFrame = () => {
           handleSidebarExpandSortClick={handleSidebarExpandSortClick}
         />
       </div>
-      <div className="flex flex-col max-w-[920px] flex-1">
+      <div className="col-span-3 row-span-1">
         <Filters
           debugMode={debugMode}
           activeSubfilter={activeSubfilter}
@@ -188,7 +212,19 @@ const TableFrame = () => {
           subfilter={activeSubfilter}
           handleFilterClick={handleFilterClick}
         />
+      </div>
+      <div
+        className={twMerge(
+          "col-span-3 row-span-7",
+          debugMode && "bg-indigo-700"
+        )}
+      >
         <Table {...table} />
+        <Pagination
+          page={filterData.page}
+          dataLength={devices.length}
+          onChange={handlePageChange}
+        />
       </div>
     </div>
   );

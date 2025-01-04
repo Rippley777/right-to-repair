@@ -43,7 +43,7 @@ const Sidebar: React.FC<SidebarProps> = ({
   sortExpanded,
 }) => {
   return (
-    <div className="layout-content-container flex flex-col justify-start w-[360px]">
+    <div className="flex flex-col justify-start">
       <div className="bg-[#242424] rounded-xl m-4 py-6">
         <ToggleInstantSearch
           handleToggle={handleInstantSearchToggle}
