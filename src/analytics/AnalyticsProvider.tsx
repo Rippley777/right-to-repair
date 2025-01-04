@@ -1,13 +1,12 @@
-import useWebSocketAnalytics from "@/analytics/useWebSocketAnalytics";
-import HomeHeaderSection from "../../components/dev/header";
-import TableFrame from "./TableFrame";
-import "./table.css";
+import { useEffect, FC, ReactNode } from "react";
+import useWebSocketAnalytics from "./useWebSocketAnalytics";
 import { WS_URL } from "@/api";
-import { useEffect } from "react";
 
-function DeviceTables() {
+const AnalyticsProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const serverUrl = WS_URL;
+  console.log("serverUrl", serverUrl);
   const siteId = "Rip2Repair";
+
   const { isConnected, sendEvent } = useWebSocketAnalytics(serverUrl, siteId);
 
   useEffect(() => {
@@ -21,14 +20,9 @@ function DeviceTables() {
         },
       });
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isConnected]);
-  return (
-    <>
-      <HomeHeaderSection />
-      <TableFrame />
-    </>
-  );
-}
+  }, [isConnected, sendEvent]);
 
-export default DeviceTables;
+  return <div>{children}</div>;
+};
+
+export default AnalyticsProvider;
