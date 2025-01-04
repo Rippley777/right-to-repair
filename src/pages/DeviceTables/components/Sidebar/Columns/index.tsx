@@ -7,36 +7,25 @@ import {
   TbHexagonFilled,
 } from "react-icons/tb";
 import { twMerge } from "tailwind-merge";
-import { Table as TableType } from "@tanstack/react-table";
 import { useDebugMode } from "@/hooks/dev/useDevHandlers";
 import { RootState } from "@/store/store";
 import { toggleVisibility } from "@/store/reducers/table/columns";
-import { toggleColumnsExpanded } from "@/store/reducers/table/features";
-import { Device } from "@/types";
 import { humanReadableKey } from "@/utils/dataUtils";
 
-type ColumnProps = {
-  table: TableType<Device>;
+type ColumnsProps = {
+  columnsExpanded: boolean;
+  handleExpandClick: () => void;
+  filterTree: unknown;
 };
-
-const Columns: React.FC<ColumnProps> = ({ table }) => {
-  const dispatch = useDispatch();
-  const { columnsExpanded } = useSelector(
-    (state: RootState) => state.table.features
-  );
-  const { filterTree } = useSelector((state: RootState) => state.table.filters);
-  console.log({ table });
-
-  console.log({ filterTree });
-
-  const handleContainerClick = () => {
-    dispatch(toggleColumnsExpanded());
-  };
-
+const Columns: React.FC<ColumnsProps> = ({
+  columnsExpanded,
+  handleExpandClick,
+  filterTree,
+}) => {
   return (
     <div className="text-center">
       <h3
-        onClick={handleContainerClick}
+        onClick={handleExpandClick}
         className="text-[#FFFFFF] text-lg font-bold leading-tight tracking-[-0.015em] px-4 pb-2 pt-4"
       >
         Columns
@@ -93,7 +82,8 @@ const SubColumnFilter: React.FC<SubColumnFilterProps> = ({
     }
     setExpanded(!expanded);
   };
-  console.log({ filter, data, level });
+  if (isDebugMode)
+    console.log("SubColumnFilter rend: ', { filter, data, level }");
 
   const iconSizeMap: { [key: number]: number } = {
     1: 16,
@@ -141,12 +131,12 @@ const SubColumnFilter: React.FC<SubColumnFilterProps> = ({
         ) : null}
       </span>
       {expanded && data
-        ? Object.keys(data).map((subFilterKey) => {
+        ? Object.keys(data).map((subfilterKey) => {
             if (isDebugMode)
-              console.log("SubFilterRendered with key: ", { subFilterKey });
+              console.log("SubfilterRendered with key: ", { subfilterKey });
             return (
               <SubColumnFilter
-                filter={subFilterKey}
+                filter={subfilterKey}
                 data={null}
                 level={level + 1}
               />
@@ -156,31 +146,3 @@ const SubColumnFilter: React.FC<SubColumnFilterProps> = ({
     </div>
   );
 };
-// const subColumns = () => {
-//   return (
-
-//     <div key={headerGroup.id} className="bg-[#242424]">
-//     {headerGroup.headers.map((header) => (
-//       <span key={header.id} className="border-black">
-//         {header.isPlaceholder
-//           ? null
-//           : flexRender(
-//               header.column.columnDef.header,
-//               header.getContext()
-//             )}
-//       </span>
-//     ))}
-//   </div>
-//   )
-// }
-
-// (
-//   <div key={header.id} className="bg-[#242424]">
-//     <span className="border-black">
-//       {flexRender(
-//         header.column.columnDef.header,
-//         header.getContext()
-//       )}
-//     </span>
-//   </div>
-// )

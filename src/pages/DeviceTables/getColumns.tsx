@@ -1,12 +1,14 @@
 import { useSelector } from "react-redux";
 import { RootState } from "@/store/store";
 import { buildTree, humanReadableKey, NestedRecord } from "@/utils/dataUtils";
+import { useDebugMode } from "@/hooks/dev/useDevHandlers";
 
 export const useDynamicColumns = () => {
   const { filterKeys } = useSelector((state: RootState) => state.table.filters);
   const { visibilityStatus } = useSelector(
     (state: RootState) => state.table.columns
   );
+  const debugMode = useDebugMode();
 
   type ColumnDef<T> = {
     header: string;
@@ -86,18 +88,19 @@ export const useDynamicColumns = () => {
   const allColumns = generateColumnsFromSchema(filterKeys);
 
   const filteredColumns = allColumns?.filter((column) => {
-    console.log({
-      column,
-      visibilityStatus,
-      // @ts-expect-error TODO learn typescript lmao
-      test: visibilityStatus[column.accessorKey ?? column.header],
-    });
+    if (debugMode)
+      console.log("getColumns() filteredColumns column: ", {
+        column,
+        visibilityStatus,
+        // @ts-expect-error TODO learn typescript lmao
+        test: visibilityStatus[column.accessorKey ?? column.header],
+      });
 
     // @ts-expect-error TODO learn typescript lmao
     return !!visibilityStatus[column.accessorKey ?? column.header];
   });
 
-  console.log(filteredColumns);
+  if (debugMode) console.log("getColumns() filteredColumns: ", filteredColumns);
 
   return (
     filteredColumns ?? [

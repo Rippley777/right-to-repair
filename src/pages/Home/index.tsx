@@ -1,5 +1,5 @@
 import Blocks from "./components/blocks";
-import Header from "./components/header";
+import Header from "../../components/dev/header";
 import Hero from "./components/hero";
 // import Portals from "./components/portals";
 

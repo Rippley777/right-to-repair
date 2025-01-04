@@ -39,7 +39,6 @@ export const fetchDevices = createAsyncThunk<
       dispatch(setPage(response.data.page));
       dispatch(setPageSize(response.data.pageSize));
     }
-    console.log("api response: ", response);
 
     return response.data.devices;
   } catch (error) {

@@ -1,21 +1,27 @@
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "@/store/store";
-import { toggleActionsExpanded } from "@/store/reducers/table/features";
+import React from "react";
 import ActionsPanel from "./ActionsPanel";
 
-const Actions = () => {
-  const dispatch = useDispatch();
-  const { actionsExpanded } = useSelector(
-    (state: RootState) => state.table.features
-  );
-
-  const handleExpandClick = () => {
-    dispatch(toggleActionsExpanded());
-  };
+type ActionsProps = {
+  actionsExpanded: boolean;
+  handleExpandClick: () => void;
+  handleRefresh: () => void;
+  handleSearch: () => void;
+  handleUpdate: () => void;
+};
+const Actions: React.FC<ActionsProps> = ({
+  actionsExpanded,
+  handleExpandClick,
+  handleRefresh,
+  handleSearch,
+  handleUpdate,
+}) => {
   return (
     <ActionsPanel
       actionsExpanded={actionsExpanded}
       handleExpandClick={handleExpandClick}
+      handleRefresh={handleRefresh}
+      handleSearch={handleSearch}
+      handleUpdate={handleUpdate}
     />
   );
 };

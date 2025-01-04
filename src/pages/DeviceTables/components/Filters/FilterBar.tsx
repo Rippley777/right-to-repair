@@ -1,16 +1,19 @@
 import { twMerge } from "tailwind-merge";
-import { useSelector } from "react-redux";
+import FilterChip from "./components/FilterChip";
 
-import { RootState } from "@/store/store";
-import FilterChip from "./components/shared/FieldChip";
-import { useDebugMode } from "@/hooks/dev/useDevHandlers";
+type FilterBarProps = {
+  debugMode: boolean;
+  filterKeys: string[];
+  subfilter: string | null;
+  handleFilterClick: (filter: string) => void;
+};
 
-const Field = () => {
-  const { activeSubfilter: subfilter, filterKeys } = useSelector(
-    (state: RootState) => state.table.filters
-  );
-  const debugMode = useDebugMode();
-
+const FilterBar: React.FC<FilterBarProps> = ({
+  debugMode,
+  filterKeys,
+  subfilter,
+  handleFilterClick,
+}) => {
   return (
     <div
       className={twMerge(
@@ -29,10 +32,11 @@ const Field = () => {
           filterKeys.length > 1 &&
           filterKeys.map((chip) => (
             <FilterChip
-              key={chip}
-              type={chip}
-              subfilter={subfilter}
               active={subfilter === chip}
+              handleFilterClick={handleFilterClick}
+              key={chip}
+              subfilter={subfilter}
+              type={chip}
             />
           ))}
       </div>
@@ -40,4 +44,4 @@ const Field = () => {
   );
 };
 
-export default Field;
+export default FilterBar;

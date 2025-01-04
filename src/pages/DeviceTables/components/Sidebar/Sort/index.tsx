@@ -1,21 +1,14 @@
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "@/store/store";
-import { toggleSortExpanded } from "@/store/reducers/table/features";
 import { TbChevronDown, TbChevronRight } from "react-icons/tb";
 
-const Sort = () => {
-  const dispatch = useDispatch();
-  const { sortExpanded } = useSelector(
-    (state: RootState) => state.table.features
-  );
-
-  const handleClick = () => {
-    dispatch(toggleSortExpanded());
-  };
+type SortProps = {
+  sortExpanded: boolean;
+  handleExpandClick: () => void;
+};
+const Sort: React.FC<SortProps> = ({ handleExpandClick, sortExpanded }) => {
   return (
     <>
       <h3
-        onClick={handleClick}
+        onClick={handleExpandClick}
         className="text-[#FFFFFF] text-lg font-bold leading-tight tracking-[-0.015em] px-4 pb-2 pt-4"
       >
         Sort

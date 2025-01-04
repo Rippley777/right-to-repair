@@ -1,38 +1,76 @@
-import { Table as TableType } from "@tanstack/react-table";
-
 import DevModeToggle from "@/components/dev/DevModeToggle";
-import { useDebugMode } from "@/hooks/dev/useDevHandlers";
-import { Device } from "@/types";
+import { FilterTree } from "@/utils/dataUtils";
 
-import FilterHandler from "../Filters/Handler";
+import ActiveFilterBar from "./components/ActiveFilterBar";
+import ToggleInstantSearch from "./components/ToggleInstantSearch";
 import Actions from "./Actions";
-import Sort from "./Sort";
 import Columns from "./Columns";
-import ToggleInstantSearch from "../shared/ToggleInstantSearch";
+import Sort from "./Sort";
 
 type SidebarProps = {
-  table: TableType<Device>;
+  actionsExpanded: boolean;
+  columnsExpanded: boolean;
+  debugMode: boolean;
+  filterData: Record<string, string | number>;
+  filterTree?: FilterTree;
+  handleFilterClick: (filter: string) => void;
+  handleRefresh: () => void;
+  handleSearch: () => void;
+  handleUpdate: () => void;
+  handleSidebarExpandColumnsClick: () => void;
+  handleInstantSearchToggle: () => void;
+  handleSidebarExpandActionClick: () => void;
+  handleSidebarExpandSortClick: () => void;
+  instantSearch: boolean;
+  sortExpanded: boolean;
 };
 
-export type SidebarSectionProps = {
-  expand: boolean;
-  setExpand: React.Dispatch<React.SetStateAction<boolean>>;
-};
-
-const Sidebar: React.FC<SidebarProps> = ({ table }) => {
-  const debugMode = useDebugMode();
-
-  if (debugMode) console.log({ table });
-
+const Sidebar: React.FC<SidebarProps> = ({
+  actionsExpanded,
+  columnsExpanded,
+  debugMode,
+  filterData,
+  filterTree,
+  handleFilterClick,
+  handleRefresh,
+  handleSearch,
+  handleUpdate,
+  handleSidebarExpandColumnsClick,
+  handleInstantSearchToggle,
+  handleSidebarExpandActionClick,
+  handleSidebarExpandSortClick,
+  instantSearch,
+  sortExpanded,
+}) => {
   return (
     <div className="layout-content-container flex flex-col justify-start w-[360px]">
       <div className="bg-[#242424] rounded-xl m-4 py-6">
-        {/* Handler */}
-        <ToggleInstantSearch />
-        <FilterHandler />
-        <Actions />
-        <Columns table={table} />
-        <Sort />
+        <ToggleInstantSearch
+          handleToggle={handleInstantSearchToggle}
+          instantSearch={instantSearch}
+          handleRefresh={handleRefresh}
+        />
+        <ActiveFilterBar
+          filterData={filterData}
+          debugMode={debugMode}
+          handleFilterClick={handleFilterClick}
+        />
+        <Actions
+          actionsExpanded={actionsExpanded}
+          handleExpandClick={handleSidebarExpandActionClick}
+          handleRefresh={handleRefresh}
+          handleSearch={handleSearch}
+          handleUpdate={handleUpdate}
+        />
+        <Columns
+          columnsExpanded={columnsExpanded}
+          filterTree={filterTree}
+          handleExpandClick={handleSidebarExpandColumnsClick}
+        />
+        <Sort
+          handleExpandClick={handleSidebarExpandSortClick}
+          sortExpanded={sortExpanded}
+        />
       </div>
       <DevModeToggle />
     </div>

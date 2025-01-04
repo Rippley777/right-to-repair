@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { API_URL } from "@/api";
-import { buildTree, separateTopLevelTree } from "@/utils/dataUtils";
+import { buildTree, FilterTree, separateTopLevelTree } from "@/utils/dataUtils";
 
 interface SetFilterAction {
   payload: {
@@ -58,7 +58,7 @@ type FilterState = {
   rangeValues: Record<string, unknown>;
   sortKeys: string[];
   sortValues: Record<string, unknown>;
-  filterTree?: unknown;
+  filterTree?: FilterTree;
   fetchingFilterOptions: boolean;
 };
 
@@ -98,6 +98,14 @@ const filtersSlice = createSlice({
         !(state.data[key] as Array<string | number>).includes(value)
       ) {
         (state.data[key] as Array<string | number>).push(value);
+      }
+    },
+    removeFilter: (state, action) => {
+      const { key, value } = action.payload;
+      if (Array.isArray(state.data[key])) {
+        state.data[key] = (state.data[key] as Array<string | number>).filter(
+          (v) => v !== value
+        ) as unknown as string | number;
       }
     },
     setActiveSubfilter: (state, action) => {
@@ -154,6 +162,7 @@ const filtersSlice = createSlice({
 
 export const {
   setFilter,
+  removeFilter,
   setActiveSubfilter,
   resetFilters,
   setPage,

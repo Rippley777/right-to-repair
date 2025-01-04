@@ -1,4 +1,4 @@
-import HomeHeaderSection from "../Home/components/header";
+import HomeHeaderSection from "../../components/dev/header";
 import TableFrame from "./TableFrame";
 import "./table.css";
 

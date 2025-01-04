@@ -1,18 +1,3 @@
-export const getNestedValue = <T>(obj: T, path: string): unknown => {
-  if (!path) {
-    return undefined;
-  }
-  if (!path.includes(".")) {
-    return obj[path as keyof T];
-  }
-  return path.split(".").reduce((acc: unknown, key) => {
-    if (typeof acc === "object" && acc !== null && key in acc) {
-      return (acc as Record<string, unknown>)[key];
-    }
-    return undefined;
-  }, obj);
-};
-
 export const filterValueMap: { [key: string]: string } = {
   type: "Type",
   brand: "Brand",

@@ -1,49 +1,48 @@
-import { useSelector } from "react-redux";
-import { twMerge } from "tailwind-merge";
-import { Table as TableType } from "@tanstack/react-table";
+import Subfilter from "./SubfilterBar";
+import FilterSearch from "./SearchBar";
+import FilterBar from "./FilterBar";
 
-import { Device } from "@/types";
-import { RootState } from "@/store/store";
-import { useDebugMode } from "@/hooks/dev/useDevHandlers";
-
-import SubFilter from "./Subfield";
-import FilterSearch from "./Search";
-import Field from "./FilterFrame";
-
-type FilterProps = {
-  filters?: string;
-  updateFilter?: (key: string, value: string) => void;
-  table: TableType<Device>;
+type FiltersProps = {
+  activeSubfilter: string | null;
+  activeSubfilters: string[];
+  filterData: Record<string, string | number>;
+  debugMode: boolean;
+  filterKeys: string[];
+  search: boolean;
+  subfilter: string | null;
+  handleFilterClick: (filter: string) => void;
 };
 
-const Filters: React.FC<FilterProps> = ({ table }) => {
-  const debugMode = useDebugMode();
-
-  const { activeSubfilter: subfilter } = useSelector(
-    (state: RootState) => state.table.filters
-  );
-
-  const { search } = useSelector((state: RootState) => state.table.features);
+const Filters: React.FC<FiltersProps> = ({
+  debugMode,
+  filterKeys,
+  search,
+  subfilter,
+  activeSubfilters,
+  filterData,
+  handleFilterClick,
+}) => {
+  if (debugMode)
+    console.log("FilterFrame rend: ", { filterKeys, search, subfilter });
 
   return (
     <div>
-      {/* Field */}
-      <Field />
-      {/* SubField */}
+      <FilterBar
+        debugMode={debugMode}
+        filterKeys={filterKeys}
+        subfilter={subfilter}
+        handleFilterClick={handleFilterClick}
+      />
       {subfilter ? (
-        <div
-          className={twMerge(
-            "h-20 overflow-scroll ",
-            debugMode ? "bg-red-500" : ""
-          )}
-        >
-          <SubFilter table={table} subfilter={subfilter} />
-        </div>
+        <Subfilter
+          activeSubfilters={activeSubfilters}
+          handleFilterClick={handleFilterClick}
+          filterData={filterData}
+          debugMode={debugMode}
+          subfilter={subfilter}
+        />
       ) : null}
-
-      {/* Search */}
-
-      {search ? <FilterSearch /> : null}
+      {search ? <FilterSearch debugMode={debugMode} /> : null}
     </div>
   );
 };

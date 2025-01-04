@@ -2,6 +2,7 @@ import {
   TbChevronDown,
   TbChevronRight,
   TbDownload,
+  TbSearch,
   TbSend,
   TbSettings,
   TbTrash,
@@ -18,17 +19,28 @@ export type ActionItemProps = {
 type ActionsPanelProps = {
   actionsExpanded: boolean;
   handleExpandClick: () => void;
+  handleRefresh: () => void;
+  handleSearch: () => void;
+  handleUpdate: () => void;
 };
 
 const ActionsPanel: React.FC<ActionsPanelProps> = ({
   handleExpandClick,
   actionsExpanded,
+  handleRefresh,
+  handleSearch,
+  handleUpdate,
 }) => {
   const actions = [
     {
       title: "Update",
       icon: <TbSend color="white" size={24} />,
-      trigger: () => console.log("Update"),
+      trigger: handleUpdate,
+    },
+    {
+      title: "Search",
+      icon: <TbSearch color="white" size={24} />,
+      trigger: handleSearch,
     },
     {
       title: "Export",
@@ -38,7 +50,7 @@ const ActionsPanel: React.FC<ActionsPanelProps> = ({
     {
       title: "Delete Filters",
       icon: <TbTrash color="white" size={24} />,
-      trigger: () => console.log("Update"),
+      trigger: handleRefresh,
     },
     {
       title: "Advanced",

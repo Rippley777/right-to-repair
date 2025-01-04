@@ -2,16 +2,17 @@ import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "react-query";
-import "./index.css";
-// import "@radix-ui/themes/styles.css";
-import "./App.css";
 
 import store, { persistor } from "./store/store";
+
 import Home from "./pages/Home";
 import DeviceList from "./pages/DeviceList";
 import DeviceDetails from "./pages/DeviceDetails";
 import Charts from "./pages/Charts";
 import Tables from "./pages/DeviceTables";
+
+import "./index.css";
+import "./App.css";
 
 const queryClient = new QueryClient();
 

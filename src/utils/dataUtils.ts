@@ -1,8 +1,9 @@
-export type FilterTree = Record<string, unknown>;
+/**
+ * TREE FUNCTIONS
+ *
+ * **/
 
-export type NestedRecord = {
-  [key: string]: NestedRecord | null;
-};
+export type FilterTree = Record<string, unknown>;
 
 export function buildTree(keys: string[]): Record<string, NestedRecord | null> {
   const tree: Record<string, NestedRecord | null> = {};
@@ -49,6 +50,52 @@ export const separateTopLevelTree = (filterTree: FilterTree) => {
 
   return { topLevelValues, topLevelNullValues, valueTree };
 };
+
+/**
+ * NESTED FUNCTIONS
+ *
+ * **/
+
+export type NestedRecord = {
+  [key: string]: NestedRecord | null;
+};
+
+export const getNestedValue = <T>(obj: T, path: string): unknown => {
+  if (!path) {
+    return undefined;
+  }
+  if (!path.includes(".")) {
+    return obj[path as keyof T];
+  }
+  return path.split(".").reduce((acc: unknown, key) => {
+    if (typeof acc === "object" && acc !== null && key in acc) {
+      return (acc as Record<string, unknown>)[key];
+    }
+    return undefined;
+  }, obj);
+};
+
+export const flattenNestedObject = (obj: Record<string, string | number>) => {
+  return Object.entries(obj)
+    .flatMap(([key, values]) => {
+      if (Array.isArray(values)) {
+        return values.map((value) => ({ key, value }));
+      } else if (typeof values === "object" && values !== null) {
+        return Object.entries(values).map(([nestedKey, nestedValue]) => ({
+          key: `${key}.${nestedKey}`,
+          value: nestedValue,
+        }));
+      } else {
+        return [{ key, value: values }];
+      }
+    })
+    .filter(({ value }) => value !== undefined && value !== null);
+};
+
+/**
+ * KEY FUNCTIONS
+ *
+ * **/
 
 export const categorizeKeys = (
   flattenedKeys: string[],
