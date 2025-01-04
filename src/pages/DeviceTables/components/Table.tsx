@@ -1,7 +1,7 @@
 import { flexRender, Table as TableType } from "@tanstack/react-table";
-import { Device } from "../../../types";
+import { Device } from "@/types";
 import { useSelector } from "react-redux";
-import { RootState } from "../../../store/store";
+import { RootState } from "@/store/store";
 
 const Table = (table: TableType<Device>) => {
   const { features } = useSelector((state: RootState) => state.table);

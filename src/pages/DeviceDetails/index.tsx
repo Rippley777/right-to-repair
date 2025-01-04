@@ -1,9 +1,9 @@
 import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch } from "../../store/store";
-import { RootState } from "../../store/store";
-import { clearDevice, fetchDeviceById } from "../../store/reducers/device";
+import { AppDispatch } from "@/store/store";
+import { RootState } from "@/store/store";
+import { clearDevice, fetchDeviceById } from "@/store/reducers/device";
 
 const DeviceDetails: React.FC = () => {
   const { model_identifier } = useParams<{ model_identifier: string }>(); // Get the `model_identifier` from the URL

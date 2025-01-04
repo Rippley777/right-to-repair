@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-import { API_URL } from "../../../api";
-import { buildTree, separateTopLevelTree } from "../../../utils/dataUtils";
+import { API_URL } from "@/api";
+import { buildTree, separateTopLevelTree } from "@/utils/dataUtils";
 
 interface SetFilterAction {
   payload: {

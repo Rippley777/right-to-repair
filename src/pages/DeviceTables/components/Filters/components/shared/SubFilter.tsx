@@ -1,30 +1,18 @@
-// TOOD this component is miscategorized, it should be in the shared components folder
-
-import { Table as TableType } from "@tanstack/react-table";
-import { Device } from "../../../../../../types";
-import FieldChip from "./FieldChip";
 import { useSelector } from "react-redux";
-import { RootState } from "../../../../../../store/store";
 import { twMerge } from "tailwind-merge";
-import useDebugMode from "../../../../../../hooks/dev/useDebugMode";
+
+import { useDebugMode } from "@/hooks/dev/useDevHandlers";
+import { RootState } from "@/store/store";
+import FieldChip from "./FieldChip";
 
 type DataFieldFilterProps = {
   subfilter: string | null;
-  table?: TableType<Device>;
-  type?: string;
 };
 
-const DataFieldFilter: React.FC<DataFieldFilterProps> = ({
-  subfilter,
-  // table,
-  // type,
-}) => {
-  // const [activeSubfilter, setActiveSubfilter] = useState<string>("brand");
-  const {
-    activeSubfilter,
-    activeSubfilterValues /*rangeValues, sortValues*/,
-    data,
-  } = useSelector((state: RootState) => state.table.filters);
+const DataFieldFilter: React.FC<DataFieldFilterProps> = ({ subfilter }) => {
+  const { activeSubfilter, activeSubfilterValues, data } = useSelector(
+    (state: RootState) => state.table.filters
+  );
   const debugMode = useDebugMode();
   return (
     <div
@@ -34,7 +22,7 @@ const DataFieldFilter: React.FC<DataFieldFilterProps> = ({
       )}
     >
       {activeSubfilterValues.map((chip: string) => {
-        console.log({ chip });
+        if (debugMode) console.log("subfilter chip rendered: ", { chip });
         const isActive =
           typeof data[activeSubfilter] === "string"
             ? data[activeSubfilter]?.includes(chip)

@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
-import { API_URL } from "../../api";
-import { Device } from "../../types";
+import { API_URL } from "@/api";
+import { Device } from "@/types";
 import { setPage, setPageSize } from "./table/filter";
 
 interface DevicesState {

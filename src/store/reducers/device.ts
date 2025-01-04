@@ -1,8 +1,8 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import { WritableDraft } from "immer";
 import axios from "axios";
-import { Device } from "../../types";
-import { API_URL } from "../../api/";
+import { Device } from "@/types";
+import { API_URL } from "@/api/";
 import { ObjectId } from "mongoose";
 
 interface SingleDeviceState {

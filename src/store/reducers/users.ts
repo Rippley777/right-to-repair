@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-// import { omit } from "../../../utils/obj-helpers";
+// import { omit } from "@/utils/obj-helpers";
 
 type UserData = {
   email?: string;

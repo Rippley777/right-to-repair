@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { useDevices } from "../../hooks/useDevices";
-import { Device } from "../../types";
+import { useDevices } from "@/hooks/useDevices";
+import { Device } from "@/types";
 
 const DevicesList: React.FC = () => {
   const { devices, status, error } = useDevices();

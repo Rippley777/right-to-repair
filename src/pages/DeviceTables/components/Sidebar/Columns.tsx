@@ -1,18 +1,19 @@
-import { Table as TableType } from "@tanstack/react-table";
+import { MouseEventHandler, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-// import { toggleVisibility } from "../../../../store/reducers/table/columns";
-import { RootState } from "../../../../store/store";
-import { toggleColumnsExpanded } from "../../../../store/reducers/table/features";
 import {
   TbChevronDown,
   TbChevronRight,
   TbHexagon,
   TbHexagonFilled,
 } from "react-icons/tb";
-import { Device } from "../../../../types";
-import { MouseEventHandler, useState } from "react";
-import { humanReadableKey } from "../../../../utils/dataUtils";
-import { toggleVisibility } from "../../../../store/reducers/table/columns";
+import { twMerge } from "tailwind-merge";
+import { Table as TableType } from "@tanstack/react-table";
+import { useDebugMode } from "@/hooks/dev/useDevHandlers";
+import { RootState } from "@/store/store";
+import { toggleVisibility } from "@/store/reducers/table/columns";
+import { toggleColumnsExpanded } from "@/store/reducers/table/features";
+import { Device } from "@/types";
+import { humanReadableKey } from "@/utils/dataUtils";
 
 type ColumnProps = {
   table: TableType<Device>;
@@ -78,14 +79,14 @@ const SubColumnFilter: React.FC<SubColumnFilterProps> = ({
   const { visibilityStatus } = useSelector(
     (state: RootState) => state.table.columns
   );
-
+  const isDebugMode = useDebugMode();
   const handleOnSelectionClick: MouseEventHandler<SVGElement> = (e) => {
     e.stopPropagation();
     dispatch(toggleVisibility(filter));
   };
 
   const handleOnExpandClick = () => {
-    console.log({ data });
+    if (isDebugMode) console.log("SubColumnFilter expand click", { data });
 
     if (!data) {
       dispatch(toggleVisibility(filter));
@@ -101,11 +102,20 @@ const SubColumnFilter: React.FC<SubColumnFilterProps> = ({
     4: 6,
   };
 
+  const textSizeMap: { [key: number]: string } = {
+    1: "text-md",
+    2: "text-sm",
+    3: "text-xs",
+    4: "text-xs",
+  };
+
+  // const isLeaf = !data;
+
   return (
     <div key={filter} className="bg-[#242424] px-4 py-2 text-left">
       <span
         onClick={handleOnExpandClick}
-        className="border-black cursor-pointer"
+        className={twMerge("border-black cursor-pointer", textSizeMap[level])}
       >
         {/* @ts-expect-error TODO learn typescript */}
         {visibilityStatus[filter] ? (
@@ -132,7 +142,8 @@ const SubColumnFilter: React.FC<SubColumnFilterProps> = ({
       </span>
       {expanded && data
         ? Object.keys(data).map((subFilterKey) => {
-            console.log({ subFilterKey });
+            if (isDebugMode)
+              console.log("SubFilterRendered with key: ", { subFilterKey });
             return (
               <SubColumnFilter
                 filter={subFilterKey}

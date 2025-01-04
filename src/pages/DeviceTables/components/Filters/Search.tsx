@@ -1,5 +1,5 @@
 import { twMerge } from "tailwind-merge";
-import useDebugMode from "@/hooks/dev/useDebugMode";
+import { useDebugMode } from "@/hooks/dev/useDevHandlers";
 
 const FilterSearch = (/*{ filter, setFilter }*/) => {
   const debugMode = useDebugMode();

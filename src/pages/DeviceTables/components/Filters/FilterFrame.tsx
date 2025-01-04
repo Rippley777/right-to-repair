@@ -1,9 +1,9 @@
 import { twMerge } from "tailwind-merge";
 import { useSelector } from "react-redux";
 
-import { RootState } from "../../../../../store/store";
-import FilterChip from "../components/shared/FieldChip";
-import useDebugMode from "../../../../../hooks/dev/useDebugMode";
+import { RootState } from "@/store/store";
+import FilterChip from "./components/shared/FieldChip";
+import { useDebugMode } from "@/hooks/dev/useDevHandlers";
 
 const Field = () => {
   const { activeSubfilter: subfilter, filterKeys } = useSelector(

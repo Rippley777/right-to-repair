@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
-import { setFilter } from "../../../../store/reducers/table/filter";
-import { RootState } from "../../../../store/store";
+import { setFilter } from "@/store/reducers/table/filter";
+import { RootState } from "@/store/store";
 
 export const useFilters = () => {
   const filters = useSelector((state: RootState) => state.table.filters);

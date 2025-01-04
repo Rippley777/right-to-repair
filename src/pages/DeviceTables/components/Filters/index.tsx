@@ -4,11 +4,11 @@ import { Table as TableType } from "@tanstack/react-table";
 
 import { Device } from "@/types";
 import { RootState } from "@/store/store";
-import useDebugMode from "@/hooks/dev/useDebugMode";
+import { useDebugMode } from "@/hooks/dev/useDevHandlers";
 
-import SubFilter from "./Field/Subfield";
+import SubFilter from "./Subfield";
 import FilterSearch from "./Search";
-import Field from "./Field";
+import Field from "./FilterFrame";
 
 type FilterProps = {
   filters?: string;

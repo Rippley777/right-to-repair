@@ -31,9 +31,9 @@ export const columnsSlice = createSlice({
       const columnName = action.payload as keyof typeof state.visibilityStatus;
       state.visibilityStatus[columnName] = !state.visibilityStatus[columnName];
     },
-    toggleSectionVisibility: (state, action) => {
-      // const sectionName = action.payload as string;
-    },
+    // toggleSectionVisibility: (state, action) => {
+    //   // const sectionName = action.payload as string;
+    // },
   },
 });
 

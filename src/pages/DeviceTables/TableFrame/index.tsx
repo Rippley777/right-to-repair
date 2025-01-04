@@ -12,10 +12,10 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 
-import { useDevices } from "../../../hooks/useDevices";
-import { AppDispatch } from "../../../store/store";
-import { fetchFilterOptions } from "../../../store/reducers/table/filter";
-import { Device } from "../../../types";
+import { useDevices } from "@/hooks/useDevices";
+import { AppDispatch } from "@/store/store";
+import { fetchFilterOptions } from "@/store/reducers/table/filter";
+import { Device } from "@/types";
 
 import Filters from "../components/Filters";
 import Sidebar from "../components/Sidebar";

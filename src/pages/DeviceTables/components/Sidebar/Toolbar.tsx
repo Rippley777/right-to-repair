@@ -11,15 +11,15 @@ import {
 } from "react-icons/tb";
 import { useDispatch } from "react-redux";
 import { twMerge } from "tailwind-merge";
-import { AppDispatch } from "../../../../store/store";
-import { fetchDevices } from "../../../../store/reducers/devices";
-import { resetFilters } from "../../../../store/reducers/table/filter";
+import { AppDispatch } from "@/store/store";
+import { fetchDevices } from "@/store/reducers/devices";
+import { resetFilters } from "@/store/reducers/table/filter";
 import {
   toggleEditFilters,
   toggleHeaderGroups,
   toggleSearch,
-} from "../../../../store/reducers/table/features";
-import useDebugMode from "../../../../hooks/dev/useDebugMode";
+} from "@/store/reducers/table/features";
+import { useDebugMode } from "@/hooks/dev/useDevHandlers";
 
 const Toolbar = () => {
   const dispatch = useDispatch<AppDispatch>();

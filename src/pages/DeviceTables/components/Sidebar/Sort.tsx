@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../../../../store/store";
-import { toggleSortExpanded } from "../../../../store/reducers/table/features";
+import { RootState } from "@/store/store";
+import { toggleSortExpanded } from "@/store/reducers/table/features";
 import { TbChevronDown, TbChevronRight } from "react-icons/tb";
 
 const Sort = () => {

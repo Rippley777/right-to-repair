@@ -5,9 +5,9 @@ import {
   // fetchFilterOptions,
   setActiveSubfilter,
   setFilter,
-} from "../../../../../../store/reducers/table/filter";
-import { AppDispatch, RootState } from "../../../../../../store/store";
-import { humanReadableKey } from "../../../../../../utils/dataUtils";
+} from "@/store/reducers/table/filter";
+import { AppDispatch, RootState } from "@/store/store";
+import { humanReadableKey } from "@/utils/dataUtils";
 
 type FilterChipProps = {
   key?: string;

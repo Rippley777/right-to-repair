@@ -1,15 +1,9 @@
 import { useSelector } from "react-redux";
-import { RootState } from "../../../store/store";
-import {
-  buildTree,
-  humanReadableKey,
-  NestedRecord,
-} from "../../../utils/dataUtils";
+import { RootState } from "@/store/store";
+import { buildTree, humanReadableKey, NestedRecord } from "@/utils/dataUtils";
 
 export const useDynamicColumns = () => {
-  const { filterKeys, sortKeys } = useSelector(
-    (state: RootState) => state.table.filters
-  );
+  const { filterKeys } = useSelector((state: RootState) => state.table.filters);
   const { visibilityStatus } = useSelector(
     (state: RootState) => state.table.columns
   );

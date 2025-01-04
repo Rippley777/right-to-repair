@@ -1,6 +1,6 @@
-import { RootState } from "../../store/store";
+import { RootState } from "@/store/store";
 import { useDispatch, useSelector } from "react-redux";
-import { toggleDebugMode, toggleDevMode } from "../../store/reducers/devMode";
+import { toggleDebugMode, toggleDevMode } from "@/store/reducers/devMode";
 
 const DevModeToggle = () => {
   const dispatch = useDispatch();

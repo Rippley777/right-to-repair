@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../../../../../store/store";
-import { toggleActionsExpanded } from "../../../../../store/reducers/table/features";
+import { RootState } from "@/store/store";
+import { toggleActionsExpanded } from "@/store/reducers/table/features";
 import ActionsPanel from "./ActionsPanel";
 
 const Actions = () => {

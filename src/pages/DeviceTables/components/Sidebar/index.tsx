@@ -1,7 +1,7 @@
 import { Table as TableType } from "@tanstack/react-table";
 
 import DevModeToggle from "@/components/dev/DevModeToggle";
-import useDebugMode from "@/hooks/dev/useDebugMode";
+import { useDebugMode } from "@/hooks/dev/useDevHandlers";
 import { Device } from "@/types";
 
 import FilterHandler from "../Filters/Handler";

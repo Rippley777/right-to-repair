@@ -1,6 +1,6 @@
 import React from "react";
 // import { Link } from "react-router-dom";
-import { useDevices } from "../../hooks/useDevices";
+import { useDevices } from "@/hooks/useDevices";
 import RepairabilityChart from "./Repairability/chart";
 
 const DevicesList: React.FC = () => {

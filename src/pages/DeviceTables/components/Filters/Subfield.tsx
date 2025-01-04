@@ -1,17 +1,17 @@
 import { useSelector } from "react-redux";
 import { Table as TableType } from "@tanstack/react-table";
 
-import { RootState } from "../../../../../store/store";
-import { Device } from "../../../../../types";
+import { RootState } from "@/store/store";
+import { Device } from "@/types";
 
-import DataFieldFilter from "../components/shared/DataFieldFilter";
+import SubFilterRow from "../components/shared/SubFilter";
 
 type SubFilterProps = {
   table: TableType<Device>;
   subfilter: string | null;
 };
 
-const SubFilter: React.FC<SubFilterProps> = ({ table, subfilter }) => {
+const SubFilter: React.FC<SubFilterProps> = ({ subfilter }) => {
   const {
     filterValues,
     rangeValues,
@@ -33,21 +33,15 @@ const SubFilter: React.FC<SubFilterProps> = ({ table, subfilter }) => {
   }
 
   if (filterValues[subfilter]) {
-    return (
-      <DataFieldFilter subfilter={subfilter} type={subfilter} table={table} />
-    );
+    return <SubFilterRow subfilter={subfilter} />;
   }
 
   if (rangeValues[subfilter]) {
-    return (
-      <DataFieldFilter subfilter={subfilter} type={subfilter} table={table} />
-    );
+    return <SubFilterRow subfilter={subfilter} />;
   }
 
   if (sortValues[subfilter]) {
-    return (
-      <DataFieldFilter subfilter={subfilter} type={subfilter} table={table} />
-    );
+    return <SubFilterRow subfilter={subfilter} />;
   }
 
   return null;

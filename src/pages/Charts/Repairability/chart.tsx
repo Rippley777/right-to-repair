@@ -11,7 +11,7 @@ import {
   TooltipItem,
 } from "chart.js";
 import { Line } from "react-chartjs-2";
-import { Device } from "../../../types";
+import { Device } from "@/types";
 
 ChartJS.register(
   CategoryScale,

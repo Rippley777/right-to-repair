@@ -2,9 +2,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { twMerge } from "tailwind-merge";
 import { TbTrash } from "react-icons/tb";
 
-import { AppDispatch, RootState } from "../../../../store/store";
-import { setFilter } from "../../../../store/reducers/table/filter";
-import useDebugMode from "../../../../hooks/dev/useDebugMode";
+import { AppDispatch, RootState } from "@/store/store";
+import { setFilter } from "@/store/reducers/table/filter";
+import { useDebugMode } from "@/hooks/dev/useDevHandlers";
 
 const FilterHandler = () => {
   const { data } = useSelector((state: RootState) => state.table.filters);
