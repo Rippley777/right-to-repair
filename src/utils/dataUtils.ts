@@ -92,9 +92,47 @@ export const flattenNestedObject = (obj: Record<string, string | number>) => {
     .filter(({ value }) => value !== undefined && value !== null);
 };
 
+// TODO this came from struggling with the nested object structure
+// A lot of this, including the data store itself, should be simplified
+export function flattenObject(
+  obj: unknown,
+  parentKey = "",
+  removeTopLevel = false
+) {
+  const flattened: Record<string, unknown> = {};
+
+  for (const [key, value] of Object.entries(obj as Record<string, unknown>)) {
+    const newKey = parentKey ? `${parentKey}.${key}` : key;
+
+    if (value && typeof value === "object" && !Array.isArray(value)) {
+      Object.assign(flattened, flattenObject(value, newKey, false));
+    } else {
+      flattened[newKey] = value;
+    }
+  }
+
+  if (removeTopLevel && parentKey) {
+    return Object.fromEntries(
+      Object.entries(flattened).map(([key, val]) => [
+        key.replace(`${parentKey}.`, ""),
+        val,
+      ])
+    );
+  }
+
+  return flattened;
+}
+
+type HierarchyNode = {
+  key: string;
+  type: string;
+  parentKey: string;
+  children: HierarchyNode[];
+};
+
 export const buildHierarchy = (data: string[], omits: string[]) => {
   // console.log("BH0: ", { data });
-  const result: unknown[] = [];
+  const result: HierarchyNode[] = [];
   // console.log("BH1: ", { data });
   const filteredData = data.filter((item) => !omits.includes(item));
   filteredData.forEach((item) => {

@@ -13,7 +13,7 @@ type SidebarProps = {
   debugMode: boolean;
   filterData: Record<string, string | number>;
   filterTree?: FilterTree;
-  handleFilterClick: (filter: string, key: string, level?: number) => void;
+  handleFilterClick: (filter: string, level: number) => void;
   handleRefresh: () => void;
   handleSearch: () => void;
   handleUpdate: () => void;

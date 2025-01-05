@@ -15,7 +15,6 @@ import {
 
 import { useDevices } from "@/hooks/useDevices";
 import { useDebugMode } from "@/hooks/dev/useDevHandlers";
-import { useFilterBarDetails } from "./hooks/useFilterBarDetails";
 import { AppDispatch, RootState } from "@/store/store";
 import { resetFilters, setFilter } from "@/store/reducers/table/filter";
 
@@ -37,7 +36,6 @@ import { useDynamicColumns } from "./getColumns";
 import { fetchDevices } from "@/store/reducers/devices";
 import { twMerge } from "tailwind-merge";
 import Pagination from "./components/Pagination";
-import { FilterBarDetailProps } from "./types";
 import { setActiveSubfilters } from "@/store/reducers/table/subfilters";
 import { FilterTree } from "@/utils/dataUtils";
 
@@ -59,11 +57,11 @@ declare module "@tanstack/react-table" {
 const TableFrame = () => {
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const columns = useDynamicColumns() as ColumnDef<Device, unknown>[];
-  const { filterBarDetails } = useFilterBarDetails();
   const dispatch: AppDispatch = useDispatch();
 
   const {
     filterKeys,
+    filterValues,
     filterTree,
     data: filterData,
   } = useSelector((state: RootState) => state.table.filters);
@@ -78,7 +76,6 @@ const TableFrame = () => {
   const { activeSubfilters } = useSelector(
     (state: RootState) => state.table.subfilters
   );
-  // console.log({ setActiveSubfilters });
 
   const debugMode = useDebugMode();
 
@@ -117,12 +114,12 @@ const TableFrame = () => {
     dispatch(fetchDevices({}));
   };
 
-  const handleFilterClick = (type: string, key: string, level: number = 0) => {
-    if (debugMode) console.log("handleFilterClick", { type, level, key });
+  const handleFilterClick = (type: string, level: number = 0) => {
+    if (debugMode) console.log("handleFilterClick", { type, level });
 
-    const test = activeSubfilters.slice(0, level + 1);
-    console.log({ test });
-
+    const test = activeSubfilters.slice(0, level);
+    if (debugMode)
+      console.log("handleFilterClick from TableFrame:", { type, test });
     test[level] = type;
     dispatch(setActiveSubfilters(test));
 
@@ -212,9 +209,9 @@ const TableFrame = () => {
         <Filters
           debugMode={debugMode}
           activeSubfilters={activeSubfilters}
-          filterBarDetails={filterBarDetails as FilterBarDetailProps[]}
           filterKeys={filterKeys}
           filterTree={filterTree as FilterTree}
+          filterValues={filterValues}
           handleFilterClick={handleFilterClick}
           search={search}
         />

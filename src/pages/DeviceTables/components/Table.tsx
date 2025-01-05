@@ -29,7 +29,10 @@ const Table = (table: TableType<Device>) => {
                   </tr>
                 ))
               : lastHeaderGroup.headers.map((header) => (
-                  <th key={header.id} className="border-black bg-[#242424]">
+                  <th
+                    key={header.id}
+                    className="border-black bg-[#242424] h-20"
+                  >
                     {header.isPlaceholder
                       ? null
                       : flexRender(

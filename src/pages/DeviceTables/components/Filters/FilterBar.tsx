@@ -1,57 +1,104 @@
+// TODO share this with filter bar
+
 import { twMerge } from "tailwind-merge";
 import FilterChip from "./components/FilterChip";
-import { FilterBarDetailProps } from "../../types";
+import { FilterTree } from "@/utils/dataUtils";
 
-type FilterBarProps = {
+type SubfilterBarProps = {
   debugMode: boolean;
+  filterValues: Record<string, unknown>;
   filterKeys: string[];
-  handleFilterClick: (filter: string, key: string, level?: number) => void;
-  level: number;
-  filterBarDetails: FilterBarDetailProps[];
-  activeSubfilters?: string[];
+  handleSubfilterClick: (filter: string, level: number) => void;
+  activeSubfilters: string[];
+  filterTree: FilterTree;
 };
 
-const FilterBar: React.FC<FilterBarProps> = ({
+const SubfilterBar: React.FC<SubfilterBarProps> = ({
+  activeSubfilters,
   debugMode,
   filterKeys,
-  handleFilterClick,
-  filterBarDetails,
-  level,
-  activeSubfilters,
+  filterTree,
+  filterValues,
+  handleSubfilterClick,
 }) => {
-  if (!filterBarDetails || filterBarDetails.length === 0) return null;
   if (debugMode)
-    console.log("Filter Bar rend:", {
+    console.log("SubFilter Bar2 rend:", {
+      activeSubfilters,
       debugMode,
       filterKeys,
-      handleFilterClick,
-      filterBarDetails,
-      level,
-      activeSubfilters,
+      filterTree,
+      handleSubfilterClick,
     });
-
+  if (!filterTree) return null;
+  const items =
+    activeSubfilters.length === 0 || activeSubfilters[0] === null
+      ? Object.keys(filterTree)
+      : Object.keys(filterTree);
   return (
     <div
       className={twMerge(
-        "text-white rounded overflow-scroll h-12",
+        "text-white flex rounded overflow-scroll h-12",
         debugMode ? "bg-violet-600" : ""
       )}
     >
+      {activeSubfilters.map((filter, index) => (
+        <FilterRow
+          index={index}
+          filter={filter}
+          filterTree={filterTree}
+          filterValues={filterValues}
+          items={items}
+          activeSubfilters={activeSubfilters}
+          debugMode={debugMode}
+          handleSubfilterClick={handleSubfilterClick}
+        />
+      ))}
+    </div>
+  );
+};
+
+export default SubfilterBar;
+
+type FilterRowProps = {
+  index: number;
+  filter: string;
+  items: string[];
+  handleSubfilterClick: (filter: string, level: number) => void;
+  debugMode: boolean;
+  filterTree: FilterTree;
+  filterValues: Record<string, unknown>;
+  activeSubfilters: string[];
+};
+const FilterRow: React.FC<FilterRowProps> = ({
+  activeSubfilters,
+  debugMode,
+  handleSubfilterClick,
+  index,
+  items,
+}) => {
+  if (debugMode)
+    console.log("FilterRow rend:", {
+      debugMode,
+      handleSubfilterClick,
+      activeSubfilters,
+    });
+  return (
+    <div>
       <div
         className={twMerge(
-          "flex gap-3 p-3 overflow-scroll pr-4",
-          debugMode ? "bg-violet-400" : ""
+          "text-white flex rounded overflow-scroll h-12",
+          debugMode ? "bg-violet-600" : ""
         )}
       >
-        {filterBarDetails.map((detailItem) => {
-          const isActive = activeSubfilters?.includes(detailItem.key) ?? false;
-          // console.log({ isActive });
+        {items.map((filterKey) => {
+          const isActive = activeSubfilters?.includes(filterKey) ?? false;
           return (
             <FilterChip
+              level={index}
               active={isActive}
-              handleFilterClick={handleFilterClick}
-              key={level ? detailItem.key : detailItem.type}
-              type={detailItem.key}
+              handleFilterClick={handleSubfilterClick}
+              key={filterKey}
+              type={filterKey}
             />
           );
         })}
@@ -59,14 +106,3 @@ const FilterBar: React.FC<FilterBarProps> = ({
     </div>
   );
 };
-
-export default FilterBar;
-
-//   <FilterBar
-//   debugMode={debugMode}
-//   filterKeys={filterKeys}
-//   subfilter={parentKey ?? null}
-//   parentKey=""
-//   level={level + 1}
-// >
-// </FilterBar>

@@ -5,7 +5,7 @@ type SubfilterStateProps = {
 };
 
 const initialState: SubfilterStateProps = {
-  activeSubfilters: [""],
+  activeSubfilters: ["device_details"],
 };
 
 export const subfiltersSlice = createSlice({
@@ -13,12 +13,7 @@ export const subfiltersSlice = createSlice({
   initialState,
   reducers: {
     setActiveSubfilters: (state, action) => {
-      console.log("setActiveSubfilter1", action.payload);
-      console.log("setActiveSubfilter2", state.activeSubfilters);
-      //   state.activePrimarySubfilters = action.payload;
-      //   state.activeSecondarySubfilters = action.payload;
       state.activeSubfilters = action.payload;
-      //
     },
   },
 });

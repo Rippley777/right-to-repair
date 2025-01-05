@@ -6,7 +6,7 @@ import { flattenNestedObject } from "@/utils/dataUtils";
 type ActiveFilterBarProps = {
   filterData: Record<string, string | number>;
   debugMode: boolean;
-  handleFilterClick: (filter: string, key: string, level?: number) => void;
+  handleFilterClick: (filter: string, level: number) => void;
 };
 
 const ActiveFilterBar: React.FC<ActiveFilterBarProps> = ({
@@ -35,6 +35,7 @@ const ActiveFilterBar: React.FC<ActiveFilterBarProps> = ({
             <FilterChip
               onClick={handleFilterClick}
               key={`${key}-${value}`}
+              level={-1}
               /*group={key}*/ type={value}
             />
           ))}
@@ -48,20 +49,15 @@ export default ActiveFilterBar;
 
 type FilterChipProps = {
   key: string;
-  onClick: (type: string, key: string, level?: number) => void;
-  level?: number;
+  onClick: (type: string, level: number) => void;
+  level: number;
   type: string;
 };
 
-const FilterChip: React.FC<FilterChipProps> = ({
-  key,
-  onClick,
-  type,
-  level,
-}) => {
+const FilterChip: React.FC<FilterChipProps> = ({ onClick, type, level }) => {
   return (
     <div
-      onClick={() => onClick(type, key, level)}
+      onClick={() => onClick(type, level)}
       className={twMerge(
         "flex p-3 h-8 shrink-0 items-center justify-center gap-x-2 rounded-xl bg-[#292929] pl-4 pr-4 cursor-pointer"
       )}

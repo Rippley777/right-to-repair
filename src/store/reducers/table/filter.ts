@@ -21,7 +21,6 @@ export const fetchFilterOptions = createAsyncThunk(
       if (response.data.filterKeys) {
         const tree = buildTree(response.data.filterKeys);
         const { topLevelNullValues, valueTree } = separateTopLevelTree(tree);
-
         return {
           ...response.data,
           filterTree: { device_details: topLevelNullValues, ...valueTree },
@@ -46,12 +45,10 @@ type FilterData = {
 };
 type FilterState = {
   data: FilterData;
-  history: FilterData[]; // Adjust type if you know the structure of history items
+  history: FilterData[];
   total: number;
   loading: boolean;
   error: string | null;
-  activeSubfilter: { key: string; type: string; options: unknown[] } | null[];
-  activeSubfilterValues: string[];
   filterKeys: string[];
   filterValues: Record<string, unknown>;
   rangeKeys: string[];
@@ -71,8 +68,6 @@ const initialState: FilterState = {
   total: 0,
   loading: false,
   error: null as string | null,
-  activeSubfilter: [null, null, null],
-  activeSubfilterValues: [] as string[],
   filterKeys: [] as string[],
   filterValues: {} as Record<string, unknown>,
   rangeKeys: [] as string[],
