@@ -6,7 +6,7 @@ import { flattenNestedObject } from "@/utils/dataUtils";
 type ActiveFilterBarProps = {
   filterData: Record<string, string | number>;
   debugMode: boolean;
-  handleFilterClick: (filter: string) => void;
+  handleFilterClick: (filter: string, key: string, level?: number) => void;
 };
 
 const ActiveFilterBar: React.FC<ActiveFilterBarProps> = ({
@@ -46,27 +46,22 @@ const ActiveFilterBar: React.FC<ActiveFilterBarProps> = ({
 
 export default ActiveFilterBar;
 
-// TODO move out filterchip or share component with existing chip
 type FilterChipProps = {
-  key?: string | number;
-  onClick: (type: string) => void;
-  // group: string;
+  key: string;
+  onClick: (type: string, key: string, level?: number) => void;
+  level?: number;
   type: string;
 };
 
-const FilterChip: React.FC<FilterChipProps> = ({ onClick, type }) => {
-  // const dispatch = useDispatch<AppDispatch>();
-  // // const handleFilterClick = () => {
-  // //   if (group && type) {
-  // //     dispatch(setFilter({ key: group, value: type }));
-  // //   } else if (!group && type) {
-  // //     dispatch(setFilter({ key: type, value: type }));
-  // //   }
-  // //   dispatch(setFilter({ key: group, value: type }));
-  // // };
+const FilterChip: React.FC<FilterChipProps> = ({
+  key,
+  onClick,
+  type,
+  level,
+}) => {
   return (
     <div
-      onClick={() => onClick(type)}
+      onClick={() => onClick(type, key, level)}
       className={twMerge(
         "flex p-3 h-8 shrink-0 items-center justify-center gap-x-2 rounded-xl bg-[#292929] pl-4 pr-4 cursor-pointer"
       )}

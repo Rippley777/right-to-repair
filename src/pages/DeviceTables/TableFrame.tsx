@@ -1,6 +1,7 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  ColumnDef,
   ColumnFiltersState,
   getCoreRowModel,
   getFacetedMinMaxValues,
@@ -14,13 +15,9 @@ import {
 
 import { useDevices } from "@/hooks/useDevices";
 import { useDebugMode } from "@/hooks/dev/useDevHandlers";
+import { useFilterBarDetails } from "./hooks/useFilterBarDetails";
 import { AppDispatch, RootState } from "@/store/store";
-import {
-  fetchFilterOptions,
-  resetFilters,
-  setActiveSubfilter,
-  setFilter,
-} from "@/store/reducers/table/filter";
+import { resetFilters, setFilter } from "@/store/reducers/table/filter";
 
 import {
   toggleInstantSearch,
@@ -40,6 +37,9 @@ import { useDynamicColumns } from "./getColumns";
 import { fetchDevices } from "@/store/reducers/devices";
 import { twMerge } from "tailwind-merge";
 import Pagination from "./components/Pagination";
+import { FilterBarDetailProps } from "./types";
+import { setActiveSubfilters } from "@/store/reducers/table/subfilters";
+import { FilterTree } from "@/utils/dataUtils";
 
 declare module "@tanstack/react-table" {
   interface TableMeta<TData extends RowData> {
@@ -58,15 +58,13 @@ declare module "@tanstack/react-table" {
 
 const TableFrame = () => {
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
-  const columns = useDynamicColumns();
+  const columns = useDynamicColumns() as ColumnDef<Device, unknown>[];
+  const { filterBarDetails } = useFilterBarDetails();
   const dispatch: AppDispatch = useDispatch();
 
   const {
-    activeSubfilter,
     filterKeys,
     filterTree,
-    filterValues,
-    activeSubfilterValues,
     data: filterData,
   } = useSelector((state: RootState) => state.table.filters);
 
@@ -77,11 +75,12 @@ const TableFrame = () => {
     search,
     sortExpanded,
   } = useSelector((state: RootState) => state.table.features);
-  const debugMode = useDebugMode();
+  const { activeSubfilters } = useSelector(
+    (state: RootState) => state.table.subfilters
+  );
+  // console.log({ setActiveSubfilters });
 
-  useEffect(() => {
-    dispatch(fetchFilterOptions());
-  }, [dispatch]);
+  const debugMode = useDebugMode();
 
   /*
    * Start callbacks all components within TableFrame
@@ -117,23 +116,22 @@ const TableFrame = () => {
     dispatch(setFilter({ key: "page", value: page }));
     dispatch(fetchDevices({}));
   };
-  const handleFilterClick = (type: string) => {
-    if (filterValues[type] === undefined) {
-      dispatch(setFilter({ key: activeSubfilter, value: type }));
-      if (instantSearch) {
-        dispatch(fetchDevices({}));
-      }
-      return;
+
+  const handleFilterClick = (type: string, key: string, level: number = 0) => {
+    if (debugMode) console.log("handleFilterClick", { type, level, key });
+
+    const test = activeSubfilters.slice(0, level + 1);
+    console.log({ test });
+
+    test[level] = type;
+    dispatch(setActiveSubfilters(test));
+
+    if (instantSearch) {
+      dispatch(fetchDevices({}));
     }
-    dispatch(setActiveSubfilter(type));
+
+    return;
   };
-  // const handleFilterClick = (type: string) => {
-  //   if (filterValues[type] === undefined) {
-  //     dispatch(removeFilter({ key: activeSubfilter, value: type }));
-  //     return;
-  //   }
-  //   dispatch(setActiveSubfilter(type));
-  // };
 
   /*
    * Start table logic
@@ -170,6 +168,10 @@ const TableFrame = () => {
     },
   });
 
+  if (!devices) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <div
       className={twMerge(
@@ -184,46 +186,43 @@ const TableFrame = () => {
         )}
       >
         <Sidebar
+          actionsExpanded={actionsExpanded}
           columnsExpanded={columnsExpanded}
           debugMode={debugMode}
           filterData={filterData}
           filterTree={filterTree}
-          sortExpanded={sortExpanded}
-          instantSearch={instantSearch}
-          actionsExpanded={actionsExpanded}
-          handleRefresh={handleRefresh}
-          handleSearch={handleSearch}
-          handleUpdate={handleUpdate}
           handleFilterClick={handleFilterClick}
           handleInstantSearchToggle={handleInstantSearchToggle}
+          handleRefresh={handleRefresh}
+          handleSearch={handleSearch}
           handleSidebarExpandActionClick={handleSidebarExpandActionClick}
           handleSidebarExpandColumnsClick={handleSidebarExpandColumnsClick}
           handleSidebarExpandSortClick={handleSidebarExpandSortClick}
-        />
-      </div>
-      <div className="col-span-3 row-span-1">
-        <Filters
-          debugMode={debugMode}
-          activeSubfilter={activeSubfilter}
-          filterKeys={filterKeys}
-          activeSubfilters={activeSubfilterValues}
-          filterData={filterData}
-          search={search}
-          subfilter={activeSubfilter}
-          handleFilterClick={handleFilterClick}
+          handleUpdate={handleUpdate}
+          instantSearch={instantSearch}
+          sortExpanded={sortExpanded}
         />
       </div>
       <div
         className={twMerge(
-          "col-span-3 row-span-7",
+          "col-span-3 row-span-8",
           debugMode && "bg-indigo-700"
         )}
       >
+        <Filters
+          debugMode={debugMode}
+          activeSubfilters={activeSubfilters}
+          filterBarDetails={filterBarDetails as FilterBarDetailProps[]}
+          filterKeys={filterKeys}
+          filterTree={filterTree as FilterTree}
+          handleFilterClick={handleFilterClick}
+          search={search}
+        />
         <Table {...table} />
         <Pagination
-          page={filterData.page}
           dataLength={devices.length}
           onChange={handlePageChange}
+          page={filterData.page}
         />
       </div>
     </div>

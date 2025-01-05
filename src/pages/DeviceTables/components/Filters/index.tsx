@@ -1,47 +1,70 @@
-import Subfilter from "./SubfilterBar";
+// import Subfilter from "./SubfilterBar.tsx.old";
 import FilterSearch from "./SearchBar";
-import FilterBar from "./FilterBar";
+import FilterBar from "./FilterBar.tsx";
+import { FilterBarDetailProps } from "../../types";
+import { FilterTree } from "@/utils/dataUtils.ts";
+import SubfilterBar from "./SubfilterBar.tsx";
 
 type FiltersProps = {
-  activeSubfilter: string | null;
   activeSubfilters: string[];
-  filterData: Record<string, string | number>;
   debugMode: boolean;
+  filterBarDetails: FilterBarDetailProps[];
   filterKeys: string[];
+  filterTree: FilterTree;
+  handleFilterClick: (filter: string, key: string, level?: number) => void;
   search: boolean;
-  subfilter: string | null;
-  handleFilterClick: (filter: string) => void;
 };
 
 const Filters: React.FC<FiltersProps> = ({
-  debugMode,
-  filterKeys,
-  search,
-  subfilter,
   activeSubfilters,
-  filterData,
+  debugMode,
+  filterBarDetails,
+  filterKeys,
+  filterTree,
   handleFilterClick,
+  search,
+  // level,
 }) => {
   if (debugMode)
-    console.log("FilterFrame rend: ", { filterKeys, search, subfilter });
-
+    console.log("Filters rend: ", { activeSubfilters, filterKeys, search });
   return (
     <div>
       <FilterBar
         debugMode={debugMode}
+        filterBarDetails={filterBarDetails}
         filterKeys={filterKeys}
-        subfilter={subfilter}
+        activeSubfilters={activeSubfilters}
         handleFilterClick={handleFilterClick}
+        level={0}
       />
-      {subfilter ? (
+      {activeSubfilters.length > 0 && filterTree
+        ? activeSubfilters.map((subfilter, index) => {
+            console.log("1234", { subfilter, index, filterTree });
+            console.log("12345678", filterTree[subfilter]);
+
+            return (
+              <SubfilterBar
+                debugMode={debugMode}
+                filterBarDetails={[]}
+                filterKeys={filterKeys}
+                filterTree={filterTree[subfilter] as FilterTree}
+                activeSubfilters={activeSubfilters}
+                handleFilterClick={handleFilterClick}
+                key={subfilter}
+                level={index + 1}
+              />
+            );
+          })
+        : null}
+
+      {/* {activeSubfilters.length > 0 ? (
         <Subfilter
           activeSubfilters={activeSubfilters}
-          handleFilterClick={handleFilterClick}
-          filterData={filterData}
           debugMode={debugMode}
-          subfilter={subfilter}
+          filterData={filterData}
+          handleFilterClick={handleFilterClick}
         />
-      ) : null}
+      ) : null} */}
       {search ? <FilterSearch debugMode={debugMode} /> : null}
     </div>
   );

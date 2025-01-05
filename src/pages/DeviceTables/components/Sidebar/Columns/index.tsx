@@ -121,7 +121,7 @@ const SubColumnFilter: React.FC<SubColumnFilterProps> = ({
             size={iconSizeMap[level]}
           />
         )}
-        {humanReadableKey(filter)}
+        {filter && humanReadableKey(filter)}
         {data ? (
           expanded ? (
             <TbChevronDown className="inline" />

@@ -11,7 +11,7 @@ export const useDynamicColumns = () => {
   const debugMode = useDebugMode();
 
   type ColumnDef<T> = {
-    header: string;
+    header: string | number;
     footer: (props: { column: { id: string } }) => string;
     columns?: ColumnDef<T>[];
     accessorKey?: string;
@@ -66,7 +66,7 @@ export const useDynamicColumns = () => {
         if (value === null) {
           return {
             accessorKey,
-            header: humanReadableKey(key),
+            header: humanReadableKey(key).toString(),
             footer: (props) => props.column.id,
           };
         } else {

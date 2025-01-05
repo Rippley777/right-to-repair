@@ -50,7 +50,7 @@ type FilterState = {
   total: number;
   loading: boolean;
   error: string | null;
-  activeSubfilter: string;
+  activeSubfilter: { key: string; type: string; options: unknown[] } | null[];
   activeSubfilterValues: string[];
   filterKeys: string[];
   filterValues: Record<string, unknown>;
@@ -71,7 +71,7 @@ const initialState: FilterState = {
   total: 0,
   loading: false,
   error: null as string | null,
-  activeSubfilter: "",
+  activeSubfilter: [null, null, null],
   activeSubfilterValues: [] as string[],
   filterKeys: [] as string[],
   filterValues: {} as Record<string, unknown>,
@@ -88,7 +88,6 @@ const filtersSlice = createSlice({
   reducers: {
     setFilter: (state: FilterState, action: SetFilterAction) => {
       const { key, value } = action.payload;
-
       if (!Array.isArray(state.data[key])) {
         //@ts-expect-error TODO handle error
         state.data[key] = [];
@@ -108,12 +107,7 @@ const filtersSlice = createSlice({
         ) as unknown as string | number;
       }
     },
-    setActiveSubfilter: (state, action) => {
-      state.activeSubfilter = action.payload;
-      state.activeSubfilterValues = state.filterValues[
-        action.payload
-      ] as string[];
-    },
+
     resetFilters: (state) => {
       state.history.push(state.data);
       state.data = {
@@ -163,7 +157,6 @@ const filtersSlice = createSlice({
 export const {
   setFilter,
   removeFilter,
-  setActiveSubfilter,
   resetFilters,
   setPage,
   setPageSize,

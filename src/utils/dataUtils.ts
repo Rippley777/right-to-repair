@@ -92,6 +92,46 @@ export const flattenNestedObject = (obj: Record<string, string | number>) => {
     .filter(({ value }) => value !== undefined && value !== null);
 };
 
+export const buildHierarchy = (data: string[], omits: string[]) => {
+  // console.log("BH0: ", { data });
+  const result: unknown[] = [];
+  // console.log("BH1: ", { data });
+  const filteredData = data.filter((item) => !omits.includes(item));
+  filteredData.forEach((item) => {
+    const parts = item.split(".");
+    let currentLevel = result;
+    // console.log("BH1.5: ", { currentLevel });
+
+    let parentKey = "";
+
+    parts.forEach((part) => {
+      const existing = currentLevel.find((node) => node.key === part);
+      // console.log("BH2: ", { existing });
+
+      if (!existing) {
+        const newNode = {
+          key: part,
+          type: part,
+          parentKey: parentKey ? `${parentKey}.${part}` : part ?? "",
+          children: [],
+        };
+        // console.log("BH3: ", { newNode });
+
+        currentLevel.push(newNode);
+        currentLevel = newNode.children;
+      } else {
+        currentLevel = existing.children;
+      }
+
+      parentKey = parentKey ? `${parentKey}.${part}` : part;
+      // console.log("BH4: ", { parentKey });
+    });
+  });
+  // console.log("BH5: ", { result });
+
+  return result;
+};
+
 /**
  * KEY FUNCTIONS
  *
@@ -117,6 +157,9 @@ export const categorizeKeys = (
   return categorized;
 };
 
-export const humanReadableKey = (key: string) => {
+export const humanReadableKey = (key: string | number) => {
+  if (typeof key === "number") {
+    return key;
+  }
   return key.charAt(0).toUpperCase() + key.slice(1).replace(/_/g, " ");
 };
