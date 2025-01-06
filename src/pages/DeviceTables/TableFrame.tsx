@@ -114,22 +114,35 @@ const TableFrame = () => {
     dispatch(fetchDevices({}));
   };
 
-  const handleFilterClick = (type: string, level: number = 0) => {
-    if (debugMode) console.log("handleFilterClick", { type, level });
+  const handleFilterValueClick = (type: string, level: number = 0) => {
+    if (debugMode) console.log("handleFilterValueClick", { type, level });
 
-    const test = activeSubfilters.slice(0, level);
-    if (debugMode)
-      console.log("handleFilterClick from TableFrame:", { type, test });
-    test[level] = type;
-    dispatch(setActiveSubfilters(test));
+    const filterKey = activeSubfilters
+      .filter((value) => value !== "device_details")
+      .join(".");
+
+    dispatch(setFilter({ key: filterKey, value: type }));
 
     if (instantSearch) {
       dispatch(fetchDevices({}));
     }
+    return;
+  };
+
+  const handleFilterKeyClick = (type: string, level: number = 0) => {
+    if (debugMode) console.log("handleFilterKeyClick", { type, level });
+    // 🐉 watch out here
+    const test = activeSubfilters.slice(0, level);
+    if (activeSubfilters[activeSubfilters.length - 1] === type) {
+      return dispatch(setActiveSubfilters(test));
+    }
+    test[level] = type;
+    dispatch(setActiveSubfilters(test));
 
     return;
   };
 
+  // const handleRemoveFilterValueClick
   /*
    * Start table logic
    *
@@ -209,10 +222,12 @@ const TableFrame = () => {
         <Filters
           debugMode={debugMode}
           activeSubfilters={activeSubfilters}
+          filterData={filterData}
           filterKeys={filterKeys}
           filterTree={filterTree as FilterTree}
           filterValues={filterValues}
-          handleFilterClick={handleFilterClick}
+          handleFilterKeyClick={handleFilterKeyClick}
+          handleFilterValueClick={handleFilterValueClick}
           search={search}
         />
         <Table {...table} />

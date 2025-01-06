@@ -7,15 +7,21 @@ type ActiveFilterBarProps = {
   filterData: Record<string, string | number>;
   debugMode: boolean;
   handleFilterClick: (filter: string, level: number) => void;
+  handleRefresh: () => void;
 };
+
+const filtersToSkip = ["page", "page_size"];
 
 const ActiveFilterBar: React.FC<ActiveFilterBarProps> = ({
   filterData,
   debugMode,
+  handleRefresh,
   handleFilterClick,
 }) => {
   const allEntries = flattenNestedObject(filterData);
-  const filteredChips = allEntries.filter((entry) => entry.key !== "page");
+  const filteredChips = allEntries.filter(
+    (entry) => !filtersToSkip.includes(entry.key)
+  );
   if (debugMode)
     console.log("ActiveFilterBar rend:", { filterData, allEntries });
 
@@ -26,10 +32,18 @@ const ActiveFilterBar: React.FC<ActiveFilterBarProps> = ({
       }
     >
       <div className="flex flex-col gap-2 justify-start">
-        <span className="text-sm">Active Filters</span>
+        <div className="flex flex-1 justify-center items-center gap-2">
+          <span className="text-sm">Active Filters</span>
+          {Object.keys(filterData).length > 2 ? (
+            <TbTrash size={18} onClick={handleRefresh} />
+          ) : null}
+        </div>
 
         <div
-          className={twMerge("flex gap-2 p-3", debugMode ? "bg-rose-400" : "")}
+          className={twMerge(
+            "flex flex-wrap gap-2 p-3",
+            debugMode ? "bg-rose-400" : ""
+          )}
         >
           {filteredChips.map(({ key, value }) => (
             <FilterChip

@@ -1,6 +1,5 @@
 import { twMerge } from "tailwind-merge";
 import { humanReadableKey } from "@/utils/dataUtils";
-import { filterValueMap } from "../utils/filterHelpers";
 
 type FilterChipProps = {
   active: boolean;
@@ -8,30 +7,30 @@ type FilterChipProps = {
   key: string;
   type: string;
   debugMode?: boolean;
-  level?: number;
+  level: number;
 };
 
 const FilterChip: React.FC<FilterChipProps> = ({
   active,
   debugMode = false,
   handleFilterClick,
-  key,
-  level = 0,
+  key = " missing key",
+  level,
   type,
 }) => {
   if (debugMode)
     console.log("FilterChip: ", {
-      active,
-      handleFilterClick,
-      key,
-      level,
-      type,
+      // active,
+      // handleFilterClick,
+      // key,
+      // level,
+      // type,
     });
-  const filterChipKey = filterValueMap[type] ?? type;
-
+  const filterChipKey = humanReadableKey(type) ?? type;
   // TODO get smarter here
   return (
     <div
+      // TODO need unique key
       key={key ?? type}
       onClick={() => {
         if (debugMode) console.log("FilterChip onClick", { type, key, level });

@@ -50,7 +50,7 @@ type FilterState = {
   loading: boolean;
   error: string | null;
   filterKeys: string[];
-  filterValues: Record<string, unknown>;
+  filterValues: Record<string, (string | number)[]>;
   rangeKeys: string[];
   rangeValues: Record<string, unknown>;
   sortKeys: string[];
@@ -69,7 +69,7 @@ const initialState: FilterState = {
   loading: false,
   error: null as string | null,
   filterKeys: [] as string[],
-  filterValues: {} as Record<string, unknown>,
+  filterValues: {} as Record<string, (string | number)[]>,
   rangeKeys: [] as string[],
   rangeValues: {} as Record<string, unknown>,
   sortKeys: [] as string[],
@@ -83,15 +83,22 @@ const filtersSlice = createSlice({
   reducers: {
     setFilter: (state: FilterState, action: SetFilterAction) => {
       const { key, value } = action.payload;
+
       if (!Array.isArray(state.data[key])) {
-        //@ts-expect-error TODO handle error
-        state.data[key] = [];
+        state.data[key] = [] as unknown as string | number;
       }
-      if (
-        Array.isArray(state.data[key]) &&
-        !(state.data[key] as Array<string | number>).includes(value)
-      ) {
-        (state.data[key] as Array<string | number>).push(value);
+
+      const filterArray = state.data[key] as unknown as Array<string | number>;
+
+      const valueIndex = filterArray.indexOf(value);
+      if (valueIndex === -1) {
+        filterArray.push(value);
+      } else {
+        filterArray.splice(valueIndex, 1);
+      }
+
+      if (filterArray.length === 0) {
+        delete state.data[key];
       }
     },
     removeFilter: (state, action) => {
@@ -102,7 +109,6 @@ const filtersSlice = createSlice({
         ) as unknown as string | number;
       }
     },
-
     resetFilters: (state) => {
       state.history.push(state.data);
       state.data = {

@@ -2,25 +2,28 @@
 import FilterSearch from "./SearchBar";
 import { FilterTree } from "@/utils/dataUtils.ts";
 import FilterBar from "./FilterBar";
-import FilterDisplayChips from "./FilterDisplayChips.tsx";
 
 type FiltersProps = {
   activeSubfilters: string[];
   debugMode: boolean;
+  filterData: Record<string, string | number>;
   filterKeys: string[];
   filterTree: FilterTree;
-  filterValues: Record<string, unknown>;
-  handleFilterClick: (filter: string, level: number) => void;
+  filterValues: Record<string, (string | number)[]>;
+  handleFilterKeyClick: (filter: string, level: number) => void;
+  handleFilterValueClick: (filter: string, level: number) => void;
   search: boolean;
 };
 
 const Filters: React.FC<FiltersProps> = ({
   activeSubfilters,
   debugMode,
+  filterData,
   filterKeys,
   filterTree,
   filterValues,
-  handleFilterClick,
+  handleFilterKeyClick,
+  handleFilterValueClick,
   search,
 }) => {
   if (debugMode)
@@ -30,19 +33,13 @@ const Filters: React.FC<FiltersProps> = ({
       <FilterBar
         activeSubfilters={activeSubfilters}
         debugMode={debugMode}
+        filterData={filterData}
         filterKeys={filterKeys}
         filterTree={filterTree}
         filterValues={filterValues}
-        handleSubfilterClick={handleFilterClick}
+        handleFilterKeyClick={handleFilterKeyClick}
+        handleFilterValueClick={handleFilterValueClick}
       />
-      {filterTree && (
-        <FilterDisplayChips
-          activeSubfilters={activeSubfilters}
-          debugMode={debugMode}
-          filterTree={filterTree}
-          handleFilterClick={handleFilterClick}
-        />
-      )}
       {search ? <FilterSearch debugMode={debugMode} /> : null}
     </div>
   );

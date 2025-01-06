@@ -13,7 +13,7 @@ type SidebarProps = {
   debugMode: boolean;
   filterData: Record<string, string | number>;
   filterTree?: FilterTree;
-  handleFilterClick: (filter: string, level: number) => void;
+  handleFilterValueClick: (filter: string, level: number) => void;
   handleRefresh: () => void;
   handleSearch: () => void;
   handleUpdate: () => void;
@@ -31,7 +31,7 @@ const Sidebar: React.FC<SidebarProps> = ({
   debugMode,
   filterData,
   filterTree,
-  handleFilterClick,
+  handleFilterValueClick,
   handleRefresh,
   handleSearch,
   handleUpdate,
@@ -48,12 +48,12 @@ const Sidebar: React.FC<SidebarProps> = ({
         <ToggleInstantSearch
           handleToggle={handleInstantSearchToggle}
           instantSearch={instantSearch}
-          handleRefresh={handleRefresh}
         />
         <ActiveFilterBar
+          handleRefresh={handleRefresh}
           filterData={filterData}
           debugMode={debugMode}
-          handleFilterClick={handleFilterClick}
+          handleFilterClick={handleFilterValueClick}
         />
         <Actions
           actionsExpanded={actionsExpanded}

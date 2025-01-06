@@ -88,14 +88,6 @@ export const useDynamicColumns = () => {
   const allColumns = generateColumnsFromSchema(filterKeys);
 
   const filteredColumns = allColumns?.filter((column) => {
-    if (debugMode)
-      console.log("getColumns() filteredColumns column: ", {
-        column,
-        visibilityStatus,
-        // @ts-expect-error TODO learn typescript lmao
-        test: visibilityStatus[column.accessorKey ?? column.header],
-      });
-
     // @ts-expect-error TODO learn typescript lmao
     return !!visibilityStatus[column.accessorKey ?? column.header];
   });

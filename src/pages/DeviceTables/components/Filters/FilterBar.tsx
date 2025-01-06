@@ -1,102 +1,143 @@
 // TODO share this with filter bar
 
 import { twMerge } from "tailwind-merge";
-import FilterChip from "./components/FilterChip";
+import FilterChip from "./FilterChip";
 import { FilterTree } from "@/utils/dataUtils";
 
-type SubfilterBarProps = {
-  debugMode: boolean;
-  filterValues: Record<string, unknown>;
-  filterKeys: string[];
-  handleSubfilterClick: (filter: string, level: number) => void;
+type FilterBarProps = {
   activeSubfilters: string[];
+  debugMode: boolean;
+  filterData: Record<string, string | number>;
+  filterKeys: string[];
   filterTree: FilterTree;
+  filterValues: Record<string, (string | number)[]>;
+  handleFilterKeyClick: (filter: string, level: number) => void;
+  handleFilterValueClick: (filter: string, level: number) => void;
+  level?: number;
+  workingSubfilters?: string[];
 };
 
-const SubfilterBar: React.FC<SubfilterBarProps> = ({
+const FilterBar: React.FC<FilterBarProps> = ({
   activeSubfilters,
   debugMode,
+  filterData,
   filterKeys,
   filterTree,
   filterValues,
-  handleSubfilterClick,
+  handleFilterKeyClick,
+  handleFilterValueClick,
+  level = 0,
+  // TODO think of a bettery name
+  workingSubfilters = activeSubfilters,
 }) => {
   if (debugMode)
     console.log("SubFilter Bar2 rend:", {
+      level,
       activeSubfilters,
       debugMode,
       filterKeys,
       filterTree,
-      handleSubfilterClick,
+      filterValues,
+      handleFilterKeyClick,
+      workingSubfilters,
     });
-  if (!filterTree) return null;
-  const items =
-    activeSubfilters.length === 0 || activeSubfilters[0] === null
-      ? Object.keys(filterTree)
-      : Object.keys(filterTree);
+  if (!filterTree) {
+    const filterKey = activeSubfilters
+      .filter((value) => value !== "device_details")
+      .join(".");
+    const sortOptions = filterValues[filterKey];
+
+    if (!sortOptions) {
+      return <div>Error: missing options Filter Bar</div>;
+    }
+    return (
+      <div className="flex gap-2">
+        {sortOptions.map((option: string | number) => {
+          return (
+            <FilterChip
+              level={level}
+              active={
+                filterData[filterKey]
+                  ? typeof filterData[filterKey] === "number"
+                    ? filterData[filterKey] === option
+                    : filterData[filterKey].includes(option as string)
+                  : false
+              }
+              handleFilterClick={handleFilterValueClick}
+              type={`${option}`}
+              key={`${option}`}
+            />
+          );
+        })}
+      </div>
+    );
+  }
   return (
-    <div
-      className={twMerge(
-        "text-white flex rounded overflow-scroll h-12",
-        debugMode ? "bg-violet-600" : ""
-      )}
-    >
-      {activeSubfilters.map((filter, index) => (
-        <FilterRow
-          index={index}
-          filter={filter}
-          filterTree={filterTree}
-          filterValues={filterValues}
-          items={items}
-          activeSubfilters={activeSubfilters}
-          debugMode={debugMode}
-          handleSubfilterClick={handleSubfilterClick}
-        />
-      ))}
-    </div>
+    <>
+      <FilterRow
+        key={level}
+        level={level}
+        items={Object.keys(filterTree)}
+        activeSubfilters={activeSubfilters}
+        debugMode={debugMode}
+        handleFilterKeyClick={handleFilterKeyClick}
+      />
+      <FilterBar
+        level={level + 1}
+        filterKeys={filterKeys}
+        filterTree={filterTree[workingSubfilters[0]] as FilterTree}
+        filterValues={filterValues}
+        activeSubfilters={activeSubfilters}
+        filterData={filterData}
+        debugMode={debugMode}
+        handleFilterKeyClick={handleFilterKeyClick}
+        handleFilterValueClick={handleFilterValueClick}
+        workingSubfilters={workingSubfilters.slice(1)}
+      />
+    </>
   );
 };
 
-export default SubfilterBar;
+export default FilterBar;
 
 type FilterRowProps = {
-  index: number;
-  filter: string;
-  items: string[];
-  handleSubfilterClick: (filter: string, level: number) => void;
-  debugMode: boolean;
-  filterTree: FilterTree;
-  filterValues: Record<string, unknown>;
   activeSubfilters: string[];
+  debugMode: boolean;
+  handleFilterKeyClick: (filter: string, level: number) => void;
+  items: string[];
+  level: number;
 };
 const FilterRow: React.FC<FilterRowProps> = ({
   activeSubfilters,
   debugMode,
-  handleSubfilterClick,
-  index,
+  handleFilterKeyClick,
   items,
+  level,
 }) => {
   if (debugMode)
     console.log("FilterRow rend:", {
+      level,
+      items,
       debugMode,
-      handleSubfilterClick,
+      handleFilterKeyClick,
       activeSubfilters,
     });
+  if (!items) return <div>Error: missing items Filter Row</div>;
   return (
     <div>
       <div
         className={twMerge(
-          "text-white flex rounded overflow-scroll h-12",
+          "text-white flex rounded overflow-scroll h-12 gap-2",
           debugMode ? "bg-violet-600" : ""
         )}
       >
         {items.map((filterKey) => {
-          const isActive = activeSubfilters?.includes(filterKey) ?? false;
+          const isActive = activeSubfilters[level] === filterKey;
           return (
             <FilterChip
-              level={index}
+              level={level}
               active={isActive}
-              handleFilterClick={handleSubfilterClick}
+              handleFilterClick={handleFilterKeyClick}
               key={filterKey}
               type={filterKey}
             />
