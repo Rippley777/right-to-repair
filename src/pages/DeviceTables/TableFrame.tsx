@@ -73,7 +73,7 @@ const TableFrame = () => {
     search,
     sortExpanded,
   } = useSelector((state: RootState) => state.table.features);
-  const { activeSubfilters } = useSelector(
+  const { activeSubfilters = [] } = useSelector(
     (state: RootState) => state.table.subfilters
   );
 
@@ -131,7 +131,7 @@ const TableFrame = () => {
 
   const handleFilterKeyClick = (type: string, level: number = 0) => {
     if (debugMode) console.log("handleFilterKeyClick", { type, level });
-    // 🐉 watch out here
+    // 🐉 watch out here 🐉
     const test = activeSubfilters.slice(0, level);
     if (activeSubfilters[activeSubfilters.length - 1] === type) {
       return dispatch(setActiveSubfilters(test));
@@ -201,7 +201,7 @@ const TableFrame = () => {
           debugMode={debugMode}
           filterData={filterData}
           filterTree={filterTree}
-          handleFilterClick={handleFilterClick}
+          handleFilterValueClick={handleFilterValueClick}
           handleInstantSearchToggle={handleInstantSearchToggle}
           handleRefresh={handleRefresh}
           handleSearch={handleSearch}
