@@ -2,45 +2,63 @@ import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
 import { API_URL } from "@/api";
 import { Device } from "@/types";
-import { setPage, setPageSize } from "./table/filter";
+import { setPageDataFromApi } from "./table/pages";
 
 interface DevicesState {
   data: Device[];
+  total: number;
   status: "idle" | "loading" | "succeeded" | "failed";
   error: string | null;
 }
+interface DeviceResponseAction {
+  payload: DeviceResponse;
+}
+
+type DeviceResponse = {
+  devices: Device[];
+  total: number;
+  page: number;
+  pages: number;
+};
 
 const initialState: DevicesState = {
   data: [],
+  total: 0,
   status: "idle",
   error: null,
 };
 
 export const fetchDevices = createAsyncThunk<
-  Device[],
+  DeviceResponse,
   unknown,
   { rejectValue: string }
 >("devices/fetchDevices", async (_, thunkAPI) => {
   const { dispatch, getState } = thunkAPI;
   try {
     const state = getState() as {
-      table: { filters: { data: Record<string, string> } };
+      table: {
+        filters: { data: Record<string, string> };
+        pages: { current: number };
+      };
     };
     const { data } = state.table.filters;
-
+    const { current } = state.table.pages;
     const queryParams = new URLSearchParams({
       ...data,
+      page: current.toString(),
     });
 
     const response = await axios.get(
       `${API_URL}/api/devices/search?${queryParams.toString()}`
     );
-    if (response.data.page) {
-      dispatch(setPage(response.data.page));
-      dispatch(setPageSize(response.data.pageSize));
+    if (!response.data) {
+      return thunkAPI.rejectWithValue("Failed to fetch devices");
+    }
+    if (response.data) {
+      dispatch(setPageDataFromApi(response.data));
     }
 
-    return response.data.devices;
+    return response.data;
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {
       return thunkAPI.rejectWithValue(
@@ -62,10 +80,11 @@ const devicesSlice = createSlice({
       })
       .addCase(
         fetchDevices.fulfilled,
-        (state, action: PayloadAction<Device[]>) => {
+        (state, action: DeviceResponseAction) => {
           state.status = "succeeded";
+          state.total = action.payload.total;
           // @ts-expect-error TODO actually learn TS and get fancy here with indexing
-          state.data = action.payload.map((device) => ({
+          state.data = action.payload.devices.map((device) => ({
             ...device,
             repairability_insights: {
               ...device.repairability_insights,

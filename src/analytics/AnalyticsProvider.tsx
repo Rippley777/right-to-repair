@@ -5,7 +5,6 @@ import { useDebugMode } from "@/hooks/dev/useDevHandlers";
 
 const AnalyticsProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const serverUrl = WS_URL;
-  console.log("serverUrl", serverUrl);
   const siteId = "Rip2Repair";
 
   const { isConnected, sendEvent } = useWebSocketAnalytics(serverUrl, siteId);

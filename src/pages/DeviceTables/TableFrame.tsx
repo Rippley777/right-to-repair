@@ -38,6 +38,7 @@ import { twMerge } from "tailwind-merge";
 import Pagination from "./components/Pagination";
 import { setActiveSubfilters } from "@/store/reducers/table/subfilters";
 import { FilterTree } from "@/utils/dataUtils";
+import { setPage } from "@/store/reducers/table/pages";
 
 declare module "@tanstack/react-table" {
   interface TableMeta<TData extends RowData> {
@@ -78,6 +79,10 @@ const TableFrame = () => {
   );
 
   const debugMode = useDebugMode();
+  const { devices } = useDevices();
+  const { current: currentPage, total: totalPages } = useSelector(
+    (state: RootState) => state.table.pages
+  );
 
   /*
    * Start callbacks all components within TableFrame
@@ -110,7 +115,7 @@ const TableFrame = () => {
     dispatch(toggleSortExpanded());
   };
   const handlePageChange = (page: number) => {
-    dispatch(setFilter({ key: "page", value: page }));
+    dispatch(setPage(page));
     dispatch(fetchDevices({}));
   };
 
@@ -147,7 +152,6 @@ const TableFrame = () => {
    * Start table logic
    *
    */
-  const { devices } = useDevices();
 
   const table = useReactTable<Device>({
     data: devices,
@@ -232,9 +236,9 @@ const TableFrame = () => {
         />
         <Table {...table} />
         <Pagination
-          dataLength={devices.length}
           onChange={handlePageChange}
-          page={filterData.page}
+          page={currentPage}
+          totalPages={totalPages}
         />
       </div>
     </div>

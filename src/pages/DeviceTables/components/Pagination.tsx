@@ -1,33 +1,16 @@
 import { TbChevronLeft, TbChevronRight } from "react-icons/tb";
-{
-  /* <li>
-<a
-  href="#"
-  className="flex items-center justify-center px-4 h-10 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
->
-  1
-</a>
-</li> */
-}
+
 type PaginationProps = {
   page: string | number;
-  dataLength: number;
+  totalPages: number;
   onChange: (page: number) => void;
 };
 const Pagination: React.FC<PaginationProps> = ({
   page,
-  dataLength,
+  totalPages,
   onChange,
 }) => {
-  //   const [currentPage, setCurrentPage] = useState(Number(page));
   const currentPage = Number(page);
-
-  const totalItems = dataLength;
-  // TODO page size  should be dynamic
-  const pageSize = 10;
-  const totalPages = Math.ceil(totalItems / pageSize);
-
-  //   const startIndex = (currentPage - 1) * pageSize;
 
   const handlePageChange = (page: number) => {
     onChange(page);

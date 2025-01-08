@@ -47,6 +47,7 @@ type FilterState = {
   data: FilterData;
   history: FilterData[];
   total: number;
+  pages: number;
   loading: boolean;
   error: string | null;
   filterKeys: string[];
@@ -66,6 +67,7 @@ const initialState: FilterState = {
   },
   history: [],
   total: 0,
+  pages: 0,
   loading: false,
   error: null as string | null,
   filterKeys: [] as string[],
@@ -125,9 +127,6 @@ const filtersSlice = createSlice({
     updateFilterHistory: (state, action) => {
       state.history.push(action.payload);
     },
-    setPage: (state, action) => {
-      state.data.page = action.payload;
-    },
     setPageSize: (state, action) => {
       state.data.pageSize = action.payload;
     },
@@ -159,7 +158,6 @@ export const {
   setFilter,
   removeFilter,
   resetFilters,
-  setPage,
   setPageSize,
   resetFiltersByKeys,
   updateFilterHistory,
