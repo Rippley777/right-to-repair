@@ -10,7 +10,7 @@ type ActiveFilterBarProps = {
   handleRefresh: () => void;
 };
 
-const filtersToSkip = ["page", "page_size"];
+const filtersToSkip = ["page", "pageSize"];
 
 const ActiveFilterBar: React.FC<ActiveFilterBarProps> = ({
   filterData,
