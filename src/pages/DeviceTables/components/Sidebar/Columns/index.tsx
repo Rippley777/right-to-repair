@@ -10,17 +10,19 @@ import { twMerge } from "tailwind-merge";
 import { useDebugMode } from "@/hooks/dev/useDevHandlers";
 import { RootState } from "@/store/store";
 import { toggleVisibility } from "@/store/reducers/table/columns";
-import { humanReadableKey } from "@/utils/dataUtils";
+import { FilterTree, humanReadableKey } from "@/utils/dataUtils";
 
 type ColumnsProps = {
   columnsExpanded: boolean;
   handleExpandClick: () => void;
   filterTree: unknown;
+  workingColumns?: string[];
 };
 const Columns: React.FC<ColumnsProps> = ({
   columnsExpanded,
   handleExpandClick,
   filterTree,
+  // workingColumns,
 }) => {
   return (
     <div className="text-center">
@@ -41,8 +43,10 @@ const Columns: React.FC<ColumnsProps> = ({
               <SubColumnFilter
                 filter={filter}
                 // @ts-expect-error TODO learn typescrip t
-                data={filterTree[filter]}
+                // data={filterTree[filter]}
+                data={filterTree[workingSubfilters[0]] as FilterTree}
                 level={1}
+                // workingColumns={filterTree.slice(1)}
               />
             );
           })
@@ -55,13 +59,15 @@ export default Columns;
 
 type SubColumnFilterProps = {
   filter: string;
-  data: unknown;
+  data: FilterTree;
   level: number;
+  // workingColumns: string[];
 };
 const SubColumnFilter: React.FC<SubColumnFilterProps> = ({
   filter,
   data,
   level,
+  // workingColumns,
 }) => {
   const [expanded, setExpanded] = useState(false);
   const dispatch = useDispatch();
@@ -137,7 +143,9 @@ const SubColumnFilter: React.FC<SubColumnFilterProps> = ({
             return (
               <SubColumnFilter
                 filter={subfilterKey}
-                data={null}
+                // filterKey={}
+                data={data[subfilterKey]}
+                // workingColumns={workingColumns.slice(1)}
                 level={level + 1}
               />
             );

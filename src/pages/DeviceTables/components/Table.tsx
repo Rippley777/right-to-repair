@@ -64,6 +64,9 @@ const Table = (table: TableType<Device>) => {
           </tbody>
         </table>
       </div>
+      {table.getRowModel().rows.length === 0 && (
+        <div className="w-full">Too many filters</div>
+      )}
     </div>
   );
 };

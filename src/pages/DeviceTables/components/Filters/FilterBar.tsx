@@ -48,8 +48,9 @@ const FilterBar: React.FC<FilterBarProps> = ({
     const sortOptions = filterValues[filterKey];
 
     if (!sortOptions) {
-      return <div>Error: missing options Filter Bar</div>;
+      return <></>;
     }
+
     return (
       <div className="flex gap-2 overflow-scroll">
         {sortOptions.map((option: string | number) => {
