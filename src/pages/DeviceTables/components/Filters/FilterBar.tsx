@@ -3,10 +3,12 @@
 import { twMerge } from "tailwind-merge";
 import FilterChip from "./FilterChip";
 import { FilterTree } from "@/utils/dataUtils";
+import { logDebug } from "@/utils/logUtils";
+import { debugStyle } from "@/utils/styleUtils";
+import { useDebugMode } from "@/hooks/dev/useDevHandlers";
 
 type FilterBarProps = {
   activeSubfilters: string[];
-  debugMode: boolean;
   filterData: Record<string, string | number>;
   filterKeys: string[];
   filterTree: FilterTree;
@@ -16,34 +18,28 @@ type FilterBarProps = {
   level?: number;
   workingSubfilters?: string[];
 };
+const excludedValues = ["device_details", "default"];
 
-const FilterBar: React.FC<FilterBarProps> = ({
-  activeSubfilters,
-  debugMode,
-  filterData,
-  filterKeys,
-  filterTree,
-  filterValues,
-  handleFilterKeyClick,
-  handleFilterValueClick,
-  level = 0,
-  // TODO think of a bettery name
-  workingSubfilters = activeSubfilters,
-}) => {
-  if (debugMode)
-    console.log("SubFilter Bar2 rend:", {
-      level,
-      activeSubfilters,
-      debugMode,
-      filterKeys,
-      filterTree,
-      filterValues,
-      handleFilterKeyClick,
-      workingSubfilters,
-    });
+const FilterBar: React.FC<FilterBarProps> = (props) => {
+  const debugMode = useDebugMode();
+
+  const {
+    activeSubfilters,
+    filterData,
+    filterKeys,
+    filterTree,
+    filterValues,
+    handleFilterKeyClick,
+    handleFilterValueClick,
+    level = 0,
+    // TODO think of a bettery name
+    workingSubfilters = activeSubfilters,
+  } = props;
+
+  logDebug(debugMode, "SubFilter Bar2 rend:", props);
   if (!filterTree) {
     const filterKey = activeSubfilters
-      .filter((value) => value !== "device_details")
+      .filter((value) => !excludedValues.includes(value))
       .join(".");
     const sortOptions = filterValues[filterKey];
 
@@ -75,11 +71,11 @@ const FilterBar: React.FC<FilterBarProps> = ({
   return (
     <>
       <FilterRow
+        debugMode={debugMode}
         key={level}
         level={level}
         items={Object.keys(filterTree)}
         activeSubfilters={activeSubfilters}
-        debugMode={debugMode}
         handleFilterKeyClick={handleFilterKeyClick}
       />
       <FilterBar
@@ -89,7 +85,6 @@ const FilterBar: React.FC<FilterBarProps> = ({
         filterValues={filterValues}
         activeSubfilters={activeSubfilters}
         filterData={filterData}
-        debugMode={debugMode}
         handleFilterKeyClick={handleFilterKeyClick}
         handleFilterValueClick={handleFilterValueClick}
         workingSubfilters={workingSubfilters.slice(1)}
@@ -107,28 +102,23 @@ type FilterRowProps = {
   items: string[];
   level: number;
 };
-const FilterRow: React.FC<FilterRowProps> = ({
-  activeSubfilters,
-  debugMode,
-  handleFilterKeyClick,
-  items,
-  level,
-}) => {
-  if (debugMode)
-    console.log("FilterRow rend:", {
-      level,
-      items,
-      debugMode,
-      handleFilterKeyClick,
-      activeSubfilters,
-    });
+
+const FilterRow: React.FC<FilterRowProps> = (props) => {
+  const {
+    activeSubfilters,
+    debugMode,
+    handleFilterKeyClick,
+    items,
+    level,
+  } = props;
+  logDebug(debugMode, "FilterRow rend:", props);
   if (!items) return <div>Error: missing items Filter Row</div>;
   return (
     <div>
       <div
         className={twMerge(
           "text-white flex rounded overflow-scroll h-12 gap-2",
-          debugMode ? "bg-violet-600" : ""
+          debugStyle("bg-violet-600")
         )}
       >
         {items.map((filterKey) => {

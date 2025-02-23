@@ -1,6 +1,7 @@
 import { useSelector } from "react-redux";
 import { RootState } from "@/store/store";
 import { buildTree, humanReadableKey, NestedRecord } from "@/utils/dataUtils";
+import { logDebug } from "@/utils/logUtils";
 import { useDebugMode } from "@/hooks/dev/useDevHandlers";
 
 export const useDynamicColumns = () => {
@@ -92,7 +93,7 @@ export const useDynamicColumns = () => {
     return !!visibilityStatus[column.accessorKey ?? column.header];
   });
 
-  if (debugMode) console.log("getColumns() filteredColumns: ", filteredColumns);
+  logDebug(debugMode, "getColumns() filteredColumns: ", filteredColumns);
 
   return (
     filteredColumns ?? [

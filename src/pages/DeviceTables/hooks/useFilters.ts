@@ -1,4 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
+
 import { setFilter } from "@/store/reducers/table/filter";
 import { RootState } from "@/store/store";
 
@@ -7,8 +8,13 @@ export const useFilters = () => {
   const dispatch = useDispatch();
 
   const updateFilter = (key: string, value: unknown) => {
-    if (typeof value === "string" || typeof value === "number") {
-      dispatch(setFilter({ key, value }));
+    switch (typeof value) {
+      case "string":
+      case "number":
+        dispatch(setFilter({ key, value }));
+        break;
+      default:
+        break;
     }
   };
 

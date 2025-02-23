@@ -3,12 +3,13 @@ import { MouseEventHandler, useState } from "react";
 import { TbChevronDown, TbChevronRight } from "react-icons/tb";
 import { useDispatch, useSelector } from "react-redux";
 import { twMerge } from "tailwind-merge";
-import { useDebugMode } from "@/hooks/dev/useDevHandlers";
 import { toggleVisibility } from "@/store/reducers/table/columns";
 import { RootState } from "@/store/store";
 import { FilterTree, humanReadableKey } from "@/utils/dataUtils";
 import Icon from "./IndicatorIcon";
 import { iconSizeMap, textSizeMap } from "../../utils";
+import { logDebug } from "@/utils/logUtils";
+import { useDebugMode } from "@/hooks/dev/useDevHandlers";
 
 type SubColumnProps = {
   filter: string;
@@ -26,8 +27,7 @@ const SubColumn: React.FC<SubColumnProps> = ({
   const { visibilityStatus } = useSelector(
     (state: RootState) => state.table.columns
   );
-
-  const isDebugMode = useDebugMode();
+  const debugMode = useDebugMode();
 
   const handleOnSelectionClick: MouseEventHandler<SVGElement> = (e) => {
     e.stopPropagation();
@@ -35,7 +35,7 @@ const SubColumn: React.FC<SubColumnProps> = ({
   };
 
   const handleOnExpandClick = () => {
-    if (isDebugMode) console.log("SubColumn expand click", { data });
+    logDebug(debugMode, "SubColumn expand click", { data });
 
     if (!data) {
       dispatch(toggleVisibility(filter));
@@ -44,8 +44,7 @@ const SubColumn: React.FC<SubColumnProps> = ({
     setExpanded(!expanded);
   };
 
-  if (isDebugMode)
-    console.log("SubColumn rend: ', { filter, data, level }");
+  logDebug(debugMode, "SubColumn rend: ", { filter, data, level });
 
   // const isLeaf = !data;
 
@@ -56,7 +55,7 @@ const SubColumn: React.FC<SubColumnProps> = ({
   const SubfilterList = ({ data, level }: { data: FilterTree; level: number }) => (
     <>
       {Object.keys(data).map((subfilterKey) => {
-        if (isDebugMode) console.log("SubfilterRendered with key: ", { subfilterKey });
+        logDebug(debugMode, "SubfilterRendered with key: ", { subfilterKey });
         return <SubColumn filter={subfilterKey} data={data[subfilterKey] as FilterTree} level={level + 1} />;
       })}
     </>

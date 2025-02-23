@@ -2,10 +2,12 @@ import { twMerge } from "tailwind-merge";
 import { TbTrash } from "react-icons/tb";
 
 import { flattenNestedObject } from "@/utils/dataUtils";
+import { logDebug } from "@/utils/logUtils";
+import { debugStyle } from "@/utils/styleUtils";
+import { useDebugMode } from "@/hooks/dev/useDevHandlers";
 
 type ActiveFilterBarProps = {
   filterData: Record<string, string | number>;
-  debugMode: boolean;
   handleFilterClick: (filter: string, level: number) => void;
   handleRefresh: () => void;
 };
@@ -14,21 +16,20 @@ const filtersToSkip = ["page", "pageSize"];
 
 const ActiveFilterBar: React.FC<ActiveFilterBarProps> = ({
   filterData,
-  debugMode,
   handleRefresh,
   handleFilterClick,
 }) => {
+  const debugMode = useDebugMode();
   const allEntries = flattenNestedObject(filterData);
   const filteredChips = allEntries.filter(
     (entry) => !filtersToSkip.includes(entry.key)
   );
-  if (debugMode)
-    console.log("ActiveFilterBar rend:", { filterData, allEntries });
+  logDebug(debugMode, "ActiveFilterBar rend:", { filterData, allEntries });
 
   return (
     <div
       className={
-        (twMerge("p-4 text-white rounded"), debugMode ? "bg-purple-500" : "")
+        (twMerge("p-4 text-white rounded", debugStyle("bg-purple-500")))
       }
     >
       <div className="flex flex-col gap-2 justify-start">
@@ -42,7 +43,7 @@ const ActiveFilterBar: React.FC<ActiveFilterBarProps> = ({
         <div
           className={twMerge(
             "flex flex-wrap gap-2 p-3",
-            debugMode ? "bg-rose-400" : ""
+            debugStyle("bg-rose-400")
           )}
         >
           {filteredChips.map(({ key, value }) => (

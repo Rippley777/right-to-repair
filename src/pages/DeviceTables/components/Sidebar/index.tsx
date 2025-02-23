@@ -10,9 +10,8 @@ import Sort from "./Sort";
 type SidebarProps = {
   actionsExpanded: boolean;
   columnsExpanded: boolean;
-  debugMode: boolean;
   filterData: Record<string, string | number>;
-  filterTree?: FilterTree;
+  filterTree: FilterTree;
   handleFilterValueClick: (filter: string, level: number) => void;
   handleRefresh: () => void;
   handleSearch: () => void;
@@ -28,7 +27,6 @@ type SidebarProps = {
 const Sidebar: React.FC<SidebarProps> = ({
   actionsExpanded,
   columnsExpanded,
-  debugMode,
   filterData,
   filterTree,
   handleFilterValueClick,
@@ -52,7 +50,6 @@ const Sidebar: React.FC<SidebarProps> = ({
         <ActiveFilterBar
           handleRefresh={handleRefresh}
           filterData={filterData}
-          debugMode={debugMode}
           handleFilterClick={handleFilterValueClick}
         />
         <Actions

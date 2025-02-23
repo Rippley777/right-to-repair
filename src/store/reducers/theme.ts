@@ -1,16 +1,21 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { selectedTheme } from '@ui';
 
 export const themeSlice = createSlice({
   name: 'theme',
   initialState: {
-    theme: 'dark',
+    theme: selectedTheme("dark"),
+    themeName: 'dark',
   },
   reducers: {
     toggleTheme: (state) => {
-      state.theme = state.theme === 'light' ? 'dark' : 'light';
+      const updatedTheme = state.themeName === 'light' ? 'dark' : 'light'
+      state.themeName = updatedTheme;
+      state.theme = selectedTheme(updatedTheme);
     },
     setCustomTheme: (state, action) => {
-      state.theme = action.payload.theme;
+      state.themeName = action.payload.themeName;
+      state.theme = selectedTheme(action.payload.themeName);
     },
   },
 });

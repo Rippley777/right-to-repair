@@ -14,7 +14,6 @@ import {
 } from "@tanstack/react-table";
 
 import { useDevices } from "@/hooks/useDevices";
-import { useDebugMode } from "@/hooks/dev/useDevHandlers";
 import { AppDispatch, RootState } from "@/store/store";
 import { resetFilters, setFilter } from "@/store/reducers/table/filter";
 
@@ -39,6 +38,9 @@ import Pagination from "./components/Pagination";
 import { setActiveSubfilters } from "@/store/reducers/table/subfilters";
 import { FilterTree } from "@/utils/dataUtils";
 import { setPage } from "@/store/reducers/table/pages";
+import { logDebug } from "@/utils/logUtils";
+import { debugStyle } from "@/utils/styleUtils";
+import { useDebugMode } from "@/hooks/dev/useDevHandlers";
 
 declare module "@tanstack/react-table" {
   interface TableMeta<TData extends RowData> {
@@ -77,12 +79,12 @@ const TableFrame = () => {
   const { activeSubfilters = [] } = useSelector(
     (state: RootState) => state.table.subfilters
   );
-
-  const debugMode = useDebugMode();
   const { devices } = useDevices();
   const { current: currentPage, total: totalPages } = useSelector(
     (state: RootState) => state.table.pages
   );
+
+  const debugMode = useDebugMode();
 
   /*
    * Start callbacks all components within TableFrame
@@ -120,7 +122,7 @@ const TableFrame = () => {
   };
 
   const handleFilterValueClick = (type: string, level: number = 0) => {
-    if (debugMode) console.log("handleFilterValueClick", { type, level });
+    logDebug(debugMode, "handleFilterValueClick", { type, level });
 
     const filterKey = activeSubfilters
       .filter((value) => value !== "device_details")
@@ -135,7 +137,7 @@ const TableFrame = () => {
   };
 
   const handleFilterKeyClick = (type: string, level: number = 0) => {
-    if (debugMode) console.log("handleFilterKeyClick", { type, level });
+    logDebug(debugMode, "handleFilterKeyClick", { type, level });
     // 🐉 watch out here 🐉
     const test = activeSubfilters.slice(0, level);
     if (activeSubfilters[activeSubfilters.length - 1] === type) {
@@ -176,7 +178,7 @@ const TableFrame = () => {
         columnId: string | number,
         value: unknown
       ) => {
-        if (debugMode) console.log({ rowIndex, columnId, value });
+        logDebug(debugMode, 'updateData: ', { rowIndex, columnId, value });
         return value;
       },
     },
@@ -190,21 +192,20 @@ const TableFrame = () => {
     <div
       className={twMerge(
         "gap-1 grid grid-cols-4 grid-rows-8 px-0 py-5 w-screen max-w-screen",
-        debugMode && "bg-indigo-900"
+        debugStyle("bg-indigo-900")
       )}
     >
       <div
         className={twMerge(
           "col-span-1 row-span-8",
-          debugMode && "bg-indigo-800"
+          debugStyle("bg-indigo-800")
         )}
       >
         <Sidebar
           actionsExpanded={actionsExpanded}
           columnsExpanded={columnsExpanded}
-          debugMode={debugMode}
           filterData={filterData}
-          filterTree={filterTree}
+          filterTree={filterTree as FilterTree}
           handleFilterValueClick={handleFilterValueClick}
           handleInstantSearchToggle={handleInstantSearchToggle}
           handleRefresh={handleRefresh}
@@ -220,11 +221,10 @@ const TableFrame = () => {
       <div
         className={twMerge(
           "col-span-3 row-span-8",
-          debugMode && "bg-indigo-700"
+          debugStyle("bg-indigo-700")
         )}
       >
         <Filters
-          debugMode={debugMode}
           activeSubfilters={activeSubfilters}
           filterData={filterData}
           filterKeys={filterKeys}

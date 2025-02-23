@@ -1,12 +1,14 @@
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+
 import useWebSocketAnalytics from "@/analytics/useWebSocketAnalytics";
+import { WS_URL } from "@/api";
+import { fetchFilterOptions } from "@/store/reducers/table/filter";
+import { AppDispatch, RootState } from "@/store/store";
+
 import HomeHeaderSection from "../../components/dev/header";
 import TableFrame from "./TableFrame";
 import "./table.css";
-import { WS_URL } from "@/api";
-import { useEffect } from "react";
-import { fetchFilterOptions } from "@/store/reducers/table/filter";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "@/store/store";
 
 function DeviceTables() {
   const serverUrl = WS_URL;

@@ -2,10 +2,11 @@
 import FilterSearch from "./SearchBar";
 import { FilterTree } from "@/utils/dataUtils.ts";
 import FilterBar from "./FilterBar";
+import { logDebug } from "@/utils/logUtils";
+import { useDebugMode } from "@/hooks/dev/useDevHandlers";
 
 type FiltersProps = {
   activeSubfilters: string[];
-  debugMode: boolean;
   filterData: Record<string, string | number>;
   filterKeys: string[];
   filterTree: FilterTree;
@@ -17,7 +18,6 @@ type FiltersProps = {
 
 const Filters: React.FC<FiltersProps> = ({
   activeSubfilters,
-  debugMode,
   filterData,
   filterKeys,
   filterTree,
@@ -26,13 +26,12 @@ const Filters: React.FC<FiltersProps> = ({
   handleFilterValueClick,
   search,
 }) => {
-  if (debugMode)
-    console.log("Filters rend: 12", { activeSubfilters, filterKeys, search });
+  const debugMode = useDebugMode()
+  logDebug(debugMode, "Filters rend: 12", { activeSubfilters, filterKeys, search });
   return (
     <div>
       <FilterBar
         activeSubfilters={activeSubfilters}
-        debugMode={debugMode}
         filterData={filterData}
         filterKeys={filterKeys}
         filterTree={filterTree}
@@ -40,9 +39,10 @@ const Filters: React.FC<FiltersProps> = ({
         handleFilterKeyClick={handleFilterKeyClick}
         handleFilterValueClick={handleFilterValueClick}
       />
-      {search ? <FilterSearch debugMode={debugMode} /> : null}
+      {search ? <FilterSearch /> : null}
     </div>
   );
 };
 
 export default Filters;
+
