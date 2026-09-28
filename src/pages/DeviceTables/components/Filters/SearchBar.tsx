@@ -1,15 +1,15 @@
+import { useDebugMode } from "@/hooks/dev/useDevHandlers";
 import { debugStyle } from "@/utils/styleUtils";
 import { twMerge } from "tailwind-merge";
 
-type FilterSearchProps = {
-};
 
-const FilterSearch: React.FC<FilterSearchProps> = () => {
+const FilterSearch: React.FC = () => {
+  const debugMode = useDebugMode();
   return (
     <div
       className={twMerge(
         "flex flex-wrap items-end gap-4 p-2",
-        debugStyle("bg-amber-300")
+        debugStyle("bg-amber-300", debugMode)
       )}
     >
       <label className="flex flex-col min-w-40 flex-1">

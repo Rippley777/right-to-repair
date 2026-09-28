@@ -192,13 +192,13 @@ const TableFrame = () => {
     <div
       className={twMerge(
         "gap-1 grid grid-cols-4 grid-rows-8 px-0 py-5 w-screen max-w-screen",
-        debugStyle("bg-indigo-900")
+        debugStyle("bg-indigo-900", debugMode)
       )}
     >
       <div
         className={twMerge(
           "col-span-1 row-span-8",
-          debugStyle("bg-indigo-800")
+          debugStyle("bg-indigo-800", debugMode)
         )}
       >
         <Sidebar
@@ -221,7 +221,7 @@ const TableFrame = () => {
       <div
         className={twMerge(
           "col-span-3 row-span-8",
-          debugStyle("bg-indigo-700")
+          debugStyle("bg-indigo-700", debugMode)
         )}
       >
         <Filters

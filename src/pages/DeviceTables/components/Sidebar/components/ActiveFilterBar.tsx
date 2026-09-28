@@ -29,7 +29,7 @@ const ActiveFilterBar: React.FC<ActiveFilterBarProps> = ({
   return (
     <div
       className={
-        (twMerge("p-4 text-white rounded", debugStyle("bg-purple-500")))
+        (twMerge("p-4 text-white rounded", debugStyle("bg-purple-500", debugMode)))
       }
     >
       <div className="flex flex-col gap-2 justify-start">
@@ -43,7 +43,7 @@ const ActiveFilterBar: React.FC<ActiveFilterBarProps> = ({
         <div
           className={twMerge(
             "flex flex-wrap gap-2 p-3",
-            debugStyle("bg-rose-400")
+            debugStyle("bg-rose-400", debugMode)
           )}
         >
           {filteredChips.map(({ key, value }) => (

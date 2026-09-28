@@ -1,5 +1,5 @@
 
-export const logDebug = (debugMode: boolean, message: string, data: any) => {
+export const logDebug = (debugMode: boolean, message: string, data: unknown) => {
 
     // add better filtering here
     if (debugMode) {

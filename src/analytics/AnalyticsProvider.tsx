@@ -21,7 +21,7 @@ const AnalyticsProvider: FC<{ children: ReactNode }> = ({ children }) => {
         },
       });
     }
-  }, [isConnected, sendEvent]);
+  }, [debugMode, isConnected, sendEvent]);
 
   return <div>{children}</div>;
 };

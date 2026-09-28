@@ -1,4 +1,3 @@
-import { Switch } from "@ui";
 
 type ToggleInstantSearchProps = {
   instantSearch: boolean;
@@ -13,7 +12,7 @@ const ToggleInstantSearch: React.FC<ToggleInstantSearchProps> = ({
       <span className="flex items-center gap-2 p-2 text-white">
         {/* TODO this used to be Instant search so the logic is backwards here */}
         Low Data Mode
-        <Switch checked={!instantSearch} onCheckedChange={handleToggle} />
+        <input type="checkbox" role="switch" aria-label="Low data mode" checked={!instantSearch} onChange={handleToggle} />
       </span>
       {/* <TbTrash size={24} onClick={handleRefresh} /> */}
     </div>

@@ -66,6 +66,9 @@ jobs:
         run: ls ./src
 
       - name: Build Project
+        env:
+          VITE_API_URL: ${{ secrets.VITE_API_URL }}
+          VITE_WS_URL: ${{ secrets.VITE_WS_URL }}
         run: yarn build
 
       - name: Deploy to Azure Static Web App

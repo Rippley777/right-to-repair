@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { selectedTheme } from '@ui';
+// Legacy table theme metadata; kept local so the optional UI submodule is not required.
+const selectedTheme = (name: string) => ({ name });
 
 export const themeSlice = createSlice({
   name: 'theme',

@@ -118,7 +118,7 @@ const FilterRow: React.FC<FilterRowProps> = (props) => {
       <div
         className={twMerge(
           "text-white flex rounded overflow-scroll h-12 gap-2",
-          debugStyle("bg-violet-600")
+          debugStyle("bg-violet-600", debugMode)
         )}
       >
         {items.map((filterKey) => {
