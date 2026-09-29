@@ -1,5 +1,12 @@
 import { useEffect, useRef, useState } from "react";
-import { Link, NavLink, Route, Routes, useLocation } from "react-router-dom";
+import {
+  Link,
+  NavLink,
+  Route,
+  Routes,
+  useLocation,
+  useNavigate,
+} from "react-router-dom";
 import { type CatalogDevice } from "./catalog";
 import { Score, Modal, NotFound, CatalogError } from "./ui";
 import { GuidesPage, AboutPage } from "./InfoPages";
@@ -8,17 +15,15 @@ import {
   LuArrowRight,
   LuArrowUpRight,
   LuBookmark,
-  LuCheck,
   LuGitCompareArrows,
-  LuLaptop,
-  LuSearch,
-  LuSmartphone,
   LuWrench,
   LuX,
 } from "react-icons/lu";
 import { ExplorerPage } from "./ExplorerPage";
 import { DevicePage } from "./DevicePage";
 import { ComparePage } from "./ComparePage";
+import { RepairPlannerPage } from "./RepairPlannerPage";
+import { ModelFinderPage } from "./ModelFinderPage";
 
 function useStoredIds(key: string) {
   const [ids, setIds] = useState<string[]>(() => {
@@ -52,7 +57,8 @@ export default function Workspace() {
   const compare = storedCompare
     .filter((id) => devices.some((device) => device.id === id))
     .slice(0, 3);
-  const [modal, setModal] = useState<"scores" | "identify" | null>(null);
+  const [modal, setModal] = useState<"scores" | null>(null);
+  const navigate = useNavigate();
   const [announcement, setAnnouncement] = useState("");
   const location = useLocation();
   const mainRef = useRef<HTMLElement>(null);
@@ -89,7 +95,7 @@ export default function Workspace() {
     toggleSave,
     toggleCompare,
     openScores,
-    openIdentify: () => setModal("identify"),
+    openIdentify: () => navigate("/identify"),
   };
   const selectedDevices = compare
     .map((id) => devices.find((d) => d.id === id))
@@ -111,6 +117,8 @@ export default function Workspace() {
           {
             "/": "Explore devices",
             "/saved": "Saved devices",
+            "/identify": "Exact model finder",
+            "/planner": "Repair planner",
             "/compare": "Compare devices",
             "/guides": "Repair resources",
             "/about": "About the project",
@@ -142,6 +150,8 @@ export default function Workspace() {
             <NavLink to="/" end>
               Explore devices
             </NavLink>
+            <NavLink to="/identify">Model finder</NavLink>
+            <NavLink to="/planner">Repair planner</NavLink>
             <NavLink to="/compare">
               Compare
               {selectedDevices.length > 0 && (
@@ -225,6 +235,29 @@ export default function Workspace() {
             path="/charts"
             element={catalogStatus ?? <ComparePage {...shared} />}
           />
+          <Route
+            path="/identify"
+            element={
+              <ModelFinderPage
+                {...shared}
+                loading={loading}
+                error={error}
+                retry={retry}
+              />
+            }
+          />
+          <Route
+            path="/planner"
+            element={
+              <RepairPlannerPage
+                devices={devices}
+                saved={saved}
+                loading={loading}
+                error={error}
+                retry={retry}
+              />
+            }
+          />
           <Route path="/guides" element={<GuidesPage />} />
           <Route
             path="/about"
@@ -245,7 +278,7 @@ export default function Workspace() {
         <button
           id="identify-link"
           className="text-button"
-          onClick={() => setModal("identify")}
+          onClick={() => navigate("/identify")}
         >
           Find your model <LuArrowUpRight />
         </button>
@@ -339,44 +372,6 @@ export default function Workspace() {
           >
             Explore iFixit’s scoring methodology <LuArrowUpRight />
           </a>
-        </Modal>
-      )}
-      {modal === "identify" && (
-        <Modal
-          title="Let’s find your exact model."
-          onClose={() => setModal(null)}
-        >
-          <div className="identify-steps">
-            <section>
-              <LuLaptop />
-              <h3>On a Mac</h3>
-              <p>
-                Open the Apple menu → About This Mac for the model and year.
-                Open System Information → Hardware to find an identifier like{" "}
-                <code>MacBookPro18,3</code>.
-              </p>
-            </section>
-            <section>
-              <LuSmartphone />
-              <h3>On an iPhone or iPad</h3>
-              <p>
-                Go to Settings → General → About. Tap Model Number to reveal the
-                A-number printed in our device cards.
-              </p>
-            </section>
-            <section>
-              <LuSearch />
-              <h3>Can’t turn it on?</h3>
-              <p>
-                Look for the model number on the device’s enclosure or original
-                packaging. An A-number can cover several configurations—check
-                the year and specifications too.
-              </p>
-            </section>
-          </div>
-          <button className="primary-button" onClick={() => setModal(null)}>
-            Got it <LuCheck />
-          </button>
         </Modal>
       )}
     </div>

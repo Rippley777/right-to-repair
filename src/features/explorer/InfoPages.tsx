@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import {
   LuArrowUpRight,
   LuBookOpen,
@@ -27,8 +28,8 @@ export function GuidesPage() {
             icon: LuSearch,
             title: "Find your exact model",
             text: "On a Mac, open the Apple menu → About This Mac. For the model identifier, open System Information → Hardware. On iPhone or iPad, check Settings → General → About.",
-            href: "https://support.apple.com/en-us/102767",
-            label: "Identify your MacBook",
+            href: "/identify",
+            label: "Open the model finder",
           },
           {
             number: "02",
@@ -54,10 +55,17 @@ export function GuidesPage() {
             </div>
             <h2>{item.title}</h2>
             <p>{item.text}</p>
-            <a href={item.href} target="_blank" rel="noreferrer">
-              {item.label}
-              <LuArrowUpRight />
-            </a>
+            {item.href.startsWith("/") ? (
+              <Link to={item.href}>
+                {item.label}
+                <LuArrowUpRight />
+              </Link>
+            ) : (
+              <a href={item.href} target="_blank" rel="noreferrer">
+                {item.label}
+                <LuArrowUpRight />
+              </a>
+            )}
           </article>
         ))}
       </div>

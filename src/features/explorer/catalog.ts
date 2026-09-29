@@ -8,6 +8,13 @@ export interface CatalogDevice {
   family: Family;
   year: number;
   chip: string;
+  memorySizes?: string[];
+  storageCapacities?: string[];
+  screenSize?: string;
+  processorSpeed?: string;
+  repairDifficulty?: string;
+  partAvailability?: string;
+  repairCosts?: { battery?: string; screen?: string; keyboard?: string };
   silicon: boolean;
   score: number | null;
   ram: boolean | null;

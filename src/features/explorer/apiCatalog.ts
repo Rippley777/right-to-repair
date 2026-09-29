@@ -52,6 +52,15 @@ export function normalizeDevice(device: ApiDevice): CatalogDevice {
     family,
     year,
     chip,
+    memorySizes: device.hardware_details?.memory?.available_sizes,
+    storageCapacities: device.hardware_details?.storage?.map(
+      (storage) => storage.capacity
+    ),
+    screenSize: device.hardware_details?.screen?.size,
+    processorSpeed: device.hardware_details?.processor?.base_clock,
+    repairDifficulty: device.repair_difficulty,
+    partAvailability: device.replacement_part_availability,
+    repairCosts: device.estimated_repair_cost,
     silicon: /apple|\b[ma]\d/i.test(chip),
     score,
     ram: typeof soldered === "boolean" ? !soldered : null,

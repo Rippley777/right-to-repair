@@ -13,6 +13,7 @@ import {
   LuGitCompareArrows,
   LuHardDrive,
   LuInfo,
+  LuClipboardList,
 } from "react-icons/lu";
 import DeviceArt from "./DeviceArt";
 
@@ -88,6 +89,13 @@ export function DevicePage({
               <LuBookmark />
               {saved.includes(device.id) ? "Saved" : "Save device"}
             </button>
+            <Link
+              className="secondary-button"
+              to={`/planner?device=${encodeURIComponent(device.id)}`}
+            >
+              <LuClipboardList />
+              Plan a repair
+            </Link>
           </div>
         </div>
       </div>
