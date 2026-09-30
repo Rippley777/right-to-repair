@@ -69,6 +69,9 @@ jobs:
         env:
           VITE_API_URL: ${{ secrets.VITE_API_URL }}
           VITE_WS_URL: ${{ secrets.VITE_WS_URL }}
+          VITE_HOUSE_EDGE_PROJECT: ${{ vars.VITE_HOUSE_EDGE_PROJECT }}
+          VITE_HOUSE_EDGE_KEY: ${{ vars.VITE_HOUSE_EDGE_KEY }}
+          VITE_HOUSE_EDGE_ENDPOINT: ${{ vars.VITE_HOUSE_EDGE_ENDPOINT }}
         run: yarn build
 
       - name: Deploy to Azure Static Web App
@@ -84,6 +87,9 @@ jobs:
         env:
           VITE_API_URL: ${{ secrets.VITE_API_URL }}
           VITE_WS_URL: ${{ secrets.VITE_WS_URL }}
+          VITE_HOUSE_EDGE_PROJECT: ${{ vars.VITE_HOUSE_EDGE_PROJECT }}
+          VITE_HOUSE_EDGE_KEY: ${{ vars.VITE_HOUSE_EDGE_KEY }}
+          VITE_HOUSE_EDGE_ENDPOINT: ${{ vars.VITE_HOUSE_EDGE_ENDPOINT }}
 
   close_pull_request_job:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
