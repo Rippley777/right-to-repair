@@ -1,26 +1,59 @@
 MIT NON-AI License
 
-Copyright (c) 2023, <copyright holders>
+Copyright (c) 2023-2026 Ally Rippley
 
-Permission is hereby granted, free of charge, to any person obtaining a copy of the software and associated documentation files (the "Software"),
-to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
-and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions.
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software, including the rights to use, copy, modify, merge, publish,
+distribute, sublicense, and/or sell copies of the Software, and to permit
+persons to whom the Software is furnished to do so, subject to all of the
+following conditions:
 
-The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+1. Notice preservation
 
-In addition, the following restrictions apply:
+The above copyright notice and this entire license, including the AI/ML
+restrictions, shall be included in all copies or substantial portions of the
+Software. Redistribution and sublicensing must preserve these restrictions
+for the Software and modifications or derivative works of the Software.
 
-1. The Software and any modifications made to it may not be used for the purpose of training or improving machine learning algorithms,
-including but not limited to artificial intelligence, natural language processing, or data mining. This condition applies to any derivatives,
-modifications, or updates based on the Software code. Any usage of the Software in an AI-training dataset is considered a breach of this License.
+2. No artificial intelligence or machine learning use
 
-2. The Software may not be included in any dataset used for training or improving machine learning algorithms,
-including but not limited to artificial intelligence, natural language processing, or data mining.
+No permission is granted under this license to use the Software, in whole or
+in part, or any modifications or derivative works of the Software, for any
+artificial intelligence or machine learning ("AI/ML") purpose. Prohibited
+uses include, without limitation:
 
-3. Any person or organization found to be in violation of these restrictions will be subject to legal action and may be held liable
-for any damages resulting from such use.
+- Developing, training, fine-tuning, testing, evaluating, validating, operating,
+  or improving any AI/ML model, algorithm, system, service, or application.
+- Including the Software in an AI/ML dataset, corpus, benchmark, embedding,
+  retrieval index, prompt, context window, or other AI/ML input, including
+  for inference, retrieval-augmented generation, or code generation.
+- Using AI/ML tools, assistants, or agents to read, analyze, transform, modify,
+  translate, or generate code from the Software.
+- Incorporating, integrating, or otherwise using the Software in an AI/ML
+  product, service, workflow, or application.
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
-DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE
-OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+A separate written grant from the applicable copyright holder(s) is required
+for any such use. Merely receiving the Software under this license does not
+provide that grant.
+
+3. Scope
+
+This license applies only to material the copyright holder(s) have the right
+to license under these terms. Third-party software, fonts, artwork, data, and
+other materials retain their respective licenses and notices. This license
+does not relicense those materials or revoke rights already granted under
+an earlier license.
+
+This is a custom, source-available license derived from the MIT License. It
+is not the standard MIT License and is not an OSI-approved open-source license.
+It makes no representation about whether AI tools were used to create the
+Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.

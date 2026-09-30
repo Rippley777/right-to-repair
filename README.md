@@ -66,3 +66,9 @@ The redesigned application does not require the optional `ui` submodule. Existin
 ## Contributions
 
 Please describe the problem, the change, and how you checked it in your pull request. For device-data changes, include a primary source for the score and repair details. Run the tests, lint, and production build before submitting.
+
+## License
+
+[MIT NON-AI License](LICENSE.md). This custom, source-available license permits use, modification, and redistribution subject to its terms, but **prohibits all AI/ML use of the code**, including training, inference, AI integrations, and supplying the code to AI coding tools, unless separately authorized in writing by the applicable copyright holder(s). It is not the standard MIT License or an OSI-approved open-source license.
+
+Third-party components and assets retain their own licenses. Previously granted licenses are not retroactively revoked. See the license file for the full terms.
